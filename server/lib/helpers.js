@@ -11,6 +11,20 @@ const parseJsonToObject = (str) => {
     }
 }
 
+const updateSequences = async (sequences) => {
+    const fd = await fs.open(baseDir+'db/sequences.json', 'r+')
+    await fd.truncate()
+    await fd.writeFile(JSON.stringify(sequences))
+    await fd.close()
+}
+
+const getNextDocNum = async (type) => {
+    const sequences = parseJsonToObject(await fs.readFile(baseDir+'db/sequences.json', 'utf8'))
+    sequences[type] = sequences[type] + 1
+    await updateSequences(sequences)
+    return sequences[type]
+}
+
 const helpers = {}
 
 helpers.queryDB = async (dbName) => {
@@ -23,9 +37,10 @@ helpers.readDoc = async (dir, fileName) => {
     return parseJsonToObject(data)
 }
 
-helpers.creteDoc = async (dir, fileName, fileData) => {
+helpers.creteDoc = async (dir, fileData) => {
+    const fileName = await getNextDocNum(dir)
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
-    await fs.writeFile(fileDescriptor, JSON.stringify(fileData))
+    await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
     return { message: `Success: Document ${dir}/${fileName} created` }
 }
