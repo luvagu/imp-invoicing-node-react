@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('fs').promises
+const fs = require('fs/promises')
 
 const baseDir = path.join(__dirname, '/../data/')
 
@@ -19,8 +19,9 @@ helpers.readFile = async (dir, fileName) => {
 }
 
 helpers.creteInvoice = async (fileName, fileData) => {
-    const file = await fs.open(baseDir+'invoices/'+fileName+'.json', 'wx')
-    await fs.writeFile(file, JSON.stringify(fileData))
+    const fileDescriptor = await fs.open(baseDir+'invoices/'+fileName+'.json', 'wx')
+    await fs.writeFile(fileDescriptor, JSON.stringify(fileData))
+    await fileDescriptor.close()
     return true
 }
 

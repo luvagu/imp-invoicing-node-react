@@ -10,6 +10,7 @@ const compression = require('compression')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// export NODE_ENV=production
 if (process.env.NODE_ENV === 'production') {
     app.use(compression())
     app.use(express.static(path.join(__dirname, '..', 'client/build')))
