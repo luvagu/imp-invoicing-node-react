@@ -34,4 +34,25 @@ helpers.listInvoices = async () => {
     return trimmedFileNames
 }
 
+helpers.deleteInvoice = async (filename) => {
+    await fs.unlink(baseDir+'invoices/'+filename+'.json')
+    return { message: `Success: Invoice ${filename} deleted` }
+}
+
+helpers.deleteAllInvoices = async () => {
+    // await fs.rmdir(baseDir+'invoices/', { recursive: true, force: true }) // deletes directory as well
+
+    const files = await fs.readdir(baseDir+'invoices/', 'utf8')
+
+    if (!files.length) return { message: 'Nothing to delete, directory already empty' }
+
+    let deletedFiles = 0
+    for await (const file of files) {
+        fs.unlink(baseDir+'invoices/'+file)
+        deletedFiles++
+    }
+    
+    return { message: `Success: ${deletedFiles} invoice(s) deleted` }
+}
+
 module.exports = helpers

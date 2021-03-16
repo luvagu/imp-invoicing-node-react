@@ -65,7 +65,28 @@ app.post('/invoice/create', async (req, res) => {
         res.status(200).send({ invoiceData })
     } catch (error) {
         console.error('Error on Post path >>> /invoice/create', error)
-        res.status(500).send({ Error: 'Could not creteate invoice, may already exists' })
+        res.status(500).send({ Error: 'Could not creteate invoice, it may already exist' })
+    }
+})
+
+app.delete('/invoices/delete', async (req, res) => {
+    try {
+        const response = await helpers.deleteAllInvoices()
+        res.status(200).send(response)
+    } catch (error) {
+        console.error('Error on Post path >>> /invoices/delete', error)
+        res.status(500).send({ Error: 'Could not delete invoices' })
+    }
+})
+
+app.delete('/invoice/delete/:num', async (req, res) => {
+    const fileName = req.params.num
+    try {
+        const response = await helpers.deleteInvoice(fileName)
+        res.status(200).send(response)
+    } catch (error) {
+        console.error('Error on Post path >>> /invoice/delete/:num', error)
+        res.status(500).send({ Error: 'Could not delete invoice, it may not exist' })
     }
 })
 
