@@ -1,3 +1,3 @@
 # IMP Auxiliary Invoicing App
 
-Build with Node/Express on the backend and React.js on the Frontend
+Backend Node/Express/FaunaDB and Frontend React.js
