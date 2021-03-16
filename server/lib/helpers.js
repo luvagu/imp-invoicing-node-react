@@ -13,20 +13,25 @@ const parseJsonToObject = (str) => {
 
 const helpers = {}
 
-helpers.readFile = async (dir, fileName) => {
+helpers.queryDB = async (dbName) => {
+    const data = await fs.readFile(baseDir+'db/'+dbName+'.json', 'utf8')
+    return parseJsonToObject(data)
+}
+
+helpers.readDoc = async (dir, fileName) => {
     const data = await fs.readFile(baseDir+dir+'/'+fileName+'.json', 'utf8')
     return parseJsonToObject(data)
 }
 
-helpers.creteInvoice = async (fileName, fileData) => {
-    const fileDescriptor = await fs.open(baseDir+'invoices/'+fileName+'.json', 'wx')
+helpers.creteDoc = async (dir, fileName, fileData) => {
+    const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
     await fs.writeFile(fileDescriptor, JSON.stringify(fileData))
     await fileDescriptor.close()
-    return true
+    return { message: `Success: Document ${dir}/${fileName} created` }
 }
 
-helpers.listInvoices = async () => {
-    const data = await fs.readdir(baseDir+'invoices/')
+helpers.listDocs = async (dir) => {
+    const data = await fs.readdir(baseDir+dir+'/')
     const trimmedFileNames = []
     data.forEach(fileName => {
         trimmedFileNames.push(fileName.replace('.json', ''))
@@ -34,25 +39,25 @@ helpers.listInvoices = async () => {
     return trimmedFileNames
 }
 
-helpers.deleteInvoice = async (filename) => {
-    await fs.unlink(baseDir+'invoices/'+filename+'.json')
-    return { message: `Success: Invoice ${filename} deleted` }
+helpers.deleteDoc = async (dir, fileName) => {
+    await fs.unlink(baseDir+dir+'/'+fileName+'.json')
+    return { message: `Success: Document ${dir}/${fileName} deleted` }
 }
 
-helpers.deleteAllInvoices = async () => {
+helpers.deleteAllDocs = async (dir) => {
     // await fs.rmdir(baseDir+'invoices/', { recursive: true, force: true }) // deletes directory as well
 
-    const files = await fs.readdir(baseDir+'invoices/', 'utf8')
+    const files = await fs.readdir(baseDir+dir+'/', 'utf8')
 
     if (!files.length) return { message: 'Nothing to delete, directory already empty' }
 
     let deletedFiles = 0
     for await (const file of files) {
-        fs.unlink(baseDir+'invoices/'+file)
+        fs.unlink(baseDir+dir+'/'+file)
         deletedFiles++
     }
     
-    return { message: `Success: ${deletedFiles} invoice(s) deleted` }
+    return { message: `Success: ${deletedFiles} documents deleted from ${dir}` }
 }
 
 module.exports = helpers

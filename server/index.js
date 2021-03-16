@@ -20,125 +20,148 @@ app.get('/', (req, res) => {
     res.send({ welcome: 'Welcome to IMP Invoicing' })
 })
 
-app.get('/client/:id', async (req, res) => {
+// CRUD related routes
+app.get('/list-docs/:dir', async (req, res) => {
+    const dir = req.params.dir
+    try {
+        const docsList = await helpers.listDocs(dir)
+        res.status(200).send({ docsList })
+    } catch (error) {
+        console.error('Error on Get path >>> /list-docs/:dir', error)
+        res.status(500).send({ Error: `Could not retrieve the ${dir} list` })
+    }
+})
+
+app.get('/get-doc/:type/:num', async (req, res) => {
+    const { type:dir, num:fileName } = req.params
+
+    try {
+        const invoiceData = await helpers.readDoc(dir, fileName)
+        res.status(200).send(invoiceData)
+    } catch (error) {
+        console.error('Error on Get path >>> /get-doc/:type/:num', error)
+        res.status(500).send({ Error: 'Could not get the requested document' })
+    }
+})
+
+app.post('/create-doc/:type/:num', async (req, res) => {
+    const { type:dir, num:fileName } = req.params
+    const fileData = req.body
+
+    try {
+        const response = await helpers.creteDoc(dir, fileName, fileData)
+        // const docData = await helpers.readDoc(dir, fileName)
+        res.status(200).send(response)
+    } catch (error) {
+        console.error('Error on Post path >>> /create-doc/:type/:num', error)
+        res.status(500).send({ Error: 'Could not create document, it may already exist' })
+    }
+})
+
+app.delete('/delete-doc/:type/:num', async (req, res) => {
+    const { type:dir, num:fileName } = req.params
+    try {
+        const response = await helpers.deleteDoc(dir, fileName)
+        res.status(200).send(response)
+    } catch (error) {
+        console.error('Error on Post path >>> /delete-doc/:type/:num', error)
+        res.status(500).send({ Error: 'Could not delete document, it may not exist' })
+    }
+})
+
+app.delete('/delete-all-docs/:type', async (req, res) => {
+    const dir = req.params.type
+
+    try {
+        const response = await helpers.deleteAllDocs(dir)
+        res.status(200).send(response)
+    } catch (error) {
+        console.error('Error on Post path >>> /delete-all-docs/:type', error)
+        res.status(500).send({ Error: `Could not delete documents in ${dir}` })
+    }
+})
+
+// DB related routes
+app.get('/get-client/:id', async (req, res) => {
     const clientId = req.params.id
 
     try {
-        const clientData = await helpers.readFile('clients', 'clients')
-        const client = clientData[clientId] || {}
-        res.status(200).send(client)
+        const clientData = await helpers.queryDB('clients')
+        const client = clientData[clientId] || null
+
+        if (client !== null) {
+            res.status(200).send(client)
+        } else {
+            res.status(404).send({ Error: `Could not find Client ID: ${clientId}` })
+        }
     } catch (error) {
-        console.error('Error on Get path >>> /invoice/:num', error)
-        res.status(500).send({ Error: 'Could not retrieve the requested invoice' })
+        console.error('Error on Get path >>> /client/:id', error)
+        res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/invoices', async (req, res) => {
+app.get('/get-all-products', async (req, res) => {
     try {
-        const list = await helpers.listInvoices()
-        res.status(200).send({ invoicesList: list })
+        const allProducts = await helpers.queryDB('products')
+        res.status(200).send(allProducts)
     } catch (error) {
-        console.error('Error on Get path >>> /invoices', error)
-        res.status(500).send({ Error: 'Could not retrieve the invoices list' })
+        console.error('Error on Get path >>> /get-all-products', error)
+        res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/invoice/:num', async (req, res) => {
-    const fileName = req.params.num
-
-    try {
-        const invoiceData = await helpers.readFile('invoices', fileName)
-        res.status(200).send(invoiceData)
-    } catch (error) {
-        console.error('Error on Get path >>> /invoice/:num', error)
-        res.status(500).send({ Error: 'Could not retrieve the requested invoice' })
-    }
-})
-
-app.post('/invoice/create', async (req, res) => {
-    const fileName = req.body.invoice_num
-    const data = req.body
-
-    try {
-        await helpers.creteInvoice(fileName, data)
-        const invoiceData = await helpers.readFile('invoices', fileName)
-        res.status(200).send({ invoiceData })
-    } catch (error) {
-        console.error('Error on Post path >>> /invoice/create', error)
-        res.status(500).send({ Error: 'Could not creteate invoice, it may already exist' })
-    }
-})
-
-app.delete('/invoices/delete', async (req, res) => {
-    try {
-        const response = await helpers.deleteAllInvoices()
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Post path >>> /invoices/delete', error)
-        res.status(500).send({ Error: 'Could not delete invoices' })
-    }
-})
-
-app.delete('/invoice/delete/:num', async (req, res) => {
-    const fileName = req.params.num
-    try {
-        const response = await helpers.deleteInvoice(fileName)
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Post path >>> /invoice/delete/:num', error)
-        res.status(500).send({ Error: 'Could not delete invoice, it may not exist' })
-    }
-})
-
-app.get('/products', async (req, res) => {
-    try {
-        const list = await helpers.readFile('products', 'products')
-        res.status(200).send(list)
-    } catch (error) {
-        console.error('Error on Get path >>> /invoices', error)
-        res.status(500).send({ Error: 'Could not retrieve the invoices list' })
-    }
-})
-
-app.get('/product-by-code/:code', async (req, res) => {
+app.get('/get-single-product/:code', async (req, res) => {
     const prodCode = req.params.code
 
     try {
-        const products = await helpers.readFile('products', 'products_by_code')
-        const product = products[prodCode] || {}
+        const products = await helpers.queryDB('products_by_code')
+        const product = products[prodCode] || null
 
-        res.status(200).send(product)
+        if (product !== null) {
+            res.status(200).send(product)
+        } else {
+            res.status(404).send({ Error: `Could not find Product code: ${prodCode}` })
+        }
     } catch (error) {
-        console.error('Error on Get path >>> /products/:code', error)
-        res.status(500).send({ Error: 'Could not find the requested product' })
+        console.error('Error on Get path >>> /get-single-product/:code', error)
+        res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/product-search-name/:name', async (req, res) => {
-    const prodName = req.params.name
+app.get('/product-match-terms/:terms', async (req, res) => {
+    const terms = req.params.terms
 
     try {
-        const products = await helpers.readFile('products', 'products')
-        const product = products.filter(({ name }) => name.includes(prodName.toUpperCase()))
+        const products = await helpers.queryDB('products')
+        const results = products.filter(({ name }) => name.includes(terms.toUpperCase()))
 
-        res.status(200).send(product)
+        if (results.length) {
+            res.status(200).send(results)
+        } else {
+            res.status(404).send({ Error: `Could not match products with terms ${terms}` })
+        }
     } catch (error) {
-        console.error('Error on Get path >>> /products/:code', error)
-        res.status(500).send({ Error: 'Could not find the requested product' })
+        console.error('Error on Get path >>> /product-match-terms/:terms', error)
+        res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/product-search-code/:code', async (req, res) => {
+app.get('/product-match-code/:code', async (req, res) => {
     const prodCode = req.params.code
     const regx = new RegExp(`^${prodCode}.*`)
+    
     try {
-        const products = await helpers.readFile('products', 'products')
-        const product = products.filter(({ cod }) => regx.test(cod.toUpperCase()))
+        const products = await helpers.queryDB('products')
+        const results = products.filter(({ code }) => regx.test(code.toUpperCase()))
 
-        res.status(200).send(product)
+        if (results.length) {
+            res.status(200).send(results)
+        } else {
+            res.status(404).send({ Error: `Could not match products with code ${prodCode}` })
+        }
     } catch (error) {
-        console.error('Error on Get path >>> /products/:code', error)
-        res.status(500).send({ Error: 'Could not find the requested product' })
+        console.error('Error on Get path >>> /product-match-code/:code', error)
+        res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
