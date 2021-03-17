@@ -1,14 +1,18 @@
 const path = require('path')
 
 const helpers = require('./lib/helpers')
+const port = process.env.PORT || 5000
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 5000
+
+const cors = require('cors')
+
 const compression = require('compression')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 // export NODE_ENV=production
 if (process.env.NODE_ENV === 'production') {
