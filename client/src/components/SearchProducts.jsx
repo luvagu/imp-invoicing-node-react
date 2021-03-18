@@ -2,21 +2,25 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 export default function SearchProducts() {
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState(null)
     const [searchResults, setSearchResults] = useState([])
 
     useEffect(() => {
-        console.log('useEffect just run on load')
+        if (searchTerm === null) return
         axios.get(`http://localhost:5000/get-single-product/${searchTerm}`)
-            .then(res => console.log(res))
+            .then(res => setSearchResults(res.data))
             .catch(e => console.log(e.message))
     }, [searchTerm])
+
+    console.log('searchResults >>>', searchResults)
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'code': {
                     console.log(e.target.name)
+                    console.log(e.target.value)
+                    setSearchTerm(e.target.value)
                 }
                     break
                 case 'partial-code': console.log(e.target.name)
@@ -39,7 +43,8 @@ export default function SearchProducts() {
                 <SearchInput fieldName='partial-code' placeHolder='Codigo parcial' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
                 <SearchInput fieldName='partial-name' placeHolder='Nombre parcial' handle={handleKeyDown} />
             </div>
-        
+
+            {searchResults && (<div>{searchResults.name}</div>)}
         </div>
 	)
 }
