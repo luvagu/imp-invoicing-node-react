@@ -121,7 +121,7 @@ app.get('/get-single-product/:code', async (req, res) => {
         const product = products[prodCode] || null
 
         if (product !== null) {
-            res.status(200).send(product)
+            res.status(200).send([product])
         } else {
             res.status(404).send({ Error: `Could not find Product code: ${prodCode}` })
         }
