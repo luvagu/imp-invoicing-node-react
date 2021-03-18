@@ -18,7 +18,7 @@ export default function ProductsSearch() {
                 setSearchResults([])
                 setErrMsg(err.response.data.Error)
             })
-    }, [searchTerm, serverRoute])
+    }, [serverRoute, searchTerm])
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
