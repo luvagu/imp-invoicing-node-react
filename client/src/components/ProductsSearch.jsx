@@ -1,31 +1,39 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import ProductsResults from './ProductsResults'
 
-export default function SearchProducts() {
+export default function ProductsSearch() {
+    const [errMsg, setErrMsg] = useState('')  
+    const [serverRoute, setServerRoute] = useState('')
     const [searchTerm, setSearchTerm] = useState(null)
     const [searchResults, setSearchResults] = useState([])
 
     useEffect(() => {
-        if (searchTerm === null) return
-        axios.get(`http://localhost:5000/get-single-product/${searchTerm}`)
-            .then(res => setSearchResults(res.data))
-            .catch(e => console.log(e.message))
-    }, [searchTerm])
+        if (searchTerm === null || searchTerm === '') return
 
-    console.log('searchResults >>>', searchResults)
+        axios.get(`http://localhost:5000/${serverRoute}/${searchTerm}`)
+            .then(res => setSearchResults(res.data))
+            .catch(err => {
+                // console.log(err)
+                setSearchResults([])
+                setErrMsg(err.response.data.Error)
+            })
+    }, [searchTerm, serverRoute])
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             switch (e.target.name) {
-                case 'code': {
-                    console.log(e.target.name)
-                    console.log(e.target.value)
+                case 'code': 
+                    setServerRoute('get-single-product')
                     setSearchTerm(e.target.value)
-                }
                     break
-                case 'partial-code': console.log(e.target.name)
+                case 'partial-code': 
+                    setServerRoute('product-match-code')
+                    setSearchTerm(e.target.value)
                     break
-                case 'partial-name': console.log(e.target.name)
+                case 'partial-name':  
+                    setServerRoute('product-match-terms')
+                    setSearchTerm(e.target.value)
                     break
                 default:
                     break
@@ -44,11 +52,13 @@ export default function SearchProducts() {
                 <SearchInput fieldName='partial-name' placeHolder='Nombre parcial' handle={handleKeyDown} />
             </div>
 
-            {searchResults && (<div>{searchResults.name}</div>)}
+            {searchResults && searchResults.length > 0 
+                ? <ProductsResults results={searchResults} /> 
+                : (<div className="mt-6 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
+            }
         </div>
 	)
 }
-
 
 function SearchInput({ fieldName, placeHolder, extraClass = '', handle }) {
     return (

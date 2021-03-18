@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Dashboard from './components/Dashboard'
-import SearchProducts from './components/SearchProducts'
+import ProductsSearch from './components/ProductsSearch'
 
 function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -22,7 +22,7 @@ function App() {
 							<Route path="/nueva-proforma" />
 							<Route path="/ver-facturas" />
 							<Route path="/ver-proformas" />
-							<Route path="/buscar-productos" component={SearchProducts} />
+							<Route path="/buscar-productos" component={ProductsSearch} />
 						</Switch>
 					</main>
 				</div>
