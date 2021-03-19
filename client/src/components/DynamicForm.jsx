@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 import ProductSearchModal from './ProductSearchModal'
 
-export default function DynamicForm({ formTitle }) {
+export default function DynamicForm({ data, pdfMode, formTitle }) {
     const [showModal, setShowModal] = useState(false)
 
     const handleShowModal = () => {
@@ -165,7 +165,7 @@ export default function DynamicForm({ formTitle }) {
                     </div>
                 </div>
                 
-                <ProductSearchModal show={showModal} handleClose={handleCloseModal} />
+                {!pdfMode && <ProductSearchModal show={showModal} handleClose={handleCloseModal} />}
             </div>
         </div>
     )

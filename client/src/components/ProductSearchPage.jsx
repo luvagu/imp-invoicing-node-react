@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { productsSearchApi } from '../api/productSearch'
+import { productsSearchApi } from '../api/helpers'
 
 import SearchResultsInPage from './SearchResultsInPage'
 
