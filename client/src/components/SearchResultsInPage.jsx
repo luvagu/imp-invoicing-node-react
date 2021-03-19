@@ -1,4 +1,4 @@
-export default function ProductsResults({ results }) {
+export default function SearchResultsInPage({ results }) {
     return (
         <div className="mt-6 inline-block w-full shadow rounded-lg overflow-hidden">
             <table className="w-full leading-normal">

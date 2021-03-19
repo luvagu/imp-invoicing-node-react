@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Dashboard from './components/Dashboard'
 import DynamicForm from './components/DynamicForm'
-import ProductsSearch from './components/ProductsSearch'
+import ProductSearchPage from './components/ProductSearchPage'
 
 function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -23,7 +23,7 @@ function App() {
 							<Route path="/nueva-proforma" />
 							<Route path="/ver-facturas" />
 							<Route path="/ver-proformas" />
-							<Route path="/buscar-productos" component={ProductsSearch} />
+							<Route path="/buscar-productos" component={ProductSearchPage} />
 						</Switch>
 					</main>
 				</div>

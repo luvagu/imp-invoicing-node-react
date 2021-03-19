@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import ProductsResults from './ProductsResults'
+import { productsSearchApi } from '../api/productSearch'
 
-export default function ProductsSearch() {
+import SearchResultsInPage from './SearchResultsInPage'
+
+export default function ProductSearchPage() {
     const [errMsg, setErrMsg] = useState('')  
-    const [serverRoute, setServerRoute] = useState('')
+    const [searchRoute, setServerRoute] = useState('')
     const [searchTerm, setSearchTerm] = useState(null)
     const [searchResults, setSearchResults] = useState([])
 
     useEffect(() => {
         if (searchTerm === null || searchTerm === '') return
 
-        axios.get(`http://localhost:5000/${serverRoute}/${searchTerm}`)
-            .then(res => setSearchResults(res.data))
+        productsSearchApi(searchRoute, searchTerm)
+            .then(data => setSearchResults(data))
             .catch(err => {
-                // console.log(err)
                 setSearchResults([])
-                setErrMsg(err.response.data.Error)
+                setErrMsg(err.response?.data.Error || 'Network Error')
             })
-    }, [serverRoute, searchTerm])
+
+    }, [searchRoute, searchTerm])
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -53,7 +54,7 @@ export default function ProductsSearch() {
             </div>
 
             {searchResults && searchResults.length > 0 
-                ? <ProductsResults results={searchResults} /> 
+                ? <SearchResultsInPage results={searchResults} /> 
                 : (<div className="mt-6 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
             }
         </div>

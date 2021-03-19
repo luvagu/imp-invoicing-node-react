@@ -1,6 +1,59 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { productsSearchApi } from '../api/productSearch'
+import SearchResultsInModal from './SearchResultsInModal'
 
 export default function ProductSearchModal({ show, handleClose, handleAddProduct }) {
+    const [errMsg, setErrMsg] = useState('')  
+    const [searchRoute, setServerRoute] = useState('')
+    const [searchTerm, setSearchTerm] = useState(null)
+    const [searchResults, setSearchResults] = useState([])
+
+    useEffect(() => {
+        if (searchTerm === null || searchTerm === '') return
+
+        productsSearchApi(searchRoute, searchTerm)
+            .then(data => setSearchResults(data))
+            .catch(err => {
+                setSearchResults([])
+                setErrMsg(err.response?.data.Error || 'Network Error')
+            })
+
+    }, [searchRoute, searchTerm])
+
+    const handleInputSearch = (e) => {
+        if (e.key === 'Enter') {
+            switch (e.target.name) {
+                case 'code': 
+                    setServerRoute('get-single-product')
+                    setSearchTerm(e.target.value)
+					e.target.value = ''
+					e.target.blur()
+                    break
+                case 'partial-code': 
+                    setServerRoute('product-match-code')
+                    setSearchTerm(e.target.value)
+					e.target.value = ''
+					e.target.blur()
+                    break
+                case 'partial-name':  
+                    setServerRoute('product-match-terms')
+                    setSearchTerm(e.target.value)
+					e.target.value = ''
+					e.target.blur()
+                    break
+                default:
+                    break
+            }
+        }
+    }
+
+	const handleSelectedProduct = (index) => {
+		console.log(searchResults[index])
+		setSearchTerm(null)
+		setSearchResults([])
+		handleClose()
+	}
+
 	return (
 		<div className={`${show ? '' : 'hidden'} fixed z-40 top-0 right-0 left-0 bottom-0 h-full w-full bg-black bg-opacity-80 transition-opacity`}>
 			<div className="p-4 max-w-xl mx-auto relative absolute left-0 right-0 overflow-hidden mt-24">
@@ -29,7 +82,7 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
 								type="text"
 								name="code"
 								placeholder="Codigo"
-                                onKeyDown={handleAddProduct}
+                                onKeyDown={handleInputSearch}
 							/>
 						</div>
 
@@ -39,7 +92,7 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
 								type="text"
 								name="partial-code"
 								placeholder="Codigo parcial"
-                                onKeyDown={handleAddProduct}
+                                onKeyDown={handleInputSearch}
 							/>
 						</div>
 
@@ -49,64 +102,21 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
 								type="text"
 								name="partial-name"
 								placeholder="Nombre parcial"
-                                onKeyDown={handleAddProduct}
+                                onKeyDown={handleInputSearch}
 							/>
 						</div>
 					</div>
 
-					<div className="flex mb-4 border-b py-1">
-						<div className="mb-4 w-28">
-							<p className="text-gray-800 uppercase tracking-wide text-sm font-bold">
-								Codigo
-							</p>
-						</div>
-
-						<div className="mb-4 w-2/3 mr-2">
-							<p className="text-gray-800 uppercase tracking-wide text-sm font-bold">
-								Nombre
-							</p>
-						</div>
-
-						<div className="mb-4 w-auto"></div>
-					</div>
-
-					<div className="overflow-y-auto h-48">
-						<div className="flex mb-4 border-b py-1">
-							<div className="mb-4 w-28">
-								<p className="text-gray-800 uppercase tracking-wide text-sm font-bold truncate">
-									1221616
-								</p>
-							</div>
-
-							<div className="mb-4 w-2/3 mr-2">
-								<p className="text-gray-800 uppercase tracking-wide text-sm font-bold truncate">
-									sdfasdfas sadas sdfsadf sdfasdf sdfasdf
-								</p>
-							</div>
-
-							<div className="mb-4 w-auto text-right">
-								<button className="text-green-500 hover:text-green-600 text-sm">
-									<svg
-										className="w-5 h-5"
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-								</button>
-							</div>
-						</div>
-					</div>
+					{searchResults && searchResults.length > 0 
+						? <SearchResultsInModal results={searchResults} handleSelectedProduct={handleSelectedProduct} /> 
+						: (<div className="mb-4 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
+					}
 
 					<div className="mt-8 text-right">
 						<button
 							type="button"
 							className="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded shadow-sm"
+                            onClick={handleClose}
 						>
 							Cancelar
 						</button>
