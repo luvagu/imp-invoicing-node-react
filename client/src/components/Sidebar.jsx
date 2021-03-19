@@ -1,6 +1,6 @@
 import { Link, useRouteMatch } from 'react-router-dom'
 
-import { ReactComponent as Logo } from '../assets/imp-icon.svg'
+import { ReactComponent as Icon } from '../assets/imp-icon.svg'
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 	const close = () => {
@@ -14,9 +14,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 			<div className={`fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0 ${sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'}`}>
 				<div className="flex items-center justify-center mt-8">
 					<div className="flex items-center">
-						<Logo className="h-12 w-12" />
+						<Icon className="h-10 w-10" />
 						<span className="text-white text-2xl mx-2 font-semibold">
-							IMP Facturador
+							IMP F&amp;P
 						</span>
 					</div>
 				</div>

@@ -19,8 +19,8 @@ function App() {
 					<main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
 						<Switch>
 							<Route exact path="/" component={Dashboard} />
-							<Route path="/nueva-factura" component={DynamicForm} />
-							<Route path="/nueva-proforma" />
+							<Route path="/nueva-factura" render={() => <DynamicForm formTitle='Factura' />} />
+							<Route path="/nueva-proforma" render={() => <DynamicForm formTitle='Proforma' />} />
 							<Route path="/ver-facturas" />
 							<Route path="/ver-proformas" />
 							<Route path="/buscar-productos" component={ProductSearchPage} />
