@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Dashboard from './components/Dashboard'
+import DynamicForm from './components/DynamicForm'
 import ProductsSearch from './components/ProductsSearch'
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
 					<main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
 						<Switch>
 							<Route exact path="/" component={Dashboard} />
-							<Route path="/nueva-factura" />
+							<Route path="/nueva-factura" component={DynamicForm} />
 							<Route path="/nueva-proforma" />
 							<Route path="/ver-facturas" />
 							<Route path="/ver-proformas" />

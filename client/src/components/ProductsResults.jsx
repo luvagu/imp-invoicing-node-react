@@ -1,7 +1,7 @@
 export default function ProductsResults({ results }) {
     return (
-        <div className="mt-6 inline-block min-w-full shadow rounded-lg overflow-hidden">
-            <table className="min-w-full leading-normal">
+        <div className="mt-6 inline-block w-full shadow rounded-lg overflow-hidden">
+            <table className="w-full leading-normal">
                 <thead>
                     <tr className="bg-gray-100">
                         <th

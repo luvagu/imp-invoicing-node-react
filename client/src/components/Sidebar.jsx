@@ -1,6 +1,6 @@
 import { Link, useRouteMatch } from 'react-router-dom'
 
-import { ReactComponent as Logo } from '../assets/imp-logo.svg'
+import { ReactComponent as Logo } from '../assets/imp-icon.svg'
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 	const close = () => {
