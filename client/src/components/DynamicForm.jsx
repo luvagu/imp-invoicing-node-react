@@ -2,7 +2,10 @@ import { useState } from 'react'
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 import ProductSearchModal from './ProductSearchModal'
 
-export default function DynamicForm({ data, pdfMode, formTitle }) {
+import { initialDocInfo } from '../data/initialData'
+import Download from '../pdf/Download'
+
+export default function DynamicForm({ formTitle }) {
     const [showModal, setShowModal] = useState(false)
 
     const handleShowModal = () => {
@@ -54,6 +57,8 @@ export default function DynamicForm({ data, pdfMode, formTitle }) {
                     </div>
                 </div>
 
+                <Download data={initialDocInfo} /> 
+                
                 <div className="flex justify-center mb-8">
                     <div className="flex flex-wrap w-full">
                         <label className="text-gray-800 block mb-1 font-bold text-sm uppercase w-full tracking-wide">Datos Cliente:</label>
@@ -165,7 +170,8 @@ export default function DynamicForm({ data, pdfMode, formTitle }) {
                     </div>
                 </div>
                 
-                {!pdfMode && <ProductSearchModal show={showModal} handleClose={handleCloseModal} />}
+                <ProductSearchModal show={showModal} handleClose={handleCloseModal} />
+
             </div>
         </div>
     )
