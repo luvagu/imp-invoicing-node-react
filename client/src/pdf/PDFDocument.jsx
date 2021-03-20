@@ -60,7 +60,7 @@ export default function PDFDocument({ data }) {
 						<Text style={compose('span bold dark mb-5')}>{data.clientDetailsLabel}</Text>
 
 						<View style={compose('view flex')}>
-							<View style={compose('view w-30')}><Text style={compose('span')}>RIC / CI: {data.clientId}</Text></View>
+							<View style={compose('view w-30')}><Text style={compose('span')}>RUC / CI: {data.clientId}</Text></View>
 							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientName}</Text></View>
 							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientAddress}</Text></View>
 						</View>
@@ -99,12 +99,12 @@ export default function PDFDocument({ data }) {
 				</View>
 
 				{data.products?.map((product, i) => (
-					product.description === '' ? (<Text key={i}></Text>) : (
+					product.code === '' ? (<Text key={i}></Text>) : (
 						<View key={i} style={compose('view row flex align-enter')}>
 
 							<View style={compose('view w-40 p-4-8 pb-10')}>
                 				<Text style={compose('span bold fs-9')}>{product.code}</Text>
-                				<Text style={compose('span dark')}>{product.description}</Text>
+                				<Text style={compose('span dark fs-10')}>{product.description}</Text>
 							</View>
 
 							<View style={compose('view w-15 p-4-8 pb-10')}>
@@ -197,10 +197,10 @@ export default function PDFDocument({ data }) {
 
 				</View>
 
-				<View style={compose('view mt-20')}>
+				{/* <View style={compose('view mt-20')}>
 					<Text style={compose('span bold w-100')}>{data.notesLabel}</Text>
 					<Text style={compose('span w-100')}>{data.notes}</Text>
-				</View>
+				</View> */}
 
 			</Page>
 

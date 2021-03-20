@@ -57,7 +57,7 @@ export const initialDocInfo = {
   productDiscounyLabel: 'Dcto. %',
   productTotalAmountLabel: 'P.Total',
 
-  products: [{ code: '45445343', description: 'dsfsdf dsfs df dsfsd', quantity: 2000, price: 1.2255, discount: 10, total: 325.14 }, { code: '45445343', description: 'dsfsdf dsfs df dsfsd', quantity: 2000, price: 1.2255, discount: 10, total: 325.14 }, { code: '45445343', description: 'dsfsdf dsfs df dsfsd', quantity: 2000, price: 1.2255, discount: 10, total: 325.14 }],
+  products: [],
 
   subTotalLabel: 'Subtotal',
   discountLabel: 'Descuento',

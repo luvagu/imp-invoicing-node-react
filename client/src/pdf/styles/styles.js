@@ -146,6 +146,10 @@ const styles = {
 		fontSize: 9,
 	},
 
+	'fs-10': {
+		fontSize: 10,
+	},
+
 	'fs-16': {
 		fontSize: 16,
 	},
