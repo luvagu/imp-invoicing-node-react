@@ -136,7 +136,7 @@ app.get('/product-match-terms/:terms', async (req, res) => {
 
     try {
         const products = await helpers.queryDB('products')
-        const results = products.filter(({ name }) => name.includes(terms.toUpperCase()))
+        const results = products.filter(({ name }) => name.toLowerCase().includes(terms.toLowerCase()))
 
         if (results.length) {
             res.status(200).send(results)
@@ -151,11 +151,11 @@ app.get('/product-match-terms/:terms', async (req, res) => {
 
 app.get('/product-match-code/:code', async (req, res) => {
     const prodCode = req.params.code
-    const regx = new RegExp(`^${prodCode}.*`)
+    const regx = new RegExp(`^${prodCode.toLowerCase()}.*`)
     
     try {
         const products = await helpers.queryDB('products')
-        const results = products.filter(({ code }) => regx.test(code.toUpperCase()))
+        const results = products.filter(({ code }) => regx.test(code.toLowerCase()))
 
         if (results.length) {
             res.status(200).send(results)
