@@ -25,8 +25,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     <SidebarLink close={close} to='/' label='Panel' icon='homeIcon' active={true} />
                     <SidebarLink close={close} to='/nueva-factura' label='Factura' icon='addIcon' />
                     <SidebarLink close={close} to='/nueva-proforma' label='Proforma' icon='addIcon' />
-                    <SidebarLink close={close} to='/ver-facturas' label='Ver Facturas' icon='searchIcon' />
-                    <SidebarLink close={close} to='/ver-proformas' label='Ver Proformas' icon='searchIcon' />
+                    <SidebarLink close={close} to='/buscar-documentos' label='Buscar Documentos' icon='searchIcon' />
                     <SidebarLink close={close} to='/buscar-productos' label='Buscar Productos' icon='viewIcon' />
 				</nav>
 			</div>

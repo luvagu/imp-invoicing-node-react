@@ -3,15 +3,15 @@ import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
 import { initialDocInfo, paymentTerms } from '../data/initialData'
 
-import SaveDocIcon from './SaveDocBtn'
+import SaveDocIcon from '../components/SaveDocBtn'
 import DownloadBtn from '../pdf/DownloadBtn'
 
-import Modal from './Modal'
-import ClientAddModal from './ClientAddModal'
-import ClientSearchModal from './ClientSearchModal'
-import ProductSearchModal from './ProductSearchModal'
+import Modal from '../components/Modal'
+import ClientAddModal from '../components/ClientAddModal'
+import ClientSearchModal from '../components/ClientSearchModal'
+import ProductSearchModal from '../components/ProductSearchModal'
 
-export default function DynamicForm({ formTitle }) {
+export default function ProformaInvoice({ formTitle }) {
     const [isLoading, setIsLoading] = useState(false)
     const [isDocSaved, setIsDocSaved] = useState(false)
     const [showModal, setShowModal] = useState(false)
@@ -210,4 +210,3 @@ export default function DynamicForm({ formTitle }) {
         </div>
     )
 }
-

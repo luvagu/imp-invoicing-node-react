@@ -9,9 +9,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
             break
         case '/nueva-proforma': headerTitle = 'Nueva Proforma'
             break
-        case '/ver-facturas': headerTitle = 'Ver Facturas'
-            break
-        case '/ver-proformas': headerTitle = 'Ver Proformas'
+        case '/buscar-documentos': headerTitle = 'Buscar Documentos'
             break
         case '/buscar-productos': headerTitle = 'Buscar Productos'
             break

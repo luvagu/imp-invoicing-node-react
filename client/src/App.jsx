@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
-import Dashboard from './components/Dashboard'
-import DynamicForm from './components/DynamicForm'
-import ProductSearchPage from './components/ProductSearchPage'
+
+import Dashboard from './pages/Dashboard'
+import ProformaInvoice from './pages/ProformaInvoice'
+import DocumentSearch from './pages/DocumentSearch'
+import ProductSearch from './pages/ProductSearch'
 
 function App() {
+	// Sidebar state close/open
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
 	return (
@@ -19,11 +22,10 @@ function App() {
 					<main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
 						<Switch>
 							<Route exact path="/" component={Dashboard} />
-							<Route path="/nueva-factura" render={() => <DynamicForm key={Date.now().toString()} formTitle='Factura' />} />
-							<Route path="/nueva-proforma" render={() => <DynamicForm key={Date.now().toString()} formTitle='Proforma' />} />
-							<Route path="/ver-facturas" />
-							<Route path="/ver-proformas" />
-							<Route path="/buscar-productos" component={ProductSearchPage} />
+							<Route path="/nueva-factura" render={() => <ProformaInvoice key={Date.now().toString()} formTitle='Factura' />} />
+							<Route path="/nueva-proforma" render={() => <ProformaInvoice key={Date.now().toString()} formTitle='Proforma' />} />
+							<Route path="/buscar-documentos" component={DocumentSearch} />
+							<Route path="/buscar-productos" component={ProductSearch} />
 						</Switch>
 					</main>
 				</div>

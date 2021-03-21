@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { dataSearchApi } from '../api/helpers'
 
-import SearchResultsPage from './SearchResultsPage'
-import Spinner from './Spinner'
+import SearchResultsPage from '../components/SearchResultsPage'
+import Spinner from '../components/Spinner'
 
-export default function ProductSearchPage() {
+export default function ProductSearch() {
     const [isLoading, setIsLoading] = useState(false)
     const [errMsg, setErrMsg] = useState('')  
     const [searchRoute, setServerRoute] = useState('')
