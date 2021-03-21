@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Spinner() {
     return (
         <div className="p-1 text-white rounded-full bg-yellow-500 inline-flex items-center justify-center" title="Descargar PDF">

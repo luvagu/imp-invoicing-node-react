@@ -1,57 +1,27 @@
 export default function SearchResultsPage({ results }) {
     return (
-        <div className="mt-6 inline-block w-full rounded overflow-hidden">
+        <div className="mt-6 inline-block w-full overflow-hidden">
             <table className="w-full leading-normal">
                 <thead>
-                    <tr className="bg-gray-200">
-                        <th
-                            className="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                            Codigo
-                        </th>
-                        <th
-                            className="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                            Nombre
-                        </th>
-                        <th
-                            className="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                            Precio
-                        </th>
-                        <th
-                            className="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider hidden lg:table-cell">
-                            Stock
-                        </th>
-                        <th
-                            className="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider hidden lg:table-cell">
-                            Costo
-                        </th>
-                        <th
-                            className="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-800 uppercase tracking-wider hidden lg:table-cell">
-                            Ult. Costo
-                        </th>
+                    <tr className="border-b border-gray-300 text-sm text-gray-800 font-bold uppercase">
+                        <th className="p-4 text-left tracking-wider">Codigo</th>
+                        <th className="p-4 text-left tracking-wider">Nombre</th>
+                        <th className="p-4 text-left tracking-wider">Precio</th>
+                        <th className="p-4 text-left tracking-wider hidden lg:table-cell">Stock</th>
+                        <th className="p-4 text-left tracking-wider hidden lg:table-cell">Costo</th>
+                        <th className="p-4 text-left tracking-wider hidden lg:table-cell whitespace-nowrap">Ult. Costo</th>
                     </tr>
                 </thead>
                 <tbody>
                 
                 {results.map((res, idx) => (
-                    <tr key={idx} className="bg-white hover:bg-gray-50">
-                        <td className="px-5 py-5 border-b border-gray-200 text-sm">
-                            <p className="text-gray-900 whitespace-no-wrap">{res.id}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 text-sm">
-                            <p className="text-gray-900 whitespace-no-wrap">{res.name}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 text-sm">
-                            <p className="text-gray-900 whitespace-no-wrap">${res.price}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 text-sm hidden lg:table-cell">
-                            <p className="text-gray-900 whitespace-no-wrap">{res.stock}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 text-sm hidden lg:table-cell">
-                            <p className="text-gray-900 whitespace-no-wrap">{res.cost}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 text-sm hidden lg:table-cell">
-                            <p className="text-gray-900 whitespace-no-wrap">{res.lastCost}</p>
-                        </td>
+                    <tr key={idx} className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-gray-50">
+                        <td className="p-4">{res.id}</td>
+                        <td className="p-4">{res.name}</td>
+                        <td className="p-4 whitespace-nowrap">$ {res.price}</td>
+                        <td className="p-4 hidden lg:table-cell">{res.stock}</td>
+                        <td className="p-4 hidden lg:table-cell">{res.cost}</td>
+                        <td className="p-4 hidden lg:table-cell">{res.lastCost}</td>
                     </tr>
                 ))}
 

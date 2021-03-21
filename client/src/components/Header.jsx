@@ -20,7 +20,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
     }
 
     return (
-		<header className="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
+		<header className="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-700">
 			<div className="flex items-center">
                 
                 {/* Sidebar toggle */}
@@ -41,7 +41,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
 					</svg>
 				</button>
 
-				<h3 className="uppercase text-lg font-bold">{headerTitle}</h3>
+				<h3 className="uppercase text-lg text-black font-bold">{headerTitle}</h3>
 			</div>
 
 			<div className="flex items-center">
