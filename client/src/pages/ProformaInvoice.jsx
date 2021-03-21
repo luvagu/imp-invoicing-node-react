@@ -31,6 +31,7 @@ export default function ProformaInvoice({ formTitle }) {
     return (
         <div className="container mx-auto px-5 py-6">
 
+            {/* Page header and save/print buttons */}
             <div className="flex justify-between mb-8">
                 <div className="flex items-center justify-start">
                     <Logo className="h-10 w-auto border border-yellow-200 rounded" />
@@ -43,6 +44,7 @@ export default function ProformaInvoice({ formTitle }) {
                 </div>
             </div>
 
+            {/* Client details and doc info */}
             <div className="flex flex-wrap justify-between mb-8">
                 <div className="w-full md:w-1/2 mb-1 md:mb-0">
                     <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.companyName}</label>
@@ -104,51 +106,57 @@ export default function ProformaInvoice({ formTitle }) {
                 </div>
             </div> */}
             
-
-            <div className="flex -mx-1 border-b py-2 items-start">
-                <div className="flex-1 px-1">
+            {/* Products list header */}
+            <div className="flex items-start -mx-1 py-2 border-b">
+                <div className="px-1 w-1/2">
                     <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">Descripcion</p>
                 </div>
 
-                <div className="px-1 w-28 text-right">
+                <div className="px-1 w-32 text-right">
                     <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">Cantidad</p>
                 </div>
 
-                <div className="px-1 w-28 text-right">
+                <div className="px-1 w-32 text-right">
                     <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">P.Unit</p>
                 </div>
 
-                <div className="px-1 w-28 text-right">
+                <div className="px-1 w-32 text-right">
                     <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">Dcto. %</p>
                 </div>
 
-                <div className="px-1 w-28 text-right">
+                <div className="px-1 w-32 text-right">
                     <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">P.Total</p>
                 </div>
 
                 <div className="px-1 w-10"> </div>
             </div>
 
-            <div className="flex items-center -mx-1 py-2 border-b">
-                <div className="flex-1 px-1 w-32 lg:w-auto">
-                    <span className="font-medium text-xs text-gray-500">1221616</span>
-                    <p className="text-gray-800 truncate">sdfsdf 4465ds4fs df5464df sdfasd sdafds sdafsd</p>
+            {/* Products list */}
+            <div className="flex items-end -mx-1 py-2 border-b">
+                <div className="px-1 w-1/2">
+                    <span className="font-medium text-sm text-gray-500">1221616</span>
+                    {/* <p className="text-gray-800 truncate">sdfsdf 4465ds4fs df5464df sdfasd sdafds sdafsd</p> */}
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Nombre" />
                 </div>
 
-                <div className="px-1 w-28 text-right">
-                    <p className="text-gray-800">50</p>
+                <div className="px-1 w-32">
+                    {/* <p className="text-gray-800">50</p> */}
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Cantidad" />
                 </div>
 
-                <div className="px-1 w-28 text-right">
-                    <p className="text-gray-800">1.85</p>
+                <div className="px-1 w-32">
+                    {/* <p className="text-gray-800">1.85</p> */}
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Precio" />
                 </div>
 
-                <div className="px-1 w-28 text-right">
-                    <p className="text-gray-800">10</p>
+                <div className="px-1 w-32">
+                    {/* <p className="text-gray-800">10</p> */}
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Descuento" />
                 </div>
 
-                <div className="px-1 w-28 text-right">
-                    <p className="text-gray-800">60.25</p>
+                <div className="px-1 w-32 text-right">
+                    {/* <p className="text-gray-800">60.25</p> */}
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Total" disabled />
                 </div>
 
                 <div className="px-1 w-10 text-right">
@@ -159,7 +167,8 @@ export default function ProformaInvoice({ formTitle }) {
                     </button>
                 </div>
             </div>
-
+            
+            {/* Add product button and totals */}
             <div className="flex flex-wrap justify-between mt-6">
                 <div className="w-full md:w-1/2 mb-6 md:mb-0">
                     <button 
@@ -202,6 +211,7 @@ export default function ProformaInvoice({ formTitle }) {
                 </div>
             </div>
         
+            {/* Modals */}
             <Modal show={showModal}>
                 {modalVersion === 'client-add' && <ClientAddModal handleClose={handleCloseModal} />}
                 {modalVersion === 'client-search' && <ClientSearchModal handleClose={handleCloseModal} />}
