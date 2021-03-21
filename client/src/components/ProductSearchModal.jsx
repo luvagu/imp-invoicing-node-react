@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { productsSearchApi } from '../api/helpers'
+import Modal from './Modal'
 import SearchResultsInModal from './SearchResultsInModal'
+import Spinner from './Spinner'
 
 export default function ProductSearchModal({ show, handleClose, handleAddProduct }) {
+	const [isLoading, setIsLoading] = useState(false)
     const [errMsg, setErrMsg] = useState('')  
     const [searchRoute, setServerRoute] = useState('')
     const [searchTerm, setSearchTerm] = useState(null)
@@ -11,9 +14,16 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
     useEffect(() => {
         if (searchTerm === null || searchTerm === '') return
 
+		setErrMsg('')
+		setIsLoading(true)
+
         productsSearchApi(searchRoute, searchTerm)
-            .then(data => setSearchResults(data))
+            .then(data => {
+				setIsLoading(false)
+				setSearchResults(data)
+			})
             .catch(err => {
+				setIsLoading(false)
                 setSearchResults([])
                 setErrMsg(err.response?.data.Error || 'Network Error')
             })
@@ -55,7 +65,7 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
 	}
 
 	return (
-		<div className={`fixed z-40 top-0 right-0 left-0 bottom-0 bg-black bg-opacity-80 transition-opacity ${show ? 'h-full w-full opacity-100 visible' : 'h-0 w-0 opacity-0 invisible'}`}>
+		<Modal show={show}>
 			<div className="p-4 max-w-xl mx-auto relative absolute left-0 right-0 overflow-hidden mt-24">
 				<div 
                     className="shadow absolute right-0 top-0 w-10 h-10 rounded-full bg-white text-gray-500 hover:text-gray-800 inline-flex items-center justify-center cursor-pointer"
@@ -107,6 +117,8 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
 						</div>
 					</div>
 
+					{isLoading && <div className="text-center"><Spinner/></div>}
+
 					{searchResults && searchResults.length > 0 
 						? <SearchResultsInModal results={searchResults} handleSelectedProduct={handleSelectedProduct} /> 
 						: (<div className="mb-4 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
@@ -123,6 +135,6 @@ export default function ProductSearchModal({ show, handleClose, handleAddProduct
 					</div>
 				</div>
 			</div>
-		</div>
+		</Modal>
 	)
 }

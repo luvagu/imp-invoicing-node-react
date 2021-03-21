@@ -1,11 +1,7 @@
-import React, { FC } from 'react'
-import { Text } from '@react-pdf/renderer'
-import compose from '../styles/compose'
-
-export default function EditableInput({ className, placeholder, value, onChange, pdfMode }) {
+export default function Input({ className, placeholder, value, onChange, editMode }) {
   return (
     <>
-      {pdfMode ? (
+      {editMode ? (
         <Text style={compose('span ' + (className ? className : ''))}>{value}</Text>
       ) : (
         <input

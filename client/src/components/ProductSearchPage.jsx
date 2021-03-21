@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { productsSearchApi } from '../api/helpers'
 
 import SearchResultsInPage from './SearchResultsInPage'
+import Spinner from './Spinner'
 
 export default function ProductSearchPage() {
+    const [isLoading, setIsLoading] = useState(false)
     const [errMsg, setErrMsg] = useState('')  
     const [searchRoute, setServerRoute] = useState('')
     const [searchTerm, setSearchTerm] = useState(null)
@@ -12,9 +14,16 @@ export default function ProductSearchPage() {
     useEffect(() => {
         if (searchTerm === null || searchTerm === '') return
 
+        setErrMsg('')
+		setIsLoading(true)
+
         productsSearchApi(searchRoute, searchTerm)
-            .then(data => setSearchResults(data))
+            .then(data => {
+				setIsLoading(false)
+				setSearchResults(data)
+			})
             .catch(err => {
+				setIsLoading(false)
                 setSearchResults([])
                 setErrMsg(err.response?.data.Error || 'Network Error')
             })
@@ -52,6 +61,8 @@ export default function ProductSearchPage() {
                 <SearchInput fieldName='partial-code' placeHolder='Codigo parcial' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
                 <SearchInput fieldName='partial-name' placeHolder='Nombre parcial' handle={handleKeyDown} />
             </div>
+
+            {isLoading && <div className="mt-6 text-center"><Spinner/></div>}
 
             {searchResults && searchResults.length > 0 
                 ? <SearchResultsInPage results={searchResults} /> 
