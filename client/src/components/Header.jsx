@@ -41,7 +41,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
 					</svg>
 				</button>
 
-				<h1 className="uppercase">{headerTitle}</h1>
+				<h3 className="uppercase text-lg font-bold">{headerTitle}</h3>
 			</div>
 
 			<div className="flex items-center">

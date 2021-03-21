@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { productsSearchApi } from '../api/helpers'
+import { dataSearchApi } from '../api/helpers'
 
-import SearchResultsInPage from './SearchResultsInPage'
+import SearchResultsPage from './SearchResultsPage'
 import Spinner from './Spinner'
 
 export default function ProductSearchPage() {
@@ -17,7 +17,7 @@ export default function ProductSearchPage() {
         setErrMsg('')
 		setIsLoading(true)
 
-        productsSearchApi(searchRoute, searchTerm)
+        dataSearchApi(searchRoute, searchTerm)
             .then(data => {
 				setIsLoading(false)
 				setSearchResults(data)
@@ -34,15 +34,11 @@ export default function ProductSearchPage() {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'code': 
-                    setServerRoute('get-single-product')
+                    setServerRoute('search-product-id')
                     setSearchTerm(e.target.value)
                     break
-                case 'partial-code': 
-                    setServerRoute('product-match-code')
-                    setSearchTerm(e.target.value)
-                    break
-                case 'partial-name':  
-                    setServerRoute('product-match-terms')
+                case 'terms': 
+                    setServerRoute('search-product-terms')
                     setSearchTerm(e.target.value)
                     break
                 default:
@@ -56,16 +52,15 @@ export default function ProductSearchPage() {
 
 			<h3 className="text-gray-700 text-3xl font-medium">Buscar por:</h3>
 
-            <div className="flex flex-wrap mt-4">
-                <SearchInput fieldName='code' placeHolder='Codigo' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
-                <SearchInput fieldName='partial-code' placeHolder='Codigo parcial' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
-                <SearchInput fieldName='partial-name' placeHolder='Nombre parcial' handle={handleKeyDown} />
+            <div className="flex flex-wrap mt-6">
+                <SearchInput fieldName='id' placeHolder='Codigo exacto' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
+                <SearchInput fieldName='terms' placeHolder='Codigo o nombre parcial' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
             </div>
 
-            {isLoading && <div className="mt-6 text-center"><Spinner/></div>}
+            {isLoading && <div className="mt-6 text-center"><Spinner /></div>}
 
             {searchResults && searchResults.length > 0 
-                ? <SearchResultsInPage results={searchResults} /> 
+                ? <SearchResultsPage results={searchResults} /> 
                 : (<div className="mt-6 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
             }
         </div>
@@ -93,7 +88,7 @@ function SearchInput({ fieldName, placeHolder, extraClass = '', handle }) {
 
             <input
                 onKeyDown={handle}
-                className="form-input w-full md:w-44 rounded-md pl-10 pr-4 focus:border-indigo-600"
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full  pl-10 pr-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
                 type="text"
                 name={fieldName}
                 placeholder={placeHolder}

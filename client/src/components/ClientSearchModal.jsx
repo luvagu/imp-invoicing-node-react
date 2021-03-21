@@ -4,7 +4,7 @@ import { dataSearchApi } from '../api/helpers'
 import SearchResultsModal from './SearchResultsModal'
 import Spinner from './Spinner'
 
-export default function ProductSearchModal({ handleClose, handleAddProduct }) {
+export default function ClientSearchModal({ handleClose, handleAddClient }) {
 	const [isLoading, setIsLoading] = useState(false)
     const [errMsg, setErrMsg] = useState('')  
     const [searchRoute, setServerRoute] = useState('')
@@ -34,11 +34,11 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'id': 
-                    setServerRoute('search-product-id')
+                    setServerRoute('search-client-id')
                     setSearchTerm(e.target.value)
                     break
-                case 'terms': 
-                    setServerRoute('search-product-terms')
+                case 'name': 
+                    setServerRoute('search-client-name')
                     setSearchTerm(e.target.value)
                     break
                 default:
@@ -47,7 +47,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
         }
     }
 
-	const handleSelectedProduct = (index) => {
+	const handleSelectedClient = (index) => {
 		console.log(searchResults[index])
 		setSearchTerm(null)
 		setSearchResults([])
@@ -72,7 +72,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 
 				<div className="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8">
 					<h2 className="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
-						Buscar producto por:
+						Buscar cliente por:
 					</h2>
 
 					<div className="flex mb-6">
@@ -81,7 +81,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 								className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
 								type="text"
 								name="id"
-								placeholder="Codigo exacto"
+								placeholder="Cedula o RUC"
                                 onKeyDown={handleInputSearch}
 							/>
 						</div>
@@ -90,8 +90,8 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 							<input
 								className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
 								type="text"
-								name="terms"
-								placeholder="Codigo o nombre parcial"
+								name="name"
+								placeholder="Nombre o Empresa"
                                 onKeyDown={handleInputSearch}
 							/>
 						</div>
@@ -100,7 +100,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 					{isLoading && <div className="text-center"><Spinner /></div>}
 
 					{searchResults && searchResults.length > 0 
-						? <SearchResultsModal results={searchResults} handleSelectedItem={handleSelectedProduct} idLabel='Codigo' /> 
+						? <SearchResultsModal results={searchResults} handleSelectedItem={handleSelectedClient} idLabel='CI / RUC' /> 
 						: (<div className="mb-4 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
 					}
 

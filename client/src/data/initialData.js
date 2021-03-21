@@ -1,28 +1,12 @@
-const date = new Date()
-const docDate = date.toLocaleString('es-EC')
 
 // export const initialProduct = {
-//   description: '',
+//   id: ''
+//   name: '',
 //   quantity: '',
 //   price: '',
 //   discount: '',
 //   total: ''
 // }
-
-export const paymentTerms = [
-  'Efectivo',
-  'Efectivo y Retencion',
-  'Cheque',
-  'Cheque y Retencion',
-  'Tarjeta',
-  'Transferencia',
-  'Transferencia y Retencion',
-  'Deposito',
-  'Deposito y Retencion',
-  'Credito',
-  'Credito y Retencion',
-  'Nota Credito'
-]
 
 export const initialDocInfo = {
   companyID: 'RUC: 1792673844001',
@@ -34,10 +18,9 @@ export const initialDocInfo = {
 
   currency: '$',
 
-  docType: 'Factura', // @todo set it from the component title
-  docDateLabel: 'Fecha Emision',
-  docNumLabel: 'Factura No.',
-  docDate: docDate,
+  docType: '', // @todo set it from the component title
+  docDateLabel: 'Fecha de Emision',
+  docDate: '',
   docNum: '', // @Todo get it from backend at runtime or set it on doc save
   docSubtotal: 0,
   docDiscount: 0,
@@ -45,11 +28,13 @@ export const initialDocInfo = {
   docTotal: 0,
   
   clientDetailsLabel: 'Datos Cliente:',
+  clientIdLabel: 'CI / RUC:',
   clientName: '',
   clientAddress: '',
   clientId: '',
-  clientEmail: '',
   clientPhone: '',
+  clientEmail: '',
+
 
   productDescriptionLabel: 'Descripcion',
   productQuantityLabel: 'Cantidad',
@@ -64,8 +49,23 @@ export const initialDocInfo = {
   taxLabel: 'IVA (12%)',
   totalLabel: 'Valor Total',
   notesLabel: 'Notas',
-  paymentTermsLabel: 'Forma de pago',
+  paymentTermsLabel: 'Forma de Pago',
 
   notes: '',
   paymentTerms: ''
 }
+
+export const paymentTerms = [
+  'Efectivo',
+  'Efectivo y Retencion',
+  'Cheque',
+  'Cheque y Retencion',
+  'Tarjeta',
+  'Transferencia',
+  'Transferencia y Retencion',
+  'Deposito',
+  'Deposito y Retencion',
+  'Credito',
+  'Credito y Retencion',
+  'Otra'
+]

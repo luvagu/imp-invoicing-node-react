@@ -84,86 +84,88 @@ app.delete('/delete-all-docs/:type', async (req, res) => {
     }
 })
 
-// DB related routes
-app.get('/get-client/:id', async (req, res) => {
+// Search DB related routes
+app.get('/search-client-id/:id', async (req, res) => {
     const clientId = req.params.id
 
     try {
-        const clientData = await helpers.queryDB('clients')
+        const clientData = await helpers.queryDB('clients_by_id')
         const client = clientData[clientId] || null
 
         if (client !== null) {
-            res.status(200).send(client)
+            res.status(200).send([client])
         } else {
-            res.status(404).send({ Error: `Could not find Client ID: ${clientId}` })
+            res.status(404).send({ Error: `ID de cliente no encontrada: ${clientId}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /client/:id', error)
+        console.error('Error on Get path >>> /search-client-id/:id', error)
         res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/get-all-products', async (req, res) => {
+app.get('/search-client-name/:name', async (req, res) => {
+    const clientName = req.params.name
+
     try {
-        const allProducts = await helpers.queryDB('products')
-        res.status(200).send(allProducts)
+        const clientData = await helpers.queryDB('clients')
+        const clients = clientData.filter(({ name }) => name.toLowerCase().includes(clientName.toLocaleLowerCase()))
+
+        if (clients.length) {
+            res.status(200).send(clients)
+        } else {
+            res.status(404).send({ Error: `Nombre de cliente no encontrado: ${clientName}` })
+        }
     } catch (error) {
-        console.error('Error on Get path >>> /get-all-products', error)
+        console.error('Error on Get path >>> /search-client-name/:name', error)
         res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/get-single-product/:code', async (req, res) => {
-    const prodCode = req.params.code
+// app.get('/get-all-products', async (req, res) => {
+//     try {
+//         const allProducts = await helpers.queryDB('products')
+//         res.status(200).send(allProducts)
+//     } catch (error) {
+//         console.error('Error on Get path >>> /get-all-products', error)
+//         res.status(500).send({ Error: 'Could not read database' })
+//     }
+// })
+
+app.get('/search-product-id/:id', async (req, res) => {
+    const prodId = req.params.id
 
     try {
-        const products = await helpers.queryDB('products_by_code')
-        const product = products[prodCode] || null
+        const products = await helpers.queryDB('products_by_id')
+        const product = products[prodId] || null
 
         if (product !== null) {
             res.status(200).send([product])
         } else {
-            res.status(404).send({ Error: `Could not find Product code: ${prodCode}` })
+            res.status(404).send({ Error: `Codigo exacto de producto no encontrado: ${prodId}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /get-single-product/:code', error)
+        console.error('Error on Get path >>> /search-product-id/:id', error)
         res.status(500).send({ Error: 'Could not read database' })
     }
 })
 
-app.get('/product-match-terms/:terms', async (req, res) => {
+app.get('/search-product-terms/:terms', async (req, res) => {
     const terms = req.params.terms
+    const idRegx = new RegExp(`^${terms.toLowerCase()}.*`)
 
     try {
         const products = await helpers.queryDB('products')
-        const results = products.filter(({ name }) => name.toLowerCase().includes(terms.toLowerCase()))
+        const parcialCodes = products.filter(({ id }) => idRegx.test(id.toLowerCase()))
+        const parcialNames = products.filter(({ name }) => name.toLowerCase().includes(terms.toLowerCase()))
+        const combinedResults = [...parcialCodes, ...parcialNames]
 
-        if (results.length) {
-            res.status(200).send(results)
+        if (combinedResults.length) {
+            res.status(200).send(combinedResults)
         } else {
-            res.status(404).send({ Error: `Could not match products with terms ${terms}` })
+            res.status(404).send({ Error: `Codigo o nombre parcial de producto no encontrado: ${terms}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /product-match-terms/:terms', error)
-        res.status(500).send({ Error: 'Could not read database' })
-    }
-})
-
-app.get('/product-match-code/:code', async (req, res) => {
-    const prodCode = req.params.code
-    const regx = new RegExp(`^${prodCode.toLowerCase()}.*`)
-    
-    try {
-        const products = await helpers.queryDB('products')
-        const results = products.filter(({ code }) => regx.test(code.toLowerCase()))
-
-        if (results.length) {
-            res.status(200).send(results)
-        } else {
-            res.status(404).send({ Error: `Could not match products with code ${prodCode}` })
-        }
-    } catch (error) {
-        console.error('Error on Get path >>> /product-match-code/:code', error)
+        console.error('Error on Get path >>> /search-product-terms/:terms', error)
         res.status(500).send({ Error: 'Could not read database' })
     }
 })

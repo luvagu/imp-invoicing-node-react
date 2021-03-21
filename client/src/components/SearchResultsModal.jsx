@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function SearchResultsInModal({ results, handleSelectedProduct }) {
+export default function SearchResultsModal({ results, handleSelectedItem, idLabel }) {
 	return (
 		<>
 			<div className="flex mb-4 border-b py-1">
-				<div className="mb-4 w-28">
+				<div className="mb-4 w-32">
 					<p className="text-gray-800 uppercase tracking-wide text-sm font-bold">
-						Codigo
+						{idLabel}
 					</p>
 				</div>
 
@@ -23,14 +23,14 @@ export default function SearchResultsInModal({ results, handleSelectedProduct })
 
             {results.map((res, idx) => (
                 <div key={idx} className="flex mb-4 border-b py-1">
-                    <div className="mb-4 w-28">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold truncate">
-                            {res.code}
+                    <div className="mb-4 w-32">
+                        <p className="text-gray-800 uppercase tracking-wide text-sm truncate">
+                            {res.id}
                         </p>
                     </div>
 
-                    <div className="mb-4 w-2/3 mr-2">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold truncate">
+                    <div className="mb-4 w-3/5 mr-2">
+                        <p className="text-gray-800 uppercase tracking-wide text-sm truncate">
                             {res.name}
                         </p>
                     </div>
@@ -38,7 +38,7 @@ export default function SearchResultsInModal({ results, handleSelectedProduct })
                     <div className="mb-4 w-auto text-right">
                         <button
                             className="text-green-500 hover:text-green-600 text-sm"
-                            onClick={() => handleSelectedProduct(idx)}
+                            onClick={() => handleSelectedItem(idx)}
                         >
                             <svg
                                 className="w-5 h-5"

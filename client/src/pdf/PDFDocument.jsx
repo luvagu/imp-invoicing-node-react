@@ -60,7 +60,7 @@ export default function PDFDocument({ data }) {
 						<Text style={compose('span bold dark mb-5')}>{data.clientDetailsLabel}</Text>
 
 						<View style={compose('view flex')}>
-							<View style={compose('view w-30')}><Text style={compose('span')}>RUC / CI: {data.clientId}</Text></View>
+							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientIdLabel} {data.clientId}</Text></View>
 							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientName}</Text></View>
 							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientAddress}</Text></View>
 						</View>
