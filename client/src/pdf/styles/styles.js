@@ -47,32 +47,48 @@ const styles = {
 		width: '100%',
 	},
 
-	'w-50': {
-		width: '50%',
+	'w-80': {
+		width: '80%',
 	},
 
-	'w-55': {
-		width: '55%',
-	},
-
-	'w-45': {
-		width: '45%',
+	'w-70': {
+		width: '70%',
 	},
 
 	'w-60': {
 		width: '60%',
 	},
 
-	'w-40': {
-		width: '40%',
+	'w-55': {
+		width: '55%',
+	},
+
+	'w-50': {
+		width: '50%',
 	},
 
 	'w-48': {
 		width: '48%',
 	},
 
+	'w-45': {
+		width: '45%',
+	},
+
+	'w-40': {
+		width: '40%',
+	},
+	
 	'w-30': {
 		width: '30%',
+	},
+
+	'w-25': {
+		width: '25%',
+	},
+
+	'w-20': {
+		width: '20%',
 	},
 
 	'w-18': {
@@ -170,8 +186,8 @@ const styles = {
 	},
 
 	span: {
-		paddingVertical: 4,
-		paddingRight: 12,
+		paddingVertical: 3,
+		paddingRight: 10,
 		paddingLeft: 0,
 	},
 

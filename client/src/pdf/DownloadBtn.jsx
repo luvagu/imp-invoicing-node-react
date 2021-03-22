@@ -4,7 +4,7 @@ import PDFDocument from './PDFDocument'
 
 export default function DownloadBtn({ data }) {
   const [show, setShow] = useState(false)
-
+  
   useEffect(() => {
     if (!data) return
 
@@ -21,7 +21,7 @@ export default function DownloadBtn({ data }) {
     <div className={`${!show ? 'opacity-30' : 'opacity-100'} p-1 text-white rounded-full bg-red-600 hover:bg-red-700 inline-flex items-center justify-center`} title="Descargar PDF">
         <PDFDownloadLink
           document={<PDFDocument data={data} />}
-          fileName={`${data.docTypeTitle ? `${data.docTypeTitle.toLowerCase()}-${data.docNum}` : 'factura'}.pdf`}
+          fileName={`${data.docType ? `${data.docType.toLowerCase()}-${data.docNum}` : 'documento'}.pdf`}
           aria-label="Save PDF"
         >
           <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

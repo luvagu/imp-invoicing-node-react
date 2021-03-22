@@ -54,24 +54,58 @@ export default function PDFDocument({ data }) {
 
 				</View>
 
-				<View style={compose('view flex mt-30')}>
+				<View style={compose('view flex mt-20')}>
 
 					<View style={compose('view w-100')}>
-						<Text style={compose('span bold dark mb-5')}>{data.clientDetailsLabel}</Text>
-
 						<View style={compose('view flex')}>
-							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientIdLabel} {data.clientId}</Text></View>
-							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientName}</Text></View>
-							<View style={compose('view w-30')}><Text style={compose('span')}>{data.clientAddress}</Text></View>
+							<View style={compose('view w-20')}>
+								<Text style={compose('span bold')}>{data.clientIdLabel}</Text>
+							</View>
+							<View style={compose('view w-80')}>
+								<Text style={compose('span')}>{data.clientData.id}</Text>
+							</View>
 						</View>
 
-						<Text style={compose('span')}>{data.clientPhone}</Text>
-						<Text style={compose('span')}>{data.clientEmail}</Text>
+						<View style={compose('view flex')}>
+							<View style={compose('view w-20')}>
+								<Text style={compose('span bold')}>{data.clientNameIdLabel}</Text>
+							</View>
+							<View style={compose('view w-80')}>
+								<Text style={compose('span')}>{data.clientData.name}</Text>
+							</View>
+						</View>
+
+						<View style={compose('view flex')}>
+							<View style={compose('view w-20')}>
+								<Text style={compose('span bold')}>{data.clientAddressLabel}</Text>
+							</View>
+							<View style={compose('view w-80')}>
+								<Text style={compose('span')}>{data.clientData.address}</Text>
+							</View>
+						</View>
+
+						<View style={compose('view flex')}>
+							<View style={compose('view w-20')}>
+								<Text style={compose('span bold')}>{data.clientEmailLabel}</Text>
+							</View>
+							<View style={compose('view w-80')}>
+								<Text style={compose('span')}>{data.clientData.email}</Text>
+							</View>
+						</View>
+
+						<View style={compose('view flex')}>
+							<View style={compose('view w-20')}>
+								<Text style={compose('span bold')}>{data.clientPhoneLabel}</Text>
+							</View>
+							<View style={compose('view w-80')}>
+								<Text style={compose('span')}>{data.clientData.phone}</Text>
+							</View>
+						</View>
 					</View>
 
         		</View>
 
-				<View style={compose('view mt-30 bg-dark flex')}>
+				<View style={compose('view mt-20 bg-dark flex')}>
 
 					<View style={compose('view w-40 p-4-8')}>
 						<Text style={compose('span white bold')}>{data.productDescriptionLabel}</Text>
@@ -98,7 +132,7 @@ export default function PDFDocument({ data }) {
 
 				</View>
 
-				{data.products?.map((product, i) => (
+				{data.productsList?.map((product, i) => (
 					<View key={i} style={compose('view row flex align-enter')}>
 						<View style={compose('view w-40 p-4-8 pb-10')}>
 							<Text style={compose('span bold fs-9')}>{product.id}</Text>
@@ -170,7 +204,7 @@ export default function PDFDocument({ data }) {
 
 							<View style={compose('view w-50 p-5')}>
 								<Text style={compose('span right bold dark')}>
-									{data.docTax}
+									{data.docTaxAmount}
 								</Text>
 							</View>
 

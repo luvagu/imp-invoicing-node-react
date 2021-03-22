@@ -1,5 +1,3 @@
-import Spinner from './Spinner'
-
 export default function SaveDocIcon({ handle }) {
     return (
         <button 

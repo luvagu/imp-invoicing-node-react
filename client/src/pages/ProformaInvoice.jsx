@@ -176,7 +176,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                     <h2 className="text-2xl font-bold mr-4 tracking-wider uppercase">{docData.docType}</h2>
 
                     {!isDocSaved && !isLoading && <SaveDocIcon handle={handleSave} />}
-                    {isDocSaved && !isLoading && <DownloadBtn data={initialDocInfo} />}
+                    {isDocSaved && !isLoading && <DownloadBtn data={docData} />}
                     {isLoading && <Spinner /> }
                 </div>
             </div>

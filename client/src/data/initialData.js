@@ -21,6 +21,10 @@ export const initialDocInfo = {
 
 	clientDetailsLabel: 'Datos Cliente:',
 	clientIdLabel: 'CI / RUC:',
+	clientNameIdLabel: 'Nombre:',
+	clientAddressLabel: 'Dir:',
+	clientPhoneLabel: 'Tel:',
+	clientEmailLabel: 'Correo:',
 	clientData: {
 		id: '',
 		name: '',
