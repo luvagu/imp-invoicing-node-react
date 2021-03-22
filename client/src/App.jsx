@@ -22,8 +22,10 @@ function App() {
 					<main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
 						<Switch>
 							<Route exact path="/" component={Dashboard} />
-							<Route path="/nueva-factura" render={() => <ProformaInvoice key={Date.now().toString()} formTitle='Factura' />} />
-							<Route path="/nueva-proforma" render={() => <ProformaInvoice key={Date.now().toString()} formTitle='Proforma' />} />
+							<Route path="/nueva-factura" render={() => 
+								<ProformaInvoice key={Date.now().toString()} docType='Factura' apiFolder='invoices' />} />
+							<Route path="/nueva-proforma" render={() => 
+								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='quotes' />} />
 							<Route path="/buscar-documentos" component={DocumentSearch} />
 							<Route path="/buscar-productos" component={ProductSearch} />
 						</Switch>

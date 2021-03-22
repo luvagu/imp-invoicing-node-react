@@ -22,7 +22,7 @@ const getNextDocNum = async (type) => {
     const sequences = parseJsonToObject(await fs.readFile(baseDir+'db/sequences.json', 'utf8'))
     sequences[type] = sequences[type] + 1
     await updateSequences(sequences)
-    return sequences[type]
+    return sequences[type].toString()
 }
 
 const helpers = {}
@@ -42,7 +42,7 @@ helpers.creteDoc = async (dir, fileData) => {
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
     await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
-    return { message: `Success: Document ${dir}/${fileName} created` }
+    return { message: `Success: Document ${dir}/${fileName} created`, docNum: fileName }
 }
 
 helpers.listDocs = async (dir) => {

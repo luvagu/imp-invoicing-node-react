@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Prompt } from 'react-router-dom'
+import { createDocApi } from '../api/helpers'
 
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
@@ -12,13 +13,17 @@ import Modal from '../components/Modal'
 import ClientAddModal from '../components/ClientAddModal'
 import ClientSearchModal from '../components/ClientSearchModal'
 import ProductSearchModal from '../components/ProductSearchModal'
+import Spinner from '../components/Spinner'
 
-export default function ProformaInvoice({ formTitle }) {
+export default function ProformaInvoice({ docType, apiFolder }) {
     const [isLoading, setIsLoading] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const [isDocChecked, setIsDocChecked] = useState(false)
     const [isDocSaved, setIsDocSaved] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [modalVersion, setModalVersion] = useState('')
-    const [docData, setDocData] = useState({ ...initialDocInfo, docType: formTitle, docDate: new Date().toLocaleString('es-EC') })
+    const [docData, setDocData] = useState({ ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC') })
+
     const docTaxRate = initialDocInfo.docTaxRate
 
     const handleShowModal = (version) => {
@@ -65,7 +70,7 @@ export default function ProformaInvoice({ formTitle }) {
         const docTotal = formatTotals(subTotal + taxAmount)
 
         setDocData(docData => ({ ...docData, docSubtotal, docDiscount, docTaxAmount, docTotal }))
-        setIsDocSaved(() => docData.productsList.length > 0)
+        setIsEditing(() => docData.productsList.length > 0)
     }
 
     const handleAddProduct = (product) => {
@@ -127,13 +132,37 @@ export default function ProformaInvoice({ formTitle }) {
         setDocData(newDocData)
     }
 
+    const handleSave = () => {
+        setIsDocChecked(true)
+        setIsLoading(true)
+    }
+
     useEffect(updateDocTotals, [docData.productsList, docTaxRate])
+
+    useEffect(() => {
+        if (isDocChecked === false) return
+    
+        createDocApi(apiFolder, docData)
+            .then(res => {
+                setIsDocChecked(false)
+                setIsLoading(false)
+                setIsDocSaved(true)
+                console.log(res)
+            })
+            .catch(err => {
+                setIsDocChecked(false)
+                setIsLoading(false)
+                setIsDocSaved(false)
+                console.log(err)
+            })
+            
+    }, [isDocChecked])
 
     return (
         <div className="container mx-auto px-6 py-6">
             {/* Promt the user in case of unsaved data */}
             <Prompt
-                when={isDocSaved}
+                when={isEditing}
                 message={location => `Documento sin gravar, seguro que quieres ir a (${location.pathname})?`}
             />
 
@@ -146,7 +175,9 @@ export default function ProformaInvoice({ formTitle }) {
                 <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-bold mr-4 tracking-wider uppercase">{docData.docType}</h2>
 
-                    {!isDocSaved ? (<SaveDocIcon isLoading={isLoading} />) : (<DownloadBtn data={initialDocInfo} />)}
+                    {!isDocSaved && !isLoading && <SaveDocIcon handle={handleSave} />}
+                    {isDocSaved && !isLoading && <DownloadBtn data={initialDocInfo} />}
+                    {isLoading && <Spinner /> }
                 </div>
             </div>
 
