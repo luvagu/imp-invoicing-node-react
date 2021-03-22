@@ -36,7 +36,7 @@ export default function PDFDocument({ data }) {
 							</View>
 
 							<View style={compose('view w-60')}>
-								<Text style={compose('span')}>{data.docNum}</Text>
+								<Text style={compose('span')}>{data.docNum || 'Autogenerado'}</Text>
 							</View>
 						</View>
 
@@ -88,7 +88,7 @@ export default function PDFDocument({ data }) {
 
 					<View style={compose('view w-15 p-4-8')}>
 						<Text
-							style={compose('span white bold right')}>{data.productDiscounyLabel}</Text>
+							style={compose('span white bold right')}>{data.productDiscounyRateLabel}</Text>
 					</View>
 
           			<View style={compose('view w-15 p-4-8')}>
@@ -99,39 +99,37 @@ export default function PDFDocument({ data }) {
 				</View>
 
 				{data.products?.map((product, i) => (
-					product.code === '' ? (<Text key={i}></Text>) : (
-						<View key={i} style={compose('view row flex align-enter')}>
-
-							<View style={compose('view w-40 p-4-8 pb-10')}>
-                				<Text style={compose('span bold fs-9')}>{product.code}</Text>
-                				<Text style={compose('span dark fs-10')}>{product.description}</Text>
-							</View>
-
-							<View style={compose('view w-15 p-4-8 pb-10')}>
-								<Text style={compose('span dark right')}>{product.quantity}</Text>
-							</View>
-
-							<View style={compose('view w-15 p-4-8 pb-10')}>
-								<Text
-									style={compose('span dark right')}>{product.price}</Text>
-							</View>
-
-              				<View style={compose('view w-15 p-4-8 pb-10')}>
-								<Text style={compose('span dark right')}>{product.discount}</Text>
-							</View>
-              
-							<View style={compose('view w-15 p-4-8 pb-10')}>
-								<Text style={compose('span dark right')}>{product.total}</Text>
-							</View>
-
+					<View key={i} style={compose('view row flex align-enter')}>
+						<View style={compose('view w-40 p-4-8 pb-10')}>
+							<Text style={compose('span bold fs-9')}>{product.id}</Text>
+							<Text style={compose('span dark fs-10')}>{product.name}</Text>
 						</View>
-					)))}
+
+						<View style={compose('view w-15 p-4-8 pb-10')}>
+							<Text style={compose('span dark right')}>{product.quantity}</Text>
+						</View>
+
+						<View style={compose('view w-15 p-4-8 pb-10')}>
+							<Text
+								style={compose('span dark right')}>{product.price}</Text>
+						</View>
+
+						<View style={compose('view w-15 p-4-8 pb-10')}>
+							<Text style={compose('span dark right')}>{product.discountRate}</Text>
+						</View>
+			
+						<View style={compose('view w-15 p-4-8 pb-10')}>
+							<Text style={compose('span dark right')}>{product.total}</Text>
+						</View>
+
+					</View>
+				))}
 
 				<View style={compose('view flex')}>
 
 					<View style={compose('view w-50 mt-20')}>
-						<Text style={compose('span bold')}>{data.paymentTermsLabel}</Text>
-						<Text style={compose('span uppercase')}>{data.paymentTerms}</Text>
+						<Text style={compose('span bold')}>{data.paymentMethodLabel}</Text>
+						<Text style={compose('span uppercase')}>{data.docPaymentMethod}</Text>
 					</View>
 
 					<View style={compose('view w-50 mt-20')}>

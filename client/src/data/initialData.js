@@ -13,6 +13,7 @@ export const initialDocInfo = {
   docDateLabel: 'Fecha de Emision',
   docDate: '',
   docNum: '', // @Todo get it from backend at runtime or set it on doc save
+  docPaymentMethod: '',
   docSubtotal: '0.00',
   docDiscount: '0.00',
   docTaxRate: '12',
@@ -31,7 +32,7 @@ export const initialDocInfo = {
   productDescriptionLabel: 'Descripcion',
   productQuantityLabel: 'Cantidad',
   productPriceLabel: 'P.Unit',
-  productDiscounyLabel: 'Dcto. %',
+  productDiscounyRateLabel: 'Dcto. %',
   productTotalAmountLabel: 'P.Total',
 
   productsList: [],
@@ -41,13 +42,12 @@ export const initialDocInfo = {
   taxLabel: 'IVA (12%)',
   totalLabel: 'Valor Total',
   notesLabel: 'Notas',
-  paymentTermsLabel: 'Forma de Pago',
+  paymentMethodLabel: 'Forma de Pago',
 
-  notes: '',
-  paymentTerms: ''
+  docNotes: '',
 }
 
-export const paymentTerms = [
+export const paymentMethods = [
   'Efectivo',
   'Efectivo y Retencion',
   'Cheque',

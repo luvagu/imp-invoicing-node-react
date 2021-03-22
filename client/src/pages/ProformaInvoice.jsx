@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
-import { initialDocInfo, paymentTerms } from '../data/initialData'
+import { initialDocInfo, paymentMethods } from '../data/initialData'
 
 import SaveDocIcon from '../components/SaveDocBtn'
 import DownloadBtn from '../pdf/DownloadBtn'
@@ -95,6 +95,12 @@ export default function ProformaInvoice({ formTitle }) {
 		setDocData({ ...docData, productsList })
 	}
 
+    const handleChange = (name, value) => {
+          const newDocData = { ...docData }
+          newDocData[name] = value
+          setDocData(newDocData)
+    }
+
     useEffect(() => {
         // if (!docData.productsList.length) return
 
@@ -114,7 +120,7 @@ export default function ProformaInvoice({ formTitle }) {
     }, [docData.productsList])
 
     return (
-        <div className="container mx-auto px-5 py-6 md:min-w-full">
+        <div className="container mx-auto px-6 py-6">
 
             {/* Page header and save/print buttons */}
             <div className="flex justify-between mb-8">
@@ -152,11 +158,11 @@ export default function ProformaInvoice({ formTitle }) {
                                 </>
                             ) : (
                                 <>
-                                    {docData.clientIdLabel} {docData.clientId}<br/>
-                                    {docData.clientName}<br/>
-                                    {docData.clientAddress}<br/>
-                                    {docData.clientPhone}<br/>
-                                    {docData.clientEmail}
+                                    {docData.clientIdLabel} {docData.clientId || ''}<br/>
+                                    {docData.clientName || ''}<br/>
+                                    {docData.clientAddress || ''}<br/>
+                                    {docData.clientPhone || ''}<br/>
+                                    {docData.clientEmail || ''}
                                 </>
                         )}
                     </div>
@@ -169,9 +175,12 @@ export default function ProformaInvoice({ formTitle }) {
                     <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.docDateLabel}</label>
                     <div className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700">{docData.docDate}</div>
 
-                    <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Forma de Pago</label>
-                    <select className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500">
-                        {paymentTerms.length > 0 && paymentTerms.map((option, idx) => (
+                    <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.paymentMethodLabel}</label>
+                    <select 
+                        className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
+                        onChange={(e) => handleChange('docPaymentMethod', e.target.value)}
+                    >
+                        {paymentMethods && paymentMethods.length > 0 && paymentMethods.map((option, idx) => (
                             <option key={idx} value={option}>{option}</option>
                         ))}
                     </select>
@@ -258,21 +267,21 @@ export default function ProformaInvoice({ formTitle }) {
 
                 <div className="w-full md:w-1/2 lg:w-1/2">
                     <div className="flex justify-between mb-3">
-                        <div className="text-gray-800 text-right flex-1">Subtotal</div>
+                        <div className="text-gray-800 text-right flex-1">{docData.subTotalLabel}</div>
                         <div className="text-right w-40">
                             <div className="text-gray-800 font-medium">{docData.docSubtotal}</div>
                         </div>
                     </div>
                     
                     <div className="flex justify-between mb-4">
-                        <div className="text-sm text-gray-600 text-right flex-1">Descuento</div>
+                        <div className="text-sm text-gray-600 text-right flex-1">{docData.discountLabel}</div>
                         <div className="text-right w-40">
                             <div className="text-sm text-gray-600">{docData.docDiscount}</div>
                         </div>
                     </div>
 
                     <div className="flex justify-between mb-4">
-                        <div className="text-sm text-gray-600 text-right flex-1">IVA ({docData.docTaxRate}%)</div>
+                        <div className="text-sm text-gray-600 text-right flex-1">{docData.taxLabel}</div>
                         <div className="text-right w-40">
                             <div className="text-sm text-gray-600">{docData.docTaxAmount}</div>
                         </div>
@@ -280,7 +289,7 @@ export default function ProformaInvoice({ formTitle }) {
                 
                     <div className="py-2 border-t border-b">
                         <div className="flex justify-between">
-                            <div className="text-xl text-gray-600 text-right flex-1">Valor Total</div>
+                            <div className="text-xl text-gray-600 text-right flex-1">{docData.totalLabel}</div>
                             <div className="text-right w-40">
                                 <div className="text-xl text-gray-800 font-bold">{docData.currency} {docData.docTotal}</div>
                             </div>
