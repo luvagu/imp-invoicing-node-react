@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Prompt } from 'react-router-dom'
+
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
 import { initialDocInfo, paymentMethods } from '../data/initialData'
@@ -17,6 +19,7 @@ export default function ProformaInvoice({ formTitle }) {
     const [showModal, setShowModal] = useState(false)
     const [modalVersion, setModalVersion] = useState('')
     const [docData, setDocData] = useState({ ...initialDocInfo, docType: formTitle, docDate: new Date().toLocaleString('es-EC') })
+    const docTaxRate = initialDocInfo.docTaxRate
 
     const handleShowModal = (version) => {
         setShowModal(true)
@@ -26,6 +29,11 @@ export default function ProformaInvoice({ formTitle }) {
     const handleCloseModal = () => {
         setShowModal(false)
         setModalVersion('')
+    }
+
+    const handleAddClient = (client) => {
+        const clientData = { ...client }
+        setDocData({ ...docData, clientData })
     }
 
     const formatProductPrice = (price) => parseFloat(price).toFixed(4)
@@ -42,6 +50,22 @@ export default function ProformaInvoice({ formTitle }) {
         const productTotal = priceNumber && quantityNumber ? (priceNumber * quantityNumber) - discountAmount : 0
 
         return productTotal.toFixed(2)
+    }
+
+    const updateDocTotals = () => {
+        const subTotal = docData.productsList.reduce((acc, { total }) => (acc += parseFloat(total)), 0)
+        const docSubtotal = formatTotals(subTotal)
+
+        const discountTotal = docData.productsList.reduce((acc, { quantity, price, discountRate }) =>(acc += (parseFloat(price) * parseFloat(quantity) * parseFloat(discountRate)) / 100), 0)
+        const docDiscount = formatTotals(discountTotal)
+
+        const taxAmount = subTotal * (parseFloat(docTaxRate) / 100)
+        const docTaxAmount = formatTotals(taxAmount)
+
+        const docTotal = formatTotals(subTotal + taxAmount)
+
+        setDocData(docData => ({ ...docData, docSubtotal, docDiscount, docTaxAmount, docTotal }))
+        setIsDocSaved(() => docData.productsList.length > 0)
     }
 
     const handleAddProduct = (product) => {
@@ -96,31 +120,22 @@ export default function ProformaInvoice({ formTitle }) {
 	}
 
     const handleChange = (name, value) => {
-          const newDocData = { ...docData }
-          newDocData[name] = value
-          setDocData(newDocData)
+        if (name === 'productsList') return
+
+        const newDocData = { ...docData }
+        newDocData[name] = value
+        setDocData(newDocData)
     }
 
-    useEffect(() => {
-        // if (!docData.productsList.length) return
-
-        const subTotal = docData.productsList.reduce((acc, { total }) => acc += parseFloat(total), 0)
-		const docSubtotal = formatTotals(subTotal)
-
-        const discountTotal = docData.productsList.reduce((acc, { quantity, price, discountRate }) => acc += ((parseFloat(price) * parseFloat(quantity)) * parseFloat(discountRate)) / 100, 0)
-        const docDiscount = formatTotals(discountTotal)
-
-        const taxAmount = subTotal * (parseFloat(docData.docTaxRate) / 100)
-        const docTaxAmount = formatTotals(taxAmount)
-
-        const docTotal = formatTotals(subTotal + taxAmount)
-
-        setDocData({ ...docData, docSubtotal, docDiscount, docTaxAmount, docTotal })
-
-    }, [docData.productsList])
+    useEffect(updateDocTotals, [docData.productsList, docTaxRate])
 
     return (
         <div className="container mx-auto px-6 py-6">
+            {/* Promt the user in case of unsaved data */}
+            <Prompt
+                when={isDocSaved}
+                message={location => `Documento sin gravar, seguro que quieres ir a (${location.pathname})?`}
+            />
 
             {/* Page header and save/print buttons */}
             <div className="flex justify-between mb-8">
@@ -139,32 +154,30 @@ export default function ProformaInvoice({ formTitle }) {
             <div className="flex flex-wrap justify-between mb-8">
                 <div className="w-full md:w-1/2 mb-1 md:mb-0">
                     <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.companyName}</label>
-                    <div className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700">
-                        <span className="font-semibold">{docData.clientDetailsLabel}</span><br/>
-                        {!docData.clientId 
-                            ? (
-                                <>
-                                    <button 
-                                        onClick={() => handleShowModal('client-add')}
-                                        className="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 text-sm border border-gray-300 rounded shadow-sm mt-2">
-                                        Añadir
-                                    </button>
-
-                                    <button 
-                                        onClick={() => handleShowModal('client-search')}
-                                        className="ml-2 bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 text-sm border border-gray-300 rounded shadow-sm mt-2">
-                                        Buscar
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    {docData.clientIdLabel} {docData.clientId || ''}<br/>
-                                    {docData.clientName || ''}<br/>
-                                    {docData.clientAddress || ''}<br/>
-                                    {docData.clientPhone || ''}<br/>
-                                    {docData.clientEmail || ''}
-                                </>
+                    <div className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700">
+                        <label className="text-gray-800 block mb-2 font-bold text-sm uppercase">{docData.clientDetailsLabel}</label>
+                        {docData.clientData.id && (
+                            <p className="block text-sm mb-2">
+                                {docData.clientIdLabel} {docData.clientData.id || ''}<br/>
+                                {docData.clientData.name || ''}<br/>
+                                {docData.clientData.address || ''}<br/>
+                                {docData.clientData.phone || ''}<br/>
+                                {docData.clientData.email || ''}
+                            </p>
                         )}
+                        <div className="inline-flex">
+                            <button 
+                                onClick={() => handleShowModal('client-add')}
+                                className="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 text-sm border border-gray-300 rounded shadow-sm">
+                                {docData.clientData.id ? 'Modificar' : 'Añadir'}
+                            </button>
+
+                            <button 
+                                onClick={() => handleShowModal('client-search')}
+                                className="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 text-sm border border-gray-300 rounded shadow-sm ml-2">
+                                Buscar
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -300,8 +313,12 @@ export default function ProformaInvoice({ formTitle }) {
         
             {/* Modals */}
             <Modal show={showModal}>
-                {modalVersion === 'client-add' && <ClientAddModal handleClose={handleCloseModal} />}
-                {modalVersion === 'client-search' && <ClientSearchModal handleClose={handleCloseModal} />}
+                {modalVersion === 'client-add' && <ClientAddModal 
+                    handleClose={handleCloseModal} 
+                    handleAddClient={handleAddClient}
+                    data={docData.clientData.id ? { ...docData.clientData } : null}
+                 />}
+                {modalVersion === 'client-search' && <ClientSearchModal handleClose={handleCloseModal} handleAddClient={handleAddClient} />}
                 {modalVersion === 'products' && <ProductSearchModal handleClose={handleCloseModal} handleAddProduct={handleAddProduct} />}
             </Modal>
         </div>

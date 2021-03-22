@@ -1,10 +1,25 @@
 import { useState } from "react"
-import Spinner from "./Spinner"
 
-export default function ClientAddModal({ handleClose, handleAddClient }) {
-	const [isLoading, setIsLoading] = useState(false)
-	const handleChange = (e) => {}
-	const handleSubmit = (e) => {}
+export default function ClientAddModal({ handleClose, handleAddClient, data }) {
+	const [clientData, setclientData] = useState(data ? { ...data } : {})
+	const [errorMsg, setErrorMsg] = useState('')
+
+	const handleChange = (name, value) => {
+		const newData = { ...clientData }
+		newData[name] = value
+		setclientData(newData)
+	}
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		const { id, name, address, phone, email } = clientData
+		if (!id || !name || !address || !phone || !email) {
+			setErrorMsg('Todos los campos requeridos')
+			return
+		}
+		handleAddClient(clientData)
+		handleClose()
+	}
 
     return (
 		<>
@@ -36,9 +51,9 @@ export default function ClientAddModal({ handleClose, handleAddClient }) {
                                 <input
                                     className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                                     type="text"
-                                    name="id"
                                     placeholder="Cedula o RUC"
-                                    onChange={handleChange}
+									value={clientData.id || ''}
+                                    onChange={(e) => handleChange('id', e.target.value)}
                                 />
                             </div>
 
@@ -46,9 +61,9 @@ export default function ClientAddModal({ handleClose, handleAddClient }) {
                                 <input
                                     className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                                     type="text"
-                                    name="phone"
                                     placeholder="Telefono"
-                                    onChange={handleChange}
+									value={clientData.phone || ''}
+                                    onChange={(e) => handleChange('phone', e.target.value)}
                                 />
                             </div>
 
@@ -56,9 +71,9 @@ export default function ClientAddModal({ handleClose, handleAddClient }) {
                                 <input
                                     className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                                     type="email"
-                                    name="email"
                                     placeholder="Email"
-                                    onChange={handleChange}
+									value={clientData.email || ''}
+                                    onChange={(e) => handleChange('email', e.target.value)}
                                 />
                             </div>
                         </div>
@@ -67,27 +82,28 @@ export default function ClientAddModal({ handleClose, handleAddClient }) {
 							<input
 								className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
 								type="text"
-								name="name"
 								placeholder="Nombre o Empresa"
-                                onChange={handleChange}
+								value={clientData.name || ''}
+                                onChange={(e) => handleChange('name', e.target.value)}
 							/>
 
                             <input
 								className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
 								type="text"
-								name="address"
 								placeholder="Direccion"
-                                onChange={handleChange}
+								value={clientData.address || ''}
+                                onChange={(e) => handleChange('address', e.target.value)}
 							/>
 						</div>
 					</div>
 
+					{errorMsg && <div className="mb-6 px-4 text-center text-red-600 font-semibold uppercase">{errorMsg}</div>}
+
 					<div className="flex justify-end items-center">
-						{isLoading && <div className="mr-4"><Spinner /></div>}
+						{/* {isLoading && <div className="mr-4"><Spinner /></div>} */}
                         <button
 							type="submit"
-							className="mr-2 bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm disabled:opacity-50"
-							disabled={isLoading}
+							className="mr-2 bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
                             onClick={handleSubmit}
 						>
 							Añadir

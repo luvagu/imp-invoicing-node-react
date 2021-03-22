@@ -48,7 +48,8 @@ export default function ClientSearchModal({ handleClose, handleAddClient }) {
     }
 
 	const handleSelectedClient = (index) => {
-		console.log(searchResults[index])
+		// console.log(searchResults[index])
+		handleAddClient(searchResults[index])
 		setSearchTerm(null)
 		setSearchResults([])
 		handleClose()
