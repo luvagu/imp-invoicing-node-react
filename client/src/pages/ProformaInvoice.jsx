@@ -28,8 +28,93 @@ export default function ProformaInvoice({ formTitle }) {
         setModalVersion('')
     }
 
+    const formatProductPrice = (price) => parseFloat(price).toFixed(4)
+
+    const formatTotals = (price) => parseFloat(price).toFixed(2)
+
+    const calculateProductTotal = (price, quantity, discountRate) => {
+        const priceNumber = parseFloat(price)
+        const quantityNumber = parseFloat(quantity)
+        const discountRateNumber = parseFloat(discountRate)
+
+        const discountAmount = priceNumber && quantityNumber && discountRateNumber ? ((priceNumber * quantityNumber) * discountRateNumber) / 100 : 0
+
+        const productTotal = priceNumber && quantityNumber ? (priceNumber * quantityNumber) - discountAmount : 0
+
+        return productTotal.toFixed(2)
+    }
+
+    const handleAddProduct = (product) => {
+        const productToAdd = {
+            id: product.id,
+            name: product.name,
+            quantity: '1',
+            price: formatProductPrice(product.price),
+            discountRate: '0',
+            total: formatTotals(product.price)
+        }
+
+        const productsList = [ ...docData.productsList, productToAdd ]
+        setDocData({ ...docData, productsList })
+    }
+
+    const handleRemoveProduct = (productIdx) => {
+        const productsList = docData.productsList.filter((product, idx) => idx !== productIdx)
+        setDocData({ ...docData, productsList })
+    }
+
+    const handleChangeProduct = (idx, keyName, value) => {
+		const productsList = docData.productsList.map((product, i) => {
+			if (i === idx) {
+				const newProduct = { ...product }
+
+				if (keyName === 'name') {
+					newProduct[keyName] = value
+				} else {
+					if (
+						value[value.length - 1] === '.' ||
+						(value[value.length - 1] === '0' && value.includes('.'))
+					) {
+						newProduct[keyName] = value
+					} else {
+						const n = parseFloat(value)
+
+						newProduct[keyName] = (n ? n : 0).toString()
+					}
+				}
+
+				// Calculate product total
+                newProduct.total = calculateProductTotal(newProduct.price, newProduct.quantity, newProduct.discountRate)
+
+				return newProduct
+			}
+
+			return { ...product }
+		})
+
+		setDocData({ ...docData, productsList })
+	}
+
+    useEffect(() => {
+        // if (!docData.productsList.length) return
+
+        const subTotal = docData.productsList.reduce((acc, { total }) => acc += parseFloat(total), 0)
+		const docSubtotal = formatTotals(subTotal)
+
+        const discountTotal = docData.productsList.reduce((acc, { quantity, price, discountRate }) => acc += ((parseFloat(price) * parseFloat(quantity)) * parseFloat(discountRate)) / 100, 0)
+        const docDiscount = formatTotals(discountTotal)
+
+        const taxAmount = subTotal * (parseFloat(docData.docTaxRate) / 100)
+        const docTaxAmount = formatTotals(taxAmount)
+
+        const docTotal = formatTotals(subTotal + taxAmount)
+
+        setDocData({ ...docData, docSubtotal, docDiscount, docTaxAmount, docTotal })
+
+    }, [docData.productsList])
+
     return (
-        <div className="container mx-auto px-5 py-6">
+        <div className="container mx-auto px-5 py-6 md:min-w-full">
 
             {/* Page header and save/print buttons */}
             <div className="flex justify-between mb-8">
@@ -93,19 +178,6 @@ export default function ProformaInvoice({ formTitle }) {
                 </div>
             </div>
             
-            
-            {/* <div className="flex flex-wrap w-full mb-8">
-                <label className="text-gray-800 block mb-1 font-bold text-sm uppercase w-full tracking-wide">Datos Cliente:</label>
-
-                <div className="flex flex-wrap w-full justify-between">
-                    <input className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full md:w-1/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="RUC / CI / Pasaporte" />
-                    <input className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full md:w-1/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Telefono" />
-                    <input className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full md:w-1/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Correo" />
-                    <input className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full md:w-2/5 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Nombre / Empresa" />
-                    <input className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full md:w-2/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Direccion" />
-                </div>
-            </div> */}
-            
             {/* Products list header */}
             <div className="flex items-start -mx-1 py-2 border-b">
                 <div className="px-1 w-1/2">
@@ -132,41 +204,47 @@ export default function ProformaInvoice({ formTitle }) {
             </div>
 
             {/* Products list */}
-            <div className="flex items-end -mx-1 py-2 border-b">
-                <div className="px-1 w-1/2">
-                    <span className="font-medium text-sm text-gray-500">1221616</span>
-                    {/* <p className="text-gray-800 truncate">sdfsdf 4465ds4fs df5464df sdfasd sdafds sdafsd</p> */}
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Nombre" />
-                </div>
+            {docData.productsList && docData.productsList.length > 0 && docData.productsList.map((product, idx) => (
+                <div key={idx} className="flex items-end -mx-1 py-2 border-b">
+                    <div className="px-1 w-1/2">
+                        <span className="font-medium text-sm text-gray-500">{product.id}</span>
+                        {/* <p className="text-gray-800 truncate">sdfsdf 4465ds4fs df5464df sdfasd sdafds sdafsd</p> */}
+                        <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={product.name} placeholder="Nombre" onChange={(e) => handleChangeProduct(idx, 'name', e.target.value)} />
+                    </div>
 
-                <div className="px-1 w-32">
-                    {/* <p className="text-gray-800">50</p> */}
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Cantidad" />
-                </div>
+                    <div className="px-1 w-32">
+                        {/* <p className="text-gray-800">50</p> */}
+                        <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={product.quantity} placeholder="Cantidad" onChange={(e) => handleChangeProduct(idx, 'quantity', e.target.value)} />
+                    </div>
 
-                <div className="px-1 w-32">
-                    {/* <p className="text-gray-800">1.85</p> */}
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Precio" />
-                </div>
+                    <div className="px-1 w-32">
+                        {/* <p className="text-gray-800">1.85</p> */}
+                        <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={product.price} placeholder="Precio" onChange={(e) => handleChangeProduct(idx, 'price', e.target.value)} />
+                    </div>
 
-                <div className="px-1 w-32">
-                    {/* <p className="text-gray-800">10</p> */}
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Descuento" />
-                </div>
+                    <div className="px-1 w-32">
+                        {/* <p className="text-gray-800">10</p> */}
+                        <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={product.discountRate} placeholder="Descuento" onChange={(e) => handleChangeProduct(idx, 'discountRate', e.target.value)} />
+                    </div>
 
-                <div className="px-1 w-32 text-right">
-                    {/* <p className="text-gray-800">60.25</p> */}
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500" type="text" placeholder="Total" disabled />
-                </div>
+                    <div className="px-1 w-32 text-right">
+                        {/* <p className="text-gray-800">60.25</p> */}
+                        <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-right text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500 placeholder-gray-900" type="text" placeholder={product.total} disabled />
+                    </div>
 
-                <div className="px-1 w-10 text-right">
-                    <button className="text-red-500 hover:text-red-600 text-sm">
-                        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                        </svg>
-                    </button>
+                    <div className="px-1 w-10 text-right">
+                        <button 
+                            onClick={() => handleRemoveProduct(idx)}
+                            className="text-red-500 hover:text-red-600 text-sm"
+                            type="button"
+                        >
+                            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            ))}
             
             {/* Add product button and totals */}
             <div className="flex flex-wrap justify-between mt-6">
@@ -178,7 +256,7 @@ export default function ProformaInvoice({ formTitle }) {
                     </button>
                 </div>
 
-                <div className="w-full md:w-1/2 lg:w-1/3">
+                <div className="w-full md:w-1/2 lg:w-1/2">
                     <div className="flex justify-between mb-3">
                         <div className="text-gray-800 text-right flex-1">Subtotal</div>
                         <div className="text-right w-40">
@@ -194,9 +272,9 @@ export default function ProformaInvoice({ formTitle }) {
                     </div>
 
                     <div className="flex justify-between mb-4">
-                        <div className="text-sm text-gray-600 text-right flex-1">IVA (12%)</div>
+                        <div className="text-sm text-gray-600 text-right flex-1">IVA ({docData.docTaxRate}%)</div>
                         <div className="text-right w-40">
-                            <div className="text-sm text-gray-600">{docData.docTax}</div>
+                            <div className="text-sm text-gray-600">{docData.docTaxAmount}</div>
                         </div>
                     </div>
                 
@@ -215,7 +293,7 @@ export default function ProformaInvoice({ formTitle }) {
             <Modal show={showModal}>
                 {modalVersion === 'client-add' && <ClientAddModal handleClose={handleCloseModal} />}
                 {modalVersion === 'client-search' && <ClientSearchModal handleClose={handleCloseModal} />}
-                {modalVersion === 'products' && <ProductSearchModal handleClose={handleCloseModal} />}
+                {modalVersion === 'products' && <ProductSearchModal handleClose={handleCloseModal} handleAddProduct={handleAddProduct} />}
             </Modal>
         </div>
     )

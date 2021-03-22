@@ -49,6 +49,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 
 	const handleSelectedProduct = (index) => {
 		console.log(searchResults[index])
+		handleAddProduct(searchResults[index])
 		setSearchTerm(null)
 		setSearchResults([])
 		handleClose()

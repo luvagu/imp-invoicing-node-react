@@ -1,13 +1,4 @@
 
-// export const initialProduct = {
-//   id: ''
-//   name: '',
-//   quantity: '',
-//   price: '',
-//   discount: '',
-//   total: ''
-// }
-
 export const initialDocInfo = {
   companyID: 'RUC: 1792673844001',
   companyName: 'IMPORPERNOS S.C.C.',
@@ -22,10 +13,11 @@ export const initialDocInfo = {
   docDateLabel: 'Fecha de Emision',
   docDate: '',
   docNum: '', // @Todo get it from backend at runtime or set it on doc save
-  docSubtotal: 0,
-  docDiscount: 0,
-  docTax: 0,
-  docTotal: 0,
+  docSubtotal: '0.00',
+  docDiscount: '0.00',
+  docTaxRate: '12',
+  docTaxAmount: '0.00',
+  docTotal: '0.00',
   
   clientDetailsLabel: 'Datos Cliente:',
   clientIdLabel: 'CI / RUC:',
@@ -42,7 +34,7 @@ export const initialDocInfo = {
   productDiscounyLabel: 'Dcto. %',
   productTotalAmountLabel: 'P.Total',
 
-  products: [],
+  productsList: [],
 
   subTotalLabel: 'Subtotal',
   discountLabel: 'Descuento',
