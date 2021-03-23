@@ -69,8 +69,8 @@ app.put('/update-doc/:type/:num', async (req, res) => {
         const response = await helpers.updateDoc(dir, fileName, fileData)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /create-doc/:type', error)
-        res.status(500).send({ Error: 'Could not create document, it may already exist' })
+        console.error('Error on Put path >>> /update-doc/:type/:num', error)
+        res.status(500).send({ Error: 'Could not update document' })
     }
 })
 
