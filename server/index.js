@@ -32,7 +32,7 @@ app.get('/list-docs/:dir', async (req, res) => {
         res.status(200).send({ docsList })
     } catch (error) {
         console.error('Error on Get path >>> /list-docs/:dir', error)
-        res.status(500).send({ Error: `Could not retrieve the ${dir} list` })
+        res.status(404).send({ Error: `Could not retrieve the ${dir} list` })
     }
 })
 
@@ -44,7 +44,7 @@ app.get('/get-doc/:type/:num', async (req, res) => {
         res.status(200).send(invoiceData)
     } catch (error) {
         console.error('Error on Get path >>> /get-doc/:type/:num', error)
-        res.status(500).send({ Error: 'Could not get the requested document' })
+        res.status(404).send({ Error: 'Could not get the requested document' })
     }
 })
 
