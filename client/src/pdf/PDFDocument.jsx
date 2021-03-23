@@ -217,7 +217,7 @@ export default function PDFDocument({ data }) {
 							</View>
 
 							<View style={compose('view w-50 p-5 flex')}>
-								<Text style={compose('span dark bold right ml-30')}>{data.currency}</Text>
+								<Text style={compose('span dark bold right ml-30')}>{data.currencySymbol}</Text>
 								<Text style={compose('span right bold dark w-auto')}>
 									{data.docTotal}
 								</Text>

@@ -194,7 +194,6 @@ export default function ProformaInvoice({ docType, apiFolder }) {
     const handleEdit = () => {
         setIsDocUpdating(true)
         setIsEditing(true)
-        setSuccessMsg('')
     }
 
     const handleUpdate = () => {
@@ -216,11 +215,20 @@ export default function ProformaInvoice({ docType, apiFolder }) {
     
         const timeout = setTimeout(() => {
             setErrorMsg('')
+        }, 5000)
+    
+        return () => clearTimeout(timeout)
+    }, [errorMsg])
+
+    useEffect(() => {
+        if (!successMsg) return
+    
+        const timeout = setTimeout(() => {
             setSuccessMsg('')
         }, 5000)
     
         return () => clearTimeout(timeout)
-    }, [errorMsg, successMsg])
+    }, [successMsg])
 
     return (
         <div className="container mx-auto px-6 py-6">
@@ -253,7 +261,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
             </div>
 
             {errorMsg && <div className="mb-8 p-1 text-sm text-center text-red-600 font-semibold uppercase rounded shadow-sm bg-red-200">{errorMsg}</div>}
-            {successMsg && <div className="mb-8 p-1 text-sm text-center text-green-600 font-semibold uppercase rounded shadow-sm bg-green-200">{successMsg}</div>}
+            {successMsg && <div className="mb-8 p-1 text-sm text-center text-green-700 font-semibold uppercase rounded shadow-sm bg-green-200">{successMsg}</div>}
 
             <BlockEditingLayer isDocSaved={isDocSaved} isDocUpdating={isDocUpdating}>
             {/* Client details and doc info */}
