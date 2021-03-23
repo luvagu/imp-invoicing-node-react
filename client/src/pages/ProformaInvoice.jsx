@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Prompt } from 'react-router-dom'
-import { createDocApi } from '../api/helpers'
+import { createDocApi, updateDocApi } from '../api/helpers'
 
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
@@ -196,9 +196,24 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         setIsEditing(true)
     }
 
-    const handleUpdate = () => {
-        setIsDocUpdating(false)
-        setIsEditing(false)
+    const handleUpdate = async () => {
+        if (!checkDocumentRequiredFields()) return
+
+        setIsLoading(true)
+
+        try {
+            const response = await updateDocApi(apiFolder, docData.docNum, docData)
+            console.log(response)
+            setIsDocUpdating(false)
+            setIsEditing(false)
+            setSuccessMsg(response.message)
+        } catch (error) {
+            setIsDocUpdating(true)
+            setErrorMsg(error.response?.data.Error || 'Network Error')
+            console.log(error.response?.data.Error)
+        }
+
+        setIsLoading(false)
     }
 
     useEffect(() => {

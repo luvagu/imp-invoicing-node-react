@@ -18,11 +18,11 @@ const updateSequences = async (sequences) => {
     await fileDescriptor.close()
 }
 
-const getNextDocNum = async (name) => {
+const getNextDocNum = async (keyName) => {
     const sequences = parseJsonToObject(await fs.readFile(baseDir+'db/sequences.json', 'utf8'))
-    sequences[name] = sequences[name] + 1
+    sequences[keyName] = sequences[keyName] + 1
     await updateSequences(sequences)
-    return sequences[type].toString()
+    return sequences[keyName].toString()
 }
 
 const helpers = {}
