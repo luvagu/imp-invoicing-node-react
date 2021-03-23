@@ -36,63 +36,63 @@ app.get('/list-docs/:dir', async (req, res) => {
     }
 })
 
-app.get('/get-doc/:type/:num', async (req, res) => {
-    const { type:dir, num:fileName } = req.params
+app.get('/get-doc/:folder/:doc', async (req, res) => {
+    const { folder:dir, doc:fileName } = req.params
 
     try {
         const invoiceData = await helpers.readDoc(dir, fileName)
         res.status(200).send(invoiceData)
     } catch (error) {
-        console.error('Error on Get path >>> /get-doc/:type/:num', error)
+        console.error('Error on Get path >>> /get-doc/:folder/:doc', error)
         res.status(404).send({ Error: 'Could not get the requested document' })
     }
 })
 
-app.post('/create-doc/:type', async (req, res) => {
-    const { type:dir } = req.params
+app.post('/create-doc/:folder', async (req, res) => {
+    const { folder:dir } = req.params
     const fileData = req.body
 
     try {
         const response = await helpers.creteDoc(dir, fileData)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /create-doc/:type', error)
+        console.error('Error on Post path >>> /create-doc/:folder', error)
         res.status(500).send({ Error: 'Could not create document, it may already exist' })
     }
 })
 
-app.put('/update-doc/:type/:num', async (req, res) => {
-    const { type:dir, num:fileName } = req.params
+app.put('/update-doc/:folder/:doc', async (req, res) => {
+    const { folder:dir, doc:fileName } = req.params
     const fileData = req.body
 
     try {
         const response = await helpers.updateDoc(dir, fileName, fileData)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Put path >>> /update-doc/:type/:num', error)
+        console.error('Error on Put path >>> /update-doc/:folder/:doc', error)
         res.status(500).send({ Error: 'Could not update document' })
     }
 })
 
-app.delete('/delete-doc/:type/:num', async (req, res) => {
-    const { type:dir, num:fileName } = req.params
+app.delete('/delete-doc/:folder/:doc', async (req, res) => {
+    const { folder:dir, doc:fileName } = req.params
     try {
         const response = await helpers.deleteDoc(dir, fileName)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /delete-doc/:type/:num', error)
+        console.error('Error on Post path >>> /delete-doc/:folder/:doc', error)
         res.status(500).send({ Error: 'Could not delete document, it may not exist' })
     }
 })
 
-app.delete('/delete-all-docs/:type', async (req, res) => {
+app.delete('/delete-all-docs/:folder', async (req, res) => {
     const dir = req.params.type
 
     try {
         const response = await helpers.deleteAllDocs(dir)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /delete-all-docs/:type', error)
+        console.error('Error on Post path >>> /delete-all-docs/:folder', error)
         res.status(500).send({ Error: `Could not delete documents in ${dir}` })
     }
 })
