@@ -86,7 +86,7 @@ app.delete('/delete-doc/:folder/:doc', async (req, res) => {
 })
 
 app.delete('/delete-all-docs/:folder', async (req, res) => {
-    const dir = req.params.type
+    const dir = req.params.folder
 
     try {
         const response = await helpers.deleteAllDocs(dir)
