@@ -61,12 +61,11 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         return productTotal.toFixed(2)
     }
 
-    // @todo fix useefect to run once
-    const updateDocTotals = () => {
-        const subTotal = docData.productsList.reduce((acc, { total }) => (acc += parseFloat(total)), 0)
+    const updateDocTotals = (productsList) => {
+        const subTotal = productsList.reduce((acc, { total }) => (acc += parseFloat(total)), 0)
         const docSubtotal = formatTotals(subTotal)
 
-        const discountTotal = docData.productsList.reduce((acc, { quantity, price, discountRate }) =>(acc += (parseFloat(price) * parseFloat(quantity) * parseFloat(discountRate)) / 100), 0)
+        const discountTotal = productsList.reduce((acc, { quantity, price, discountRate }) =>(acc += (parseFloat(price) * parseFloat(quantity) * parseFloat(discountRate)) / 100), 0)
         const docDiscount = formatTotals(discountTotal)
 
         const taxAmount = subTotal * (parseFloat(docTaxRate) / 100)
@@ -74,14 +73,8 @@ export default function ProformaInvoice({ docType, apiFolder }) {
 
         const docTotal = formatTotals(subTotal + taxAmount)
 
-        setDocData(docData => ({ ...docData, docSubtotal, docDiscount, docTaxAmount, docTotal }))
-        setIsEditing(() => docData.productsList.length > 0)
+        return { docSubtotal, docDiscount, docTaxAmount, docTotal }
     }
-
-    console.log('isEditing >>>', isEditing)
-    console.log('isDocSaved >>>', isDocSaved)
-    console.log('isLoading >>>', isLoading)
-    console.log('errorMsg >>>', errorMsg)
 
     const handleAddProduct = (product) => {
         const productToAdd = {
@@ -94,7 +87,11 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         }
 
         const productsList = [ ...docData.productsList, productToAdd ]
-        setDocData({ ...docData, productsList })
+
+        // Update totals
+        const newDocTotals = updateDocTotals(productsList)
+
+        setDocData({ ...docData, productsList, ...newDocTotals })
     }
 
     const handleRemoveProduct = (productIdx) => {
@@ -131,28 +128,30 @@ export default function ProformaInvoice({ docType, apiFolder }) {
 			return { ...product }
 		})
 
-		setDocData({ ...docData, productsList })
+        // Update totals
+        const newDocTotals = updateDocTotals(productsList)
+		setDocData({ ...docData, productsList, ...newDocTotals })
 	}
 
     const handleChange = (name, value) => {
-        if (name === 'productsList') return
+        if (name === 'productsList' || name === 'clientData') return
 
         const newDocData = { ...docData }
         newDocData[name] = value
         setDocData(newDocData)
     }
 
-    const checkDocumentRequiredFields = (data) => {
+    const checkDocumentRequiredFields = () => {
         // Client fields
-        const id = data.clientData.id.trim().length > 0 && data.clientData.id.trim().length <= 13
-        const name = data.clientData.name.trim().length > 3
-        const address = data.clientData.address.trim().length > 3
-        const email = data.clientData.email.trim().length >= 6 && /^([\w_\-.]+)@([\w\-.]+)$/.test(data.clientData.email.trim())
-        const phone = data.clientData.phone.trim().length >= 7
+        const id = docData.clientData.id.trim().length > 0 && docData.clientData.id.trim().length <= 13
+        const name = docData.clientData.name.trim().length > 3
+        const address = docData.clientData.address.trim().length > 3
+        const email = docData.clientData.email.trim().length >= 6 && /^([\w_\-.]+)@([\w\-.]+)$/.test(docData.clientData.email.trim())
+        const phone = docData.clientData.phone.trim().length >= 7
 
         // Payment method and products
-        const paymentMethod = paymentMethods.indexOf(data.docPaymentMethod) > -1
-        const hasAtLeastOneProduct = data.productsList.length > 0
+        const paymentMethod = paymentMethods.indexOf(docData.docPaymentMethod) > -1
+        const hasAtLeastOneProduct = docData.productsList.length > 0
 
         if (id && name && address && email && phone && paymentMethod && hasAtLeastOneProduct) {
             return true
@@ -171,7 +170,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
     }
 
     const handleSave = async () => {
-        if (!checkDocumentRequiredFields({ ...docData }) || isDocSaved) return
+        if (!checkDocumentRequiredFields() || isDocSaved) return
 
         setIsLoading(true)
 
@@ -179,7 +178,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
             const response = await createDocApi(apiFolder, docData)
             console.log(response)
             const { docNum } = response
-            setDocData(docData => ({ ...docData, docNum }))
+            setDocData({ ...docData, docNum })
             setIsDocSaved(true)
             setIsEditing(false)
             setSuccessMsg(response.message)
@@ -203,17 +202,25 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         setIsEditing(false)
     }
 
-    // useEffect(updateDocTotals, [docData.productsList, docTaxRate])
+    useEffect(() => {
+        if (!docData.productsList.length) {
+            setIsEditing(false)
+        } else {
+            setIsEditing(true)
+        }
+        
+    }, [docData.productsList])
 
     useEffect(() => {
         if (!errorMsg) return
     
         const timeout = setTimeout(() => {
-          setErrorMsg('')
+            setErrorMsg('')
+            setSuccessMsg('')
         }, 5000)
     
         return () => clearTimeout(timeout)
-    }, [errorMsg])
+    }, [errorMsg, successMsg])
 
     return (
         <div className="container mx-auto px-6 py-6">
@@ -245,8 +252,8 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                 </div>
             </div>
 
-            {errorMsg && <div className="mb-8 text-center text-center text-red-600 font-semibold uppercase">{errorMsg}</div>}
-            {successMsg && <div className="mb-8 text-center text-center text-green-600 font-semibold uppercase">{successMsg}</div>}
+            {errorMsg && <div className="mb-8 p-1 text-sm text-center text-red-600 font-semibold uppercase rounded shadow-sm bg-red-200">{errorMsg}</div>}
+            {successMsg && <div className="mb-8 p-1 text-sm text-center text-green-600 font-semibold uppercase rounded shadow-sm bg-green-200">{successMsg}</div>}
 
             <BlockEditingLayer isDocSaved={isDocSaved} isDocUpdating={isDocUpdating}>
             {/* Client details and doc info */}
