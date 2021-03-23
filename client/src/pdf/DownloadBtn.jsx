@@ -6,19 +6,19 @@ export default function DownloadBtn({ data }) {
   const [show, setShow] = useState(false)
   
   useEffect(() => {
-    if (!data) return
+		if (!data) return
 
-    setShow(false)
+		setShow(false)
 
-    const timeout = setTimeout(() => {
-      setShow(true)
-    }, 500)
+		const timeout = setTimeout(() => {
+			setShow(true)
+		}, 500)
 
-    return () => clearTimeout(timeout)
+		return () => clearTimeout(timeout)
   }, [data])
 
   return (
-    <div className={`${!show ? 'opacity-30' : 'opacity-100'} p-1 text-white rounded-full bg-red-600 hover:bg-red-700 inline-flex items-center justify-center`} title="Descargar PDF">
+    <div className={`${!show ? 'opacity-30' : 'opacity-100'} p-1 text-white rounded-full bg-red-600 hover:bg-red-700 inline-flex items-center justify-center ml-2`} title="Descargar PDF">
         <PDFDownloadLink
           document={<PDFDocument data={data} />}
           fileName={`${data.docType ? `${data.docType.toLowerCase()}-${data.docNum}` : 'documento'}.pdf`}

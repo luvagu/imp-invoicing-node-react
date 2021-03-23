@@ -12,7 +12,7 @@ export const initialDocInfo = {
 	docDateLabel: 'Fecha de Emision',
 	docDate: '',
 	docNum: '', // @Todo get it from backend at runtime or set it on doc save
-	docPaymentMethod: 'Efectivo',
+	docPaymentMethod: '',
 	docSubtotal: '0.00',
 	docDiscount: '0.00',
 	docTaxRate: '12',

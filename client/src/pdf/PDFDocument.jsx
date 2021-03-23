@@ -4,8 +4,8 @@ import compose from './styles/compose'
 Font.register({
   family: 'Roboto',
   fonts: [
-    { src: 'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxPKTU1Kg.ttf' },
-	{ src: 'https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx0_IsE.ttf', fontWeight: 700 }
+    { src: '/fonts/roboto-400.ttf' },
+	{ src: '/fonts/roboto-700.ttf', fontWeight: 700 }
   ],
 })
 
@@ -28,7 +28,7 @@ export default function PDFDocument({ data }) {
 
 					<View style={compose('view w-50')}>
 
-						<Image style={compose('logo right mb-10')} src="/logo.jpg" />
+						<Image style={compose('logo right mb-10')} src="/img/imp_pdf_logo.jpg" />
 
 						<View style={compose('view flex mb-5')}>
 							<View style={compose('view w-40')}>

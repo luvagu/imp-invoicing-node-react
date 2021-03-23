@@ -106,7 +106,7 @@ export default function ClientAddModal({ handleClose, handleAddClient, data }) {
 							className="mr-2 bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
                             onClick={handleSubmit}
 						>
-							Añadir
+							{data ? 'Actualizar' : 'Añadir'}
 						</button>
 						<button
 							type="button"

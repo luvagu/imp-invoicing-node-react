@@ -6,7 +6,8 @@ import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
 import { initialDocInfo, paymentMethods } from '../data/initialData'
 
-import SaveDocIcon from '../components/SaveDocBtn'
+// import SaveDocBtn from '../components/SaveDocBtn'
+import DocActionsBtn from '../components/DocActionsBtn'
 import DownloadBtn from '../pdf/DownloadBtn'
 
 import Modal from '../components/Modal'
@@ -14,12 +15,15 @@ import ClientAddModal from '../components/ClientAddModal'
 import ClientSearchModal from '../components/ClientSearchModal'
 import ProductSearchModal from '../components/ProductSearchModal'
 import Spinner from '../components/Spinner'
+import BlockEditingLayer from '../components/BlockEditingLayer'
 
 export default function ProformaInvoice({ docType, apiFolder }) {
+    const [errorMsg, setErrorMsg] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
-    const [isDocChecked, setIsDocChecked] = useState(false)
     const [isDocSaved, setIsDocSaved] = useState(false)
+    const [isDocUpdating, setIsDocUpdating] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [modalVersion, setModalVersion] = useState('')
     const [docData, setDocData] = useState({ ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC') })
@@ -57,6 +61,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         return productTotal.toFixed(2)
     }
 
+    // @todo fix useefect to run once
     const updateDocTotals = () => {
         const subTotal = docData.productsList.reduce((acc, { total }) => (acc += parseFloat(total)), 0)
         const docSubtotal = formatTotals(subTotal)
@@ -72,6 +77,11 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         setDocData(docData => ({ ...docData, docSubtotal, docDiscount, docTaxAmount, docTotal }))
         setIsEditing(() => docData.productsList.length > 0)
     }
+
+    console.log('isEditing >>>', isEditing)
+    console.log('isDocSaved >>>', isDocSaved)
+    console.log('isLoading >>>', isLoading)
+    console.log('errorMsg >>>', errorMsg)
 
     const handleAddProduct = (product) => {
         const productToAdd = {
@@ -132,31 +142,78 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         setDocData(newDocData)
     }
 
-    const handleSave = () => {
-        setIsDocChecked(true)
-        setIsLoading(true)
+    const checkDocumentRequiredFields = (data) => {
+        // Client fields
+        const id = data.clientData.id.trim().length > 0 && data.clientData.id.trim().length <= 13
+        const name = data.clientData.name.trim().length > 3
+        const address = data.clientData.address.trim().length > 3
+        const email = data.clientData.email.trim().length >= 6 && /^([\w_\-.]+)@([\w\-.]+)$/.test(data.clientData.email.trim())
+        const phone = data.clientData.phone.trim().length >= 7
+
+        // Payment method and products
+        const paymentMethod = paymentMethods.indexOf(data.docPaymentMethod) > -1
+        const hasAtLeastOneProduct = data.productsList.length > 0
+
+        if (id && name && address && email && phone && paymentMethod && hasAtLeastOneProduct) {
+            return true
+        } else {
+            if (!id || !name || !address || !email || !phone) {
+                setErrorMsg('Datos Cliente incompletos o inavalidos')
+            }
+            if (!paymentMethod) {
+                setErrorMsg('Debes seleccionar la forma de pago')
+            }
+            if (!hasAtLeastOneProduct) {
+                setErrorMsg('Debes añadir al menos un producto')
+            }
+            return false
+        }
     }
 
-    useEffect(updateDocTotals, [docData.productsList, docTaxRate])
+    const handleSave = async () => {
+        if (!checkDocumentRequiredFields({ ...docData }) || isDocSaved) return
+
+        setIsLoading(true)
+
+        try {
+            const response = await createDocApi(apiFolder, docData)
+            console.log(response)
+            const { docNum } = response
+            setDocData(docData => ({ ...docData, docNum }))
+            setIsDocSaved(true)
+            setIsEditing(false)
+            setSuccessMsg(response.message)
+        } catch (error) {
+            setIsDocSaved(false)
+            setErrorMsg(error.response?.data.Error || 'Network Error')
+            console.log(error.response?.data.Error)
+        }
+
+        setIsLoading(false)
+    }
+
+    const handleEdit = () => {
+        setIsDocUpdating(true)
+        setIsEditing(true)
+        setSuccessMsg('')
+    }
+
+    const handleUpdate = () => {
+        setIsDocUpdating(false)
+        setIsEditing(false)
+    }
+
+    // useEffect(updateDocTotals, [docData.productsList, docTaxRate])
 
     useEffect(() => {
-        if (isDocChecked === false) return
+        if (!errorMsg) return
     
-        createDocApi(apiFolder, docData)
-            .then(res => {
-                setIsDocChecked(false)
-                setIsLoading(false)
-                setIsDocSaved(true)
-                console.log(res)
-            })
-            .catch(err => {
-                setIsDocChecked(false)
-                setIsLoading(false)
-                setIsDocSaved(false)
-                console.log(err)
-            })
-            
-    }, [isDocChecked])
+        const timeout = setTimeout(() => {
+          setErrorMsg('')
+        }, 5000)
+    
+        return () => clearTimeout(timeout)
+    }, [errorMsg])
 
     return (
         <div className="container mx-auto px-6 py-6">
@@ -173,14 +230,25 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold mr-4 tracking-wider uppercase">{docData.docType}</h2>
+                    <h2 className="text-2xl font-bold tracking-wider uppercase">{docData.docType}</h2>
 
-                    {!isDocSaved && !isLoading && <SaveDocIcon handle={handleSave} />}
-                    {isDocSaved && !isLoading && <DownloadBtn data={docData} />}
+                    {!isDocSaved && !isLoading && <DocActionsBtn action='save' handle={handleSave} title='Guardar' color='indigo' />}
+                    {isDocUpdating && isDocSaved && !isLoading && <DocActionsBtn action='update' handle={handleUpdate} title='Actualizar' color='blue' />}
+                    {(isDocSaved && !isDocUpdating) && !isLoading && (
+                        <>
+                            <DocActionsBtn action='link' title={`Nueva ${docType}`} />
+                            <DocActionsBtn action='edit' handle={handleEdit} title='Editar' color='yellow' />
+                            <DownloadBtn data={{ ...docData }} />
+                        </>
+                    )}
                     {isLoading && <Spinner /> }
                 </div>
             </div>
 
+            {errorMsg && <div className="mb-8 text-center text-center text-red-600 font-semibold uppercase">{errorMsg}</div>}
+            {successMsg && <div className="mb-8 text-center text-center text-green-600 font-semibold uppercase">{successMsg}</div>}
+
+            <BlockEditingLayer isDocSaved={isDocSaved} isDocUpdating={isDocUpdating}>
             {/* Client details and doc info */}
             <div className="flex flex-wrap justify-between mb-8">
                 <div className="w-full md:w-1/2 mb-1 md:mb-0">
@@ -224,6 +292,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                         className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                         onChange={(e) => handleChange('docPaymentMethod', e.target.value)}
                     >
+                        <option>-</option>
                         {paymentMethods && paymentMethods.length > 0 && paymentMethods.map((option, idx) => (
                             <option key={idx} value={option}>{option}</option>
                         ))}
@@ -341,7 +410,8 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                     </div>
                 </div>
             </div>
-        
+            </BlockEditingLayer>
+
             {/* Modals */}
             <Modal show={showModal}>
                 {modalVersion === 'client-add' && <ClientAddModal 
