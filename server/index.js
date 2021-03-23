@@ -61,6 +61,19 @@ app.post('/create-doc/:type', async (req, res) => {
     }
 })
 
+app.put('/update-doc/:type/:num', async (req, res) => {
+    const { type:dir, num:fileName } = req.params
+    const fileData = req.body
+
+    try {
+        const response = await helpers.updateDoc(dir, fileName, fileData)
+        res.status(200).send(response)
+    } catch (error) {
+        console.error('Error on Post path >>> /create-doc/:type', error)
+        res.status(500).send({ Error: 'Could not create document, it may already exist' })
+    }
+})
+
 app.delete('/delete-doc/:type/:num', async (req, res) => {
     const { type:dir, num:fileName } = req.params
     try {
