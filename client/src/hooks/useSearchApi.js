@@ -8,6 +8,8 @@ const useSearchApi = () => {
 	const [searchRouteWithQuery, setSearchRouteWithQuery] = useState(null)
 
 	useEffect(() => {
+		if (searchRouteWithQuery === null || searchRouteWithQuery === '') return
+
 		const fetchData = async () => {
 			setErrorMsg('')
 			setIsLoading(true)
