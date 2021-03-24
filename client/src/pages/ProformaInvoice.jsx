@@ -443,14 +443,10 @@ export default function ProformaInvoice({ docType, apiFolder }) {
             </BlockEditingLayer>
 
             {/* Modals */}
-            <Modal show={showModal}>
-                {modalVersion === 'client-add' && <ClientAddModal 
-                    handleClose={handleCloseModal} 
-                    handleAddClient={handleAddClient}
-                    data={docData.clientData.id ? { ...docData.clientData } : null}
-                 />}
-                {modalVersion === 'client-search' && <ClientSearchModal handleClose={handleCloseModal} handleAddClient={handleAddClient} />}
-                {modalVersion === 'products' && <ProductSearchModal handleClose={handleCloseModal} handleAddProduct={handleAddProduct} />}
+            <Modal showModal={showModal} closeModal={handleCloseModal}>
+                {modalVersion === 'client-add' && <ClientAddModal closeModal={handleCloseModal} handleAddClient={handleAddClient} data={docData.clientData.id ? { ...docData.clientData } : null} />}
+                {modalVersion === 'client-search' && <ClientSearchModal closeModal={handleCloseModal} handleAddClient={handleAddClient} />}
+                {modalVersion === 'products' && <ProductSearchModal closeModal={handleCloseModal} handleAddProduct={handleAddProduct} />}
             </Modal>
         </div>
     )

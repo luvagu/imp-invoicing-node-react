@@ -4,7 +4,7 @@ import useSearchApi from '../hooks/useSearchApi'
 import SearchModalBody from './SearchModalBody'
 import SearchModalResults from './SearchModalResults'
 
-export default function ProductSearchModal({ handleClose, handleAddProduct }) {
+export default function ProductSearchModal({ closeModal, handleAddProduct }) {
 	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleInputSearch = (e) => {
@@ -24,7 +24,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 
 	const handleSelectedProduct = (index) => {
 		handleAddProduct(searchResults[index])
-		handleClose()
+		closeModal()
 	}
 
 	return (
@@ -35,7 +35,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 			inputTermsName='terms'
 			inputTermsPaceholder='Codigo o nombre parcial'
 			inputsHandle={handleInputSearch}
-			handleClose={handleClose}
+			closeModal={closeModal}
 			isLoading={isLoading}
 			errorMsg={errorMsg}
 		>

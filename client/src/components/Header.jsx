@@ -42,6 +42,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
 				<h3 className="uppercase text-lg text-black font-bold">{headerTitle}</h3>
 			</div>
 
+			{/* Login & Logout buttons */}
 			<div className="flex items-center">
 				<button className="flex mx-4 text-gray-600 focus:outline-none" type="button">
 					<svg

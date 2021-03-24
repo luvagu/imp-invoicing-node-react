@@ -3,7 +3,7 @@ import useSearchApi from '../hooks/useSearchApi'
 import SearchModalBody from './SearchModalBody'
 import SearchModalResults from './SearchModalResults'
 
-export default function ClientSearchModal({ handleClose, handleAddClient }) {
+export default function ClientSearchModal({ closeModal, handleAddClient }) {
 	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleInputSearch = (e) => {
@@ -23,7 +23,7 @@ export default function ClientSearchModal({ handleClose, handleAddClient }) {
 
 	const handleSelectedClient = (index) => {
 		handleAddClient(searchResults[index])
-		handleClose()
+		closeModal()
 	}
 
 	return (
@@ -34,7 +34,7 @@ export default function ClientSearchModal({ handleClose, handleAddClient }) {
 			inputTermsName='name'
 			inputTermsPaceholder='Nombre o Empresa'
 			inputsHandle={handleInputSearch}
-			handleClose={handleClose}
+			closeModal={closeModal}
 			isLoading={isLoading}
 			errorMsg={errorMsg}
 		>
