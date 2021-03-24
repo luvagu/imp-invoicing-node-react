@@ -42,7 +42,7 @@ helpers.creteDoc = async (dir, fileData) => {
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
     await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
-    return { message: `Success: Document ${dir}/${fileName} created`, docNum: fileName }
+    return { message: `Documento No. ${fileName} creado!`, docNum: fileName }
 }
 
 helpers.updateDoc = async (dir, fileName, fileData) => {
@@ -50,7 +50,7 @@ helpers.updateDoc = async (dir, fileName, fileData) => {
     await fileDescriptor.truncate()
     await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
-    return { message: `Success: Document ${dir}/${fileName} updated` }
+    return { message: `Documento No. ${fileName} actualizado!` }
 }
 
 helpers.listDocs = async (dir) => {
@@ -64,7 +64,7 @@ helpers.listDocs = async (dir) => {
 
 helpers.deleteDoc = async (dir, fileName) => {
     await fs.unlink(baseDir+dir+'/'+fileName+'.json')
-    return { message: `Success: Document ${dir}/${fileName} deleted` }
+    return { message: `Documento No. ${fileName} borrado!` }
 }
 
 helpers.deleteAllDocs = async (dir) => {
@@ -72,7 +72,7 @@ helpers.deleteAllDocs = async (dir) => {
 
     const files = await fs.readdir(baseDir+dir+'/', 'utf8')
 
-    if (!files.length) return { message: 'Nothing to delete, directory already empty' }
+    if (!files.length) return { message: 'Nada para borrar, la carpeta esta vacia' }
 
     let deletedFiles = 0
     for await (const file of files) {
@@ -80,7 +80,7 @@ helpers.deleteAllDocs = async (dir) => {
         deletedFiles++
     }
     
-    return { message: `Success: ${deletedFiles} documents deleted from ${dir}` }
+    return { message: `Exito: ${deletedFiles} documentos borrados` }
 }
 
 module.exports = helpers
