@@ -25,7 +25,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
             .catch(err => {
 				setIsLoading(false)
                 setSearchResults([])
-                setErrMsg(err.response?.data.Error || 'Network Error')
+                setErrMsg(err.response?.data.error || 'Network Error')
             })
 
     }, [searchRoute, searchTerm])

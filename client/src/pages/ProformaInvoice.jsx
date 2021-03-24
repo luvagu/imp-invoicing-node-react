@@ -184,8 +184,8 @@ export default function ProformaInvoice({ docType, apiFolder }) {
             setSuccessMsg(response.message)
         } catch (error) {
             setIsDocSaved(false)
-            setErrorMsg(error.response?.data.Error || 'Network Error')
-            console.log(error.response?.data.Error)
+            setErrorMsg(error.response?.data.error || 'Network Error')
+            console.log(error.response?.data.error)
         }
 
         setIsLoading(false)
@@ -209,8 +209,8 @@ export default function ProformaInvoice({ docType, apiFolder }) {
             setSuccessMsg(response.message)
         } catch (error) {
             setIsDocUpdating(true)
-            setErrorMsg(error.response?.data.Error || 'Network Error')
-            console.log(error.response?.data.Error)
+            setErrorMsg(error.response?.data.error || 'Network Error')
+            console.log(error.response?.data.error)
         }
 
         setIsLoading(false)
