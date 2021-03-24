@@ -29,7 +29,7 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 
 	return (
 		<SearchModalBody 
-			searchLabel='product'
+			searchLabel='producto'
 			inputIdName='id'
 			inputIdPaceholder='Codigo exacto'
 			inputTermsName='terms'

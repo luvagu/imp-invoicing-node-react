@@ -28,7 +28,7 @@ export default function ClientSearchModal({ handleClose, handleAddClient }) {
 
 	return (
 		<SearchModalBody 
-			searchLabel='client'
+			searchLabel='cliente'
 			inputIdName='id'
 			inputIdPaceholder='Cedula o RUC'
 			inputTermsName='name'

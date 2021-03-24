@@ -1,47 +1,21 @@
-import { useEffect, useState } from 'react'
-import { dataSearchApi } from '../api/helpers'
+import useSearchApi from '../hooks/useSearchApi'
 
 import SearchResultsPage from '../components/SearchResultsPage'
 import Spinner from '../components/Spinner'
 
 export default function ProductSearch() {
-    const [isLoading, setIsLoading] = useState(false)
-    const [errMsg, setErrMsg] = useState('')  
-    const [searchRoute, setServerRoute] = useState('')
-    const [searchTerm, setSearchTerm] = useState(null)
-    const [searchResults, setSearchResults] = useState([])
-
-    useEffect(() => {
-        if (searchTerm === null || searchTerm === '') return
-
-        setErrMsg('')
-		setIsLoading(true)
-
-        dataSearchApi(searchRoute, searchTerm)
-            .then(data => {
-				setIsLoading(false)
-				setSearchResults(data)
-			})
-            .catch(err => {
-				setIsLoading(false)
-                setSearchResults([])
-                setErrMsg(err.response?.data.error || 'Network Error')
-            })
-
-    }, [searchRoute, searchTerm])
+    const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'id': 
-                    setServerRoute('search-product-id')
-                    setSearchTerm(e.target.value)
+					setRouteWithQuery(`search-product-id/${encodeURIComponent(e.target.value)}`)
                     break
                 case 'terms': 
-                    setServerRoute('search-product-terms')
-                    setSearchTerm(e.target.value)
+					setRouteWithQuery(`search-product-includes/${encodeURIComponent(e.target.value)}`)
                     break
-                default:
+                default: setRouteWithQuery(null)
                     break
             }
         }
@@ -50,7 +24,7 @@ export default function ProductSearch() {
 	return (
         <div className="container mx-auto px-6 py-6">
 
-			<h3 className="text-black text-3xl font-medium">Buscar por:</h3>
+			<h3 className="text-black text-3xl font-medium">Buscar productos por:</h3>
 
             <div className="flex flex-wrap mt-6">
                 <SearchInput fieldName='id' placeHolder='Codigo exacto' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
@@ -59,10 +33,9 @@ export default function ProductSearch() {
 
             {isLoading && <div className="mt-6 text-center"><Spinner /></div>}
 
-            {searchResults && searchResults.length > 0 
-                ? <SearchResultsPage results={searchResults} /> 
-                : (<div className="mt-6 px-4 text-center text-red-600 font-semibold uppercase">{errMsg}</div>)
-            }
+            {searchResults && searchResults.length > 0 && <SearchResultsPage results={searchResults} />}
+
+            {errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
         </div>
 	)
 }
