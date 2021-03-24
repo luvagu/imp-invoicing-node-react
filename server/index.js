@@ -140,7 +140,7 @@ app.get('/search-client-name/:name', async (req, res) => {
 //         res.status(200).send(allProducts)
 //     } catch (error) {
 //         console.error('Error on Get path >>> /get-all-products', error)
-//         res.status(500).send({ error: 'Could not read database' })
+//         res.status(500).send({ error: 'No se pudo leer la base de datos' })
 //     }
 // })
 
