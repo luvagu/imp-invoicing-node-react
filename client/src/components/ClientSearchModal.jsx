@@ -1,45 +1,52 @@
-import { useEffect, useState } from 'react'
-import { dataSearchApi } from '../api/helpers'
+import useSearchApi from '../hooks/useSearchApi'
+
+// import { useEffect, useState } from 'react'
+// import { dataSearchApi } from '../api/helpers'
 
 import SearchModalBody from './SearchModalBody'
 import SearchModalResults from './SearchModalResults'
 
 export default function ClientSearchModal({ handleClose, handleAddClient }) {
-	const [isLoading, setIsLoading] = useState(false)
-    const [errMsg, setErrMsg] = useState('')  
-    const [searchRoute, setServerRoute] = useState('')
-    const [searchTerm, setSearchTerm] = useState(null)
-    const [searchResults, setSearchResults] = useState([])
+	// const [isLoading, setIsLoading] = useState(false)
+    // const [errMsg, setErrMsg] = useState('')  
+    // const [searchRoute, setServerRoute] = useState('')
+    // const [searchTerm, setSearchTerm] = useState(null)
+    // const [searchResults, setSearchResults] = useState([])
 
-    useEffect(() => {
-        if (searchTerm === null || searchTerm === '') return
+    // useEffect(() => {
+    //     if (searchTerm === null || searchTerm === '') return
 
-		setErrMsg('')
-		setIsLoading(true)
+	// 	setErrMsg('')
+	// 	setIsLoading(true)
 
-        dataSearchApi(searchRoute, searchTerm)
-            .then(data => {
-				setIsLoading(false)
-				setSearchResults(data)
-			})
-            .catch(err => {
-				setIsLoading(false)
-                setSearchResults([])
-                setErrMsg(err.response?.data.error || 'Network Error')
-            })
+    //     dataSearchApi(searchRoute, searchTerm)
+    //         .then(data => {
+	// 			setIsLoading(false)
+	// 			setSearchResults(data)
+	// 		})
+    //         .catch(err => {
+	// 			setIsLoading(false)
+    //             setSearchResults([])
+    //             setErrMsg(err.response?.data.error || 'Network Error')
+    //         })
+	// 	setIsLoading(false)
 
-    }, [searchRoute, searchTerm])
+    // }, [searchRoute, searchTerm])
+
+	cosnt [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleInputSearch = (e) => {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'id': 
-                    setServerRoute('search-client-id')
-                    setSearchTerm(e.target.value)
+					setRouteWithQuery(`search-client-id/${encodeURIComponent(e.target.value)}`)
+                    // setServerRoute('search-client-id')
+                    // setSearchTerm(e.target.value)
                     break
                 case 'name': 
-                    setServerRoute('search-client-name')
-                    setSearchTerm(e.target.value)
+					setRouteWithQuery(`search-client-name/${encodeURIComponent(e.target.value)}`)
+                    // setServerRoute('search-client-name')
+                    // setSearchTerm(e.target.value)
                     break
                 default:
                     break
