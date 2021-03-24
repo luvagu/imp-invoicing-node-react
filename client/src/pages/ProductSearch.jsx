@@ -1,7 +1,8 @@
 import useSearchApi from '../hooks/useSearchApi'
 
-import SearchResultsPage from '../components/SearchResultsPage'
+import ProductSearchResults from '../components/ProductSearchResults'
 import Spinner from '../components/Spinner'
+import Input from '../components/Input'
 
 export default function ProductSearch() {
     const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
@@ -27,13 +28,13 @@ export default function ProductSearch() {
 			<h3 className="text-black text-3xl font-medium">Buscar productos por:</h3>
 
             <div className="flex flex-wrap mt-6">
-                <SearchInput name='id' placeholder='Codigo exacto' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
+                <SearchInput extraClass='mb-4 md:mb-0 mr-4' name='id' placeholder='Codigo exacto' handle={handleKeyDown} />
                 <SearchInput name='includes' placeholder='Codigo o nombre parcial' handle={handleKeyDown} />
             </div>
 
             {isLoading && <div className="mt-6 text-center"><Spinner /></div>}
 
-            {searchResults && searchResults.length > 0 && <SearchResultsPage results={searchResults} />}
+            {searchResults && searchResults.length > 0 && <ProductSearchResults results={searchResults} />}
 
             {errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
         </div>
@@ -59,12 +60,12 @@ function SearchInput({ name, placeholder, extraClass = '', handle }) {
                 </svg>
             </span>
 
-            <input
-                onKeyDown={handle}
-                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full pl-10 pr-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
-                type="text"
+            <Input
+                extraClass="pl-10 pr-4"
+                type="search"
                 name={name}
                 placeholder={placeholder}
+                onKeyDown={handle}
             />
         </div>
     )
