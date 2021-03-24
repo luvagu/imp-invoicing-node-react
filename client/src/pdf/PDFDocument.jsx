@@ -4,8 +4,8 @@ import compose from './styles/compose'
 Font.register({
   family: 'Roboto',
   fonts: [
-    { src: '/fonts/roboto-400.ttf' },
-	{ src: '/fonts/roboto-700.ttf', fontWeight: 700 }
+    { src: '/fonts/Roboto-Regular.ttf' },
+	{ src: '/fonts/Roboto-Bold.ttf', fontWeight: 700 }
   ],
 })
 

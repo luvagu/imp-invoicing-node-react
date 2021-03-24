@@ -15,7 +15,7 @@ export default function ClientAddModal({ handleAddClient, closeModal, data }) {
 		e.preventDefault()
 		const { id, name, address, phone, email } = clientData
 		if (!id || !name || !address || !phone || !email) {
-			setErrorMsg('Todos los campos requeridos')
+			setErrorMsg('Todos los campos son requeridos')
 			return
 		}
 		handleAddClient(clientData)
@@ -34,26 +34,26 @@ export default function ClientAddModal({ handleAddClient, closeModal, data }) {
 			<div className="flex flex-col mb-6">
 				<div className="flex w-full">
 					<div className="w-1/3 mr-2">
-						<Input name='id' value={clientData.id} placeholder='Cedula o RUC' onChange={handleChange} />
+						<Input extraClass='mb-1 py-2 px-4' name='id' value={clientData.id} placeholder='Cedula o RUC' onChange={handleChange} />
 					</div>
 
 					<div className="w-1/3 mr-2">
-						<Input name='phone' value={clientData.phone} placeholder='Telefono' onChange={handleChange} />
+						<Input extraClass='mb-1 py-2 px-4' name='phone' value={clientData.phone} placeholder='Telefono' onChange={handleChange} />
 					</div>
 
 					<div className="w-1/3">
-						<Input type='email' name='email' value={clientData.email} placeholder='Email' onChange={handleChange} />
+						<Input extraClass='mb-1 py-2 px-4' type='email' name='email' value={clientData.email} placeholder='Email' onChange={handleChange} />
 					</div>
 				</div>
 
 				<div className="w-full">
-					<Input name='name' value={clientData.name} placeholder='Nombre o Empresa' onChange={handleChange} />
+					<Input extraClass='mb-1 py-2 px-4' name='name' value={clientData.name} placeholder='Nombre o Empresa' onChange={handleChange} />
 
-					<Input name='address' value={clientData.address} placeholder='Direccion' onChange={handleChange} />
+					<Input extraClass='mb-1 py-2 px-4' name='address' value={clientData.address} placeholder='Direccion' onChange={handleChange} />
 				</div>
 			</div>
 
-			{errorMsg && <div className="mb-6 px-4 text-center text-red-600 font-semibold uppercase">{errorMsg}</div>}
+			{errorMsg && <div className="mb-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
 
 			<div className="flex justify-end items-center">
 				{/* {isLoading && <div className="mr-4"><Spinner /></div>} */}

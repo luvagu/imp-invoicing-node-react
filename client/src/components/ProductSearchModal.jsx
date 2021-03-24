@@ -13,7 +13,7 @@ export default function ProductSearchModal({ closeModal, handleAddProduct }) {
                 case 'id': 
 					setRouteWithQuery(`search-product-id/${encodeURIComponent(e.target.value)}`)
                     break
-                case 'terms': 
+                case 'query': 
 					setRouteWithQuery(`search-product-includes/${encodeURIComponent(e.target.value)}`)
                     break
                 default: setRouteWithQuery(null)
@@ -32,8 +32,8 @@ export default function ProductSearchModal({ closeModal, handleAddProduct }) {
 			searchLabel='producto'
 			inputIdName='id'
 			inputIdPaceholder='Codigo exacto'
-			inputTermsName='terms'
-			inputTermsPaceholder='Codigo o nombre parcial'
+			inputQueryName='query'
+			inputQueryPaceholder='Codigo o nombre parcial'
 			inputsHandle={handleInputSearch}
 			closeModal={closeModal}
 			isLoading={isLoading}

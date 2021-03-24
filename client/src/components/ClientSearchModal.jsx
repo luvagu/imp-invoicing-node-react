@@ -12,7 +12,7 @@ export default function ClientSearchModal({ closeModal, handleAddClient }) {
                 case 'id': 
 					setRouteWithQuery(`search-client-id/${encodeURIComponent(e.target.value)}`)
                     break
-                case 'name': 
+                case 'query': 
 					setRouteWithQuery(`search-client-name/${encodeURIComponent(e.target.value)}`)
                     break
                 default: setRouteWithQuery(null)
@@ -31,8 +31,8 @@ export default function ClientSearchModal({ closeModal, handleAddClient }) {
 			searchLabel='cliente'
 			inputIdName='id'
 			inputIdPaceholder='Cedula o RUC'
-			inputTermsName='name'
-			inputTermsPaceholder='Nombre o Empresa'
+			inputQueryName='query'
+			inputQueryPaceholder='Nombre o Empresa'
 			inputsHandle={handleInputSearch}
 			closeModal={closeModal}
 			isLoading={isLoading}

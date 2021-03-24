@@ -1,6 +1,7 @@
+import Input from "./Input"
 import Spinner from "./Spinner"
 
-export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceholder, inputTermsName, inputTermsPaceholder, inputsHandle, closeModal, isLoading, errorMsg, children }) {
+export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceholder, inputQueryName, inputQueryPaceholder, inputsHandle, closeModal, isLoading, errorMsg, children }) {
     return (
 		<div className="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8">
 			<h2 className="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
@@ -9,11 +10,11 @@ export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceh
 
 			<div className="flex mb-6">
 				<div className="w-52 mr-2">
-					<SearchInput name={inputIdName} placeholder={inputIdPaceholder} handle={inputsHandle} />
+					<Input extraClass='mb-1 py-2 px-4' type='search' name={inputIdName} placeholder={inputIdPaceholder} onKeyDown={inputsHandle} />
 				</div>
 
 				<div className="w-full">
-					<SearchInput name={inputTermsName} placeholder={inputTermsPaceholder} handle={inputsHandle} />
+					<Input extraClass='mb-1 py-2 px-4' type='search' name={inputQueryName} placeholder={inputQueryPaceholder} onKeyDown={inputsHandle} />
 				</div>
 			</div>
 
@@ -33,17 +34,5 @@ export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceh
 				</button>
 			</div>
 		</div>
-    )
-}
-
-function SearchInput({ name, placeholder, handle }) {
-    return (
-        <input
-            className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
-            type="text"
-            name={name}
-            placeholder={placeholder}
-            onKeyDown={handle}
-        />
     )
 }
