@@ -25,8 +25,8 @@ app.get('/', (req, res) => {
 })
 
 // CRUD related routes
-app.get('/list-docs/:dir', async (req, res) => {
-    const dir = req.params.dir
+app.get('/list-docs/:folder', async (req, res) => {
+    const dir = req.params.folder
     try {
         const docsList = await helpers.listDocs(dir)
         res.status(200).send({ docsList })
@@ -98,8 +98,8 @@ app.delete('/delete-all-docs/:folder', async (req, res) => {
 })
 
 // Search DB related routes
-app.get('/search-client-id/:id', async (req, res) => {
-    const clientId = req.params.id
+app.get('/search-client-id/:query', async (req, res) => {
+    const clientId = req.params.query
 
     try {
         const clientData = await helpers.queryDB('clients_by_id')
@@ -116,8 +116,8 @@ app.get('/search-client-id/:id', async (req, res) => {
     }
 })
 
-app.get('/search-client-name/:name', async (req, res) => {
-    const clientName = req.params.name
+app.get('/search-client-name/:query', async (req, res) => {
+    const clientName = req.params.query
 
     try {
         const clientData = await helpers.queryDB('clients')
@@ -144,8 +144,8 @@ app.get('/search-client-name/:name', async (req, res) => {
 //     }
 // })
 
-app.get('/search-product-id/:id', async (req, res) => {
-    const prodId = req.params.id
+app.get('/search-product-id/:query', async (req, res) => {
+    const prodId = req.params.query
 
     try {
         const products = await helpers.queryDB('products_by_id')
@@ -162,20 +162,20 @@ app.get('/search-product-id/:id', async (req, res) => {
     }
 })
 
-app.get('/search-product-terms/:terms', async (req, res) => {
-    const terms = req.params.terms
-    const idRegx = new RegExp(`^${terms.toLowerCase()}.*`)
+app.get('/search-product-includes/:query', async (req, res) => {
+    const query = req.params.query
+    const idRegx = new RegExp(`^${query.toLowerCase()}.*`)
 
     try {
         const products = await helpers.queryDB('products')
         const parcialCodes = products.filter(({ id }) => idRegx.test(id.toLowerCase()))
-        const parcialNames = products.filter(({ name }) => name.toLowerCase().includes(terms.toLowerCase()))
-        const combinedResults = [...parcialCodes, ...parcialNames]
+        const parcialNames = products.filter(({ name }) => name.toLowerCase().includes(query.toLowerCase()))
+        const combinedResults = [ ...parcialCodes, ...parcialNames ]
 
         if (combinedResults.length) {
             res.status(200).send(combinedResults)
         } else {
-            res.status(404).send({ error: `Codigo o nombre parcial de producto no encontrado: ${terms}` })
+            res.status(404).send({ error: `Codigo o nombre parcial de producto no encontrado: ${query}` })
         }
     } catch (error) {
         console.error('Error on Get path >>> /search-product-terms/:terms', error)
