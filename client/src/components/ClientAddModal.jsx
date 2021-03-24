@@ -1,12 +1,13 @@
 import { useState } from "react"
+import Input from "./Input"
 
 export default function ClientAddModal({ handleClose, handleAddClient, data }) {
 	const [clientData, setclientData] = useState(data ? { ...data } : {})
 	const [errorMsg, setErrorMsg] = useState('')
 
-	const handleChange = (name, value) => {
+	const handleChange = (e) => {
 		const newData = { ...clientData }
-		newData[name] = value
+		newData[e.target.name] = e.target.value
 		setclientData(newData)
 	}
 
@@ -48,52 +49,57 @@ export default function ClientAddModal({ handleClose, handleAddClient, data }) {
 					<div className="flex flex-col mb-6">
                         <div className="flex w-full">
                             <div className="w-1/3 mr-2">
-                                <input
+								<Input name='id' value={clientData.id} placeholder='Cedula o RUC' onChange={handleChange} />
+                                {/* <input
                                     className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                                     type="text"
                                     placeholder="Cedula o RUC"
 									value={clientData.id || ''}
                                     onChange={(e) => handleChange('id', e.target.value)}
-                                />
+                                /> */}
                             </div>
 
                             <div className="w-1/3 mr-2">
-                                <input
+								<Input name='phone' value={clientData.phone} placeholder='Telefono' onChange={handleChange} />
+                                {/* <input
                                     className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                                     type="text"
                                     placeholder="Telefono"
 									value={clientData.phone || ''}
                                     onChange={(e) => handleChange('phone', e.target.value)}
-                                />
+                                /> */}
                             </div>
 
                             <div className="w-1/3">
-                                <input
+								<Input type='email' name='email' value={clientData.email} placeholder='Email' onChange={handleChange} />
+                                {/* <input
                                     className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                                     type="email"
                                     placeholder="Email"
 									value={clientData.email || ''}
                                     onChange={(e) => handleChange('email', e.target.value)}
-                                />
+                                /> */}
                             </div>
                         </div>
 
 						<div className="w-full">
-							<input
+							<Input name='name' value={clientData.name} placeholder='Nombre o Empresa' onChange={handleChange} />
+							{/* <input
 								className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
 								type="text"
 								placeholder="Nombre o Empresa"
 								value={clientData.name || ''}
                                 onChange={(e) => handleChange('name', e.target.value)}
-							/>
+							/> */}
 
-                            <input
+							<Input name='address' value={clientData.address} placeholder='Direccion' onChange={handleChange} />
+                            {/* <input
 								className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
 								type="text"
 								placeholder="Direccion"
 								value={clientData.address || ''}
                                 onChange={(e) => handleChange('address', e.target.value)}
-							/>
+							/> */}
 						</div>
 					</div>
 

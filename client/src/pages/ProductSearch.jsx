@@ -12,7 +12,7 @@ export default function ProductSearch() {
                 case 'id': 
 					setRouteWithQuery(`search-product-id/${encodeURIComponent(e.target.value)}`)
                     break
-                case 'terms': 
+                case 'includes': 
 					setRouteWithQuery(`search-product-includes/${encodeURIComponent(e.target.value)}`)
                     break
                 default: setRouteWithQuery(null)
@@ -27,8 +27,8 @@ export default function ProductSearch() {
 			<h3 className="text-black text-3xl font-medium">Buscar productos por:</h3>
 
             <div className="flex flex-wrap mt-6">
-                <SearchInput fieldName='id' placeHolder='Codigo exacto' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
-                <SearchInput fieldName='terms' placeHolder='Codigo o nombre parcial' handle={handleKeyDown} />
+                <SearchInput name='id' placeholder='Codigo exacto' extraClass='mb-4 md:mb-0 mr-4' handle={handleKeyDown} />
+                <SearchInput name='includes' placeholder='Codigo o nombre parcial' handle={handleKeyDown} />
             </div>
 
             {isLoading && <div className="mt-6 text-center"><Spinner /></div>}
@@ -40,7 +40,7 @@ export default function ProductSearch() {
 	)
 }
 
-function SearchInput({ fieldName, placeHolder, extraClass = '', handle }) {
+function SearchInput({ name, placeholder, extraClass = '', handle }) {
     return (
         <div className={`relative ${extraClass}`}>
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -63,8 +63,8 @@ function SearchInput({ fieldName, placeHolder, extraClass = '', handle }) {
                 onKeyDown={handle}
                 className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full pl-10 pr-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
                 type="text"
-                name={fieldName}
-                placeholder={placeHolder}
+                name={name}
+                placeholder={placeholder}
             />
         </div>
     )
