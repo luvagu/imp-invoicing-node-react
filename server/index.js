@@ -32,7 +32,7 @@ app.get('/list-docs/:dir', async (req, res) => {
         res.status(200).send({ docsList })
     } catch (error) {
         console.error('Error on Get path >>> /list-docs/:dir', error)
-        res.status(404).send({ Error: `Could not retrieve the ${dir} list` })
+        res.status(404).send({ error: `No se pudo obtener la lista de documentos` })
     }
 })
 
@@ -44,7 +44,7 @@ app.get('/get-doc/:folder/:doc', async (req, res) => {
         res.status(200).send(invoiceData)
     } catch (error) {
         console.error('Error on Get path >>> /get-doc/:folder/:doc', error)
-        res.status(404).send({ Error: 'Could not get the requested document' })
+        res.status(404).send({ error: `No se pudo obtener el documento ${fileName}` })
     }
 })
 
@@ -57,7 +57,7 @@ app.post('/create-doc/:folder', async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.error('Error on Post path >>> /create-doc/:folder', error)
-        res.status(500).send({ Error: 'Could not create document, it may already exist' })
+        res.status(500).send({ error: `No se pudo crear el documento ${fileName}, es posible que ya exista` })
     }
 })
 
@@ -70,7 +70,7 @@ app.put('/update-doc/:folder/:doc', async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.error('Error on Put path >>> /update-doc/:folder/:doc', error)
-        res.status(500).send({ Error: 'Could not update document' })
+        res.status(500).send({ error: `No se pudo actualizar el documento ${fileName}` })
     }
 })
 
@@ -81,7 +81,7 @@ app.delete('/delete-doc/:folder/:doc', async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.error('Error on Post path >>> /delete-doc/:folder/:doc', error)
-        res.status(500).send({ Error: 'Could not delete document, it may not exist' })
+        res.status(500).send({ error: `No se pudo borrar el documento ${fileName}` })
     }
 })
 
@@ -93,7 +93,7 @@ app.delete('/delete-all-docs/:folder', async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.error('Error on Post path >>> /delete-all-docs/:folder', error)
-        res.status(500).send({ Error: `Could not delete documents in ${dir}` })
+        res.status(500).send({ error: `No se pudieron borrar los documentos` })
     }
 })
 
@@ -108,11 +108,11 @@ app.get('/search-client-id/:id', async (req, res) => {
         if (client !== null) {
             res.status(200).send([client])
         } else {
-            res.status(404).send({ Error: `ID de cliente no encontrada: ${clientId}` })
+            res.status(404).send({ error: `ID de cliente no encontrada: ${clientId}` })
         }
     } catch (error) {
         console.error('Error on Get path >>> /search-client-id/:id', error)
-        res.status(500).send({ Error: 'Could not read database' })
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
 
@@ -126,11 +126,11 @@ app.get('/search-client-name/:name', async (req, res) => {
         if (clients.length) {
             res.status(200).send(clients)
         } else {
-            res.status(404).send({ Error: `Nombre de cliente no encontrado: ${clientName}` })
+            res.status(404).send({ error: `Nombre de cliente no encontrado: ${clientName}` })
         }
     } catch (error) {
         console.error('Error on Get path >>> /search-client-name/:name', error)
-        res.status(500).send({ Error: 'Could not read database' })
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
 
@@ -140,7 +140,7 @@ app.get('/search-client-name/:name', async (req, res) => {
 //         res.status(200).send(allProducts)
 //     } catch (error) {
 //         console.error('Error on Get path >>> /get-all-products', error)
-//         res.status(500).send({ Error: 'Could not read database' })
+//         res.status(500).send({ error: 'Could not read database' })
 //     }
 // })
 
@@ -154,11 +154,11 @@ app.get('/search-product-id/:id', async (req, res) => {
         if (product !== null) {
             res.status(200).send([product])
         } else {
-            res.status(404).send({ Error: `Codigo exacto de producto no encontrado: ${prodId}` })
+            res.status(404).send({ error: `Codigo exacto de producto no encontrado: ${prodId}` })
         }
     } catch (error) {
         console.error('Error on Get path >>> /search-product-id/:id', error)
-        res.status(500).send({ Error: 'Could not read database' })
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
 
@@ -175,11 +175,11 @@ app.get('/search-product-terms/:terms', async (req, res) => {
         if (combinedResults.length) {
             res.status(200).send(combinedResults)
         } else {
-            res.status(404).send({ Error: `Codigo o nombre parcial de producto no encontrado: ${terms}` })
+            res.status(404).send({ error: `Codigo o nombre parcial de producto no encontrado: ${terms}` })
         }
     } catch (error) {
         console.error('Error on Get path >>> /search-product-terms/:terms', error)
-        res.status(500).send({ Error: 'Could not read database' })
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
 
