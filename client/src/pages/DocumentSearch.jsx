@@ -13,6 +13,7 @@ export default function DocumentSearch() {
     const handleChange = (e) => {
         setRouteFolder(e.target.value)
         setIsRequired(false)
+        console.log(e.target.value);
     }
 
     const handleKeyDown = (e) => {
@@ -24,7 +25,7 @@ export default function DocumentSearch() {
 
             switch (e.target.value) {
                 case '*': 
-					setRouteWithQuery(`list-docs/${routeFolder}}`)
+					setRouteWithQuery(`list-docs/${routeFolder}`)
                     break
                 default: setRouteWithQuery(`get-doc/${routeFolder}/${(e.target.value)}`)
                     break

@@ -40,6 +40,7 @@ helpers.readDoc = async (dir, fileName) => {
 helpers.creteDoc = async (dir, fileData) => {
     const fileName = await getNextDocNum(dir)
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
+    fileData.docNum = fileName
     await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
     return { message: `Documento No. ${fileName} creado!`, docNum: fileName }
@@ -62,6 +63,23 @@ helpers.listDocs = async (dir) => {
     return trimmedFileNames
 }
 
+helpers.listDocsExtended = async (dir) => {
+    const fileNames = await fs.readdir(baseDir+dir+'/')
+    
+    if (fileNames.length) {
+        const docsSummary = []
+
+        for (const fileName of fileNames) {
+            const { docNum, docDate, docTotal, clientData: { name } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName, 'utf8'))
+            docsSummary.push({ docNum, docDate, docTotal, name })
+        }
+
+        return docsSummary
+    }
+
+    return []
+}
+
 helpers.deleteDoc = async (dir, fileName) => {
     await fs.unlink(baseDir+dir+'/'+fileName+'.json')
     return { message: `Documento No. ${fileName} borrado!` }
@@ -75,8 +93,8 @@ helpers.deleteAllDocs = async (dir) => {
     if (!files.length) return { message: 'Nada para borrar, la carpeta esta vacia' }
 
     let deletedFiles = 0
-    for await (const file of files) {
-        fs.unlink(baseDir+dir+'/'+file)
+    for (const file of files) {
+        await fs.unlink(baseDir+dir+'/'+file)
         deletedFiles++
     }
     

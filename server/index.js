@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 app.get('/list-docs/:folder', async (req, res) => {
     const dir = req.params.folder
     try {
-        const docsList = await helpers.listDocs(dir)
-        res.status(200).send({ docsList })
+        const docsList = await helpers.listDocsExtended(dir)
+        res.status(200).send(docsList)
     } catch (error) {
         console.error('Error on Get path >>> /list-docs/:dir', error)
         res.status(404).send({ error: `No se pudo obtener la lista de documentos` })
