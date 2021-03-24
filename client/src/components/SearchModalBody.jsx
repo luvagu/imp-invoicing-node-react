@@ -34,7 +34,7 @@ export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceh
 
 					{isLoading && <div className="m-0 text-center"><Spinner /></div>}
 
-					{errorMsg && <div className="m-0 px-4 text-center text-red-600 font-semibold uppercase">{errorMsg}</div>}
+					{errorMsg && <div className="m-0 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
 
 					{children}
 
