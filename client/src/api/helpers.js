@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const dataSearchApi = async (searchRouteTerm) => {
-    const { data } = await axios.get(`http://localhost:5000/${searchRouteTerm}`)
+export const dataSearchApi = async (searchRouteWithQuery) => {
+    const { data } = await axios.get(`http://localhost:5000/${searchRouteWithQuery}`)
     return data
 }
 

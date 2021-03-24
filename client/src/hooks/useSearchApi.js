@@ -5,7 +5,7 @@ const useSearchApi = () => {
 	const [errorMsg, setErrorMsg] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
 	const [searchResults, setSearchResults] = useState([])
-	const [searchRouteTerm, setSearchRouteTerm] = useState(null)
+	const [searchRouteWithQuery, setSearchRouteWithQuery] = useState(null)
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -13,7 +13,7 @@ const useSearchApi = () => {
 			setIsLoading(true)
 
 			try {
-				const results = await dataSearchApi(searchRouteTerm)
+				const results = await dataSearchApi(searchRouteWithQuery)
 				setSearchResults(results)
 			} catch (error) {
 				setSearchResults([])
@@ -24,9 +24,9 @@ const useSearchApi = () => {
 		}
 
 		fetchData()
-	}, [searchRouteTerm])
+	}, [searchRouteWithQuery])
 
-	return [{ searchResults, isLoading, errorMsg }, setSearchRouteTerm]
+	return [{ searchResults, isLoading, errorMsg }, setSearchRouteWithQuery]
 }
 
 export default useSearchApi
