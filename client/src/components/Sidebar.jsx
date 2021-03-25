@@ -23,6 +23,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
 				<nav className="mt-10">
                     <SidebarLink close={close} to='/' label='Panel' icon='homeIcon' active={true} />
+                    <SidebarLink close={close} to='/nuevo-egreso' label='Egreso' icon='addIcon' />
                     <SidebarLink close={close} to='/nueva-factura' label='Factura' icon='addIcon' />
                     <SidebarLink close={close} to='/nueva-proforma' label='Proforma' icon='addIcon' />
                     <SidebarLink close={close} to='/buscar-documentos' label='Buscar Documentos' icon='searchIcon' />

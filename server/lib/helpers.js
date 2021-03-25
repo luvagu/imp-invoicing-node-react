@@ -54,14 +54,14 @@ helpers.updateDoc = async (dir, fileName, fileData) => {
     return { message: `Documento No. ${fileName} actualizado!` }
 }
 
-helpers.listDocs = async (dir) => {
-    const data = await fs.readdir(baseDir+dir+'/')
-    const trimmedFileNames = []
-    data.forEach(fileName => {
-        trimmedFileNames.push(fileName.replace('.json', ''))
-    })
-    return trimmedFileNames
-}
+// helpers.listDocs = async (dir) => {
+//     const data = await fs.readdir(baseDir+dir+'/')
+//     const trimmedFileNames = []
+//     data.forEach(fileName => {
+//         trimmedFileNames.push(fileName.replace('.json', ''))
+//     })
+//     return trimmedFileNames
+// }
 
 helpers.listDocsExtended = async (dir) => {
     const fileNames = await fs.readdir(baseDir+dir+'/')

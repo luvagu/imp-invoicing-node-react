@@ -23,10 +23,12 @@ function App() {
 					<main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
 						<Switch>
 							<Route exact path="/" component={Dashboard} />
+							<Route path="/nuevo-egreso" render={() => 
+								<ProformaInvoice key={Date.now().toString()} docType='Egreso' apiFolder='egresos' />} />
 							<Route path="/nueva-factura" render={() => 
-								<ProformaInvoice key={Date.now().toString()} docType='Factura' apiFolder='invoices' />} />
+								<ProformaInvoice key={Date.now().toString()} docType='Factura' apiFolder='facturas' />} />
 							<Route path="/nueva-proforma" render={() => 
-								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='quotes' />} />
+								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' />} />
 							<Route path="/buscar-documentos" component={DocumentSearch} />
 							<Route path="/buscar-productos" component={ProductSearch} />
 							<Route path="/ver-documento/:type/:num" component={Test} />
