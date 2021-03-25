@@ -55,7 +55,7 @@ export default function DocumentSearch() {
 
             {isLoading && <div className="mt-6 text-center"><Spinner /></div>}
 
-            {searchResults && searchResults.length > 0 && <DocumentSearchResults results={searchResults} />}
+            {searchResults && searchResults.length > 0 && <DocumentSearchResults results={searchResults} routeFolder={routeFolder} />}
 
             {errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
         </div>

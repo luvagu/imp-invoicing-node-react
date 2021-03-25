@@ -41,7 +41,7 @@ app.get('/get-doc/:folder/:doc', async (req, res) => {
 
     try {
         const invoiceData = await helpers.readDoc(dir, fileName)
-        res.status(200).send(invoiceData)
+        res.status(200).send([invoiceData])
     } catch (error) {
         console.error('Error on Get path >>> /get-doc/:folder/:doc', error)
         res.status(404).send({ error: `No se pudo obtener el documento ${fileName}` })
