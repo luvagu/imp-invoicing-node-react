@@ -176,7 +176,6 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
 
         try {
             const response = await createDocApi(apiFolder, docData)
-            console.log(response)
             const { docNum } = response
             setDocData({ ...docData, docNum })
             setIsDocSaved(true)
@@ -203,7 +202,6 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
 
         try {
             const response = await updateDocApi(apiFolder, docData.docNum, docData)
-            console.log(response)
             setIsDocUpdating(false)
             setIsEditing(false)
             setSuccessMsg(response.message)
@@ -250,7 +248,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
         setIsDocSaved(true)
         setIsEditing(false)
     }, [docDataReceived])
-    
+
     return (
         <div className="container mx-auto px-6 py-6">
             {/* Promt the user in case of unsaved data */}

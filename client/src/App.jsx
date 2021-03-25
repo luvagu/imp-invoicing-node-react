@@ -8,7 +8,7 @@ import Dashboard from './pages/Dashboard'
 import ProformaInvoice from './pages/ProformaInvoice'
 import DocumentSearch from './pages/DocumentSearch'
 import ProductSearch from './pages/ProductSearch'
-import Test from './pages/Test'
+import DocumentView from './pages/DocumentView'
 
 function App() {
 	// Sidebar state close/open
@@ -31,7 +31,7 @@ function App() {
 								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' />} />
 							<Route path="/buscar-documentos" component={DocumentSearch} />
 							<Route path="/buscar-productos" component={ProductSearch} />
-							<Route path="/ver-documento/:folder/:doc" component={Test} />
+							<Route path="/ver-documento/:folder/:doc" component={DocumentView} />
 						</Switch>
 					</main>
 				</div>
