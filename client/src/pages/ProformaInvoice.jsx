@@ -6,9 +6,9 @@ import { ReactComponent as Logo } from '../assets/imp-logo.svg'
 
 import { initialDocInfo, paymentMethods } from '../data/initialData'
 
-// import SaveDocBtn from '../components/SaveDocBtn'
 import DocActionsBtn from '../components/DocActionsBtn'
 import DownloadBtn from '../pdf/DownloadBtn'
+import Input from '../components/Input'
 
 import Modal from '../components/Modal'
 import ClientAddModal from '../components/ClientAddModal'
@@ -16,9 +16,8 @@ import ClientSearchModal from '../components/ClientSearchModal'
 import ProductSearchModal from '../components/ProductSearchModal'
 import Spinner from '../components/Spinner'
 import BlockEditingLayer from '../components/BlockEditingLayer'
-import Input from '../components/Input'
 
-export default function ProformaInvoice({ docType, apiFolder }) {
+export default function ProformaInvoice({ docType, apiFolder, docDataReceived = null }) {
     const [errorMsg, setErrorMsg] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -27,9 +26,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
     const [isDocUpdating, setIsDocUpdating] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [modalVersion, setModalVersion] = useState('')
-    const [docData, setDocData] = useState({ ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC') })
-
-    const docTaxRate = initialDocInfo.docTaxRate
+    const [docData, setDocData] = useState(docDataReceived ? { ...docDataReceived } : { ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC') })
 
     const handleShowModal = (version) => {
         setShowModal(true)
@@ -69,7 +66,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         const discountTotal = productsList.reduce((acc, { quantity, price, discountRate }) =>(acc += (parseFloat(price) * parseFloat(quantity) * parseFloat(discountRate)) / 100), 0)
         const docDiscount = formatTotals(discountTotal)
 
-        const taxAmount = subTotal * (parseFloat(docTaxRate) / 100)
+        const taxAmount = subTotal * (parseFloat(docData.docTaxRate) / 100)
         const docTaxAmount = formatTotals(taxAmount)
 
         const docTotal = formatTotals(subTotal + taxAmount)
@@ -248,6 +245,12 @@ export default function ProformaInvoice({ docType, apiFolder }) {
         return () => clearTimeout(timeout)
     }, [successMsg])
 
+    useEffect(() => {
+        if (docDataReceived === null) return
+        setIsDocSaved(true)
+        setIsEditing(false)
+    }, [docDataReceived])
+    
     return (
         <div className="container mx-auto px-6 py-6">
             {/* Promt the user in case of unsaved data */}
@@ -269,7 +272,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                     {isDocUpdating && isDocSaved && !isLoading && <DocActionsBtn action='update' handle={handleUpdate} title='Actualizar' color='blue' />}
                     {(isDocSaved && !isDocUpdating) && !isLoading && (
                         <>
-                            <DocActionsBtn action='link' title={`Nueva ${docType}`} />
+                            {!docDataReceived && <DocActionsBtn action='link' title={`Nuevo Documento ${docType}`} />}
                             <DocActionsBtn action='edit' handle={handleEdit} title='Editar' color='yellow' />
                             <DownloadBtn data={{ ...docData }} />
                         </>
@@ -324,6 +327,7 @@ export default function ProformaInvoice({ docType, apiFolder }) {
                         <select 
                             className="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500"
                             onChange={(e) => handleChange('docPaymentMethod', e.target.value)}
+                            value={docData.docPaymentMethod}
                         >
                             <option>-</option>
                             {paymentMethods && paymentMethods.length > 0 && paymentMethods.map((option, idx) => (

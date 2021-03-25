@@ -10,22 +10,28 @@ const useSearchApi = () => {
 	useEffect(() => {
 		if (searchRouteWithQuery === null || searchRouteWithQuery === '') return
 
+		let didCancel = false
+
 		const fetchData = async () => {
 			setErrorMsg('')
 			setIsLoading(true)
 
 			try {
 				const results = await dataSearchApi(searchRouteWithQuery)
-				setSearchResults(results)
+				if (!didCancel) setSearchResults(results)
 			} catch (error) {
-				setSearchResults(null)
-				setErrorMsg(error.response?.data.error || 'Network Error')
+				if (!didCancel) {
+					setSearchResults(null)
+					setErrorMsg(error.response?.data.error || 'Network Error')
+				}
 			}
 
 			setIsLoading(false)
 		}
 
 		fetchData()
+
+		return () => didCancel = true
 	}, [searchRouteWithQuery])
 
 	return [{ searchResults, isLoading, errorMsg }, setSearchRouteWithQuery]
