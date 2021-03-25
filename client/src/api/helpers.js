@@ -6,12 +6,12 @@ import axios from 'axios'
  */
 
 /**
- * GET API routes with required 'query, folder & doc' param
+ * GET API routes with required 'query, folder & doc' params
  * /search-client-id/:query
  * /search-client-name/:query
  * /search-product-includes/:query
  * /search-product-id/:query
- * /list-docs/:folder
+ * /list-docs/:folder/:doc? (optinal 'doc' param)
  * /get-doc/:folder/:doc
  */
 
