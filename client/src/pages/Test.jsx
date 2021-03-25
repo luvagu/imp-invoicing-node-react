@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { dataSearchApi } from '../api/helpers'
+import Spinner from '../components/Spinner'
 
 import ProformaInvoice from './ProformaInvoice'
 
@@ -30,5 +31,10 @@ export default function Test() {
         return () => didCancel = true
     }, [folder, doc])
 
-    return data ? <ProformaInvoice /> : <h1>{errorMsg}</h1>
+    return data ? <ProformaInvoice /> : (
+        <>
+            <Spinner />
+            <h1>{errorMsg}</h1>
+        </>
+    )
 }

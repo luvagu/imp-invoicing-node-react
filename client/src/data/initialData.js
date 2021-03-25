@@ -64,5 +64,5 @@ export const paymentMethods = [
 	'Deposito y Retencion',
 	'Credito',
 	'Credito y Retencion',
-	'Otra',
+	'Condiciones en notas',
 ]

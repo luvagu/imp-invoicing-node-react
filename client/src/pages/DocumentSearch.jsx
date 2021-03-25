@@ -13,7 +13,6 @@ export default function DocumentSearch() {
     const handleChange = (e) => {
         setRouteFolder(e.target.value)
         setIsRequired(false)
-        console.log(e.target.value);
     }
 
     const handleKeyDown = (e) => {

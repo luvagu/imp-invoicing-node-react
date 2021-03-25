@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom'
 
 export default function Header({ sidebarOpen, setSidebarOpen }) {
     const location = useLocation()
-
+	
     let headerTitle
 
     switch (location.pathname) {
@@ -16,9 +16,13 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
             break
         case '/buscar-productos': headerTitle = 'Buscar Productos'
             break
+		case '/ver-documento': headerTitle = 'Ver Documento'
+            break
         default: headerTitle = 'Panel'
             break
     }
+
+	if (location.pathname.includes('/ver-documento')) headerTitle = 'Ver Documento'
 
     return (
 		<header className="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-700">

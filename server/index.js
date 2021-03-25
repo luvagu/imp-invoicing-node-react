@@ -33,7 +33,7 @@ app.get('/list-docs/:folder/:doc?', async (req, res) => {
         if (docsList.length) {
             res.status(200).send(docsList)
         } else {
-            res.status(404).send('No hay documentos para mostrar')
+            res.status(404).send({ error: 'No hay documentos para mostrar' })
         }
     } catch (error) {
         console.error('Error on Get path >>> /list-docs/:folder/:doc?', error)
