@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import ProformaInvoice from './pages/ProformaInvoice'
 import DocumentSearch from './pages/DocumentSearch'
 import ProductSearch from './pages/ProductSearch'
+import Test from './pages/Test'
 
 function App() {
 	// Sidebar state close/open
@@ -28,6 +29,7 @@ function App() {
 								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='quotes' />} />
 							<Route path="/buscar-documentos" component={DocumentSearch} />
 							<Route path="/buscar-productos" component={ProductSearch} />
+							<Route path="/ver-documento/:type/:num" component={Test} />
 						</Switch>
 					</main>
 				</div>

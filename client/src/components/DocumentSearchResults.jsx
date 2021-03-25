@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 export default function DocumentSearchResults({ results, routeFolder }) {
     const history = useHistory()
     const handleOnClick = (param) => {
-        history.push(`/${routeFolder}/${param}`)
+        history.push(`/ver-documento/${routeFolder}/${param}`)
     }
 
     return (
