@@ -63,9 +63,16 @@ helpers.updateDoc = async (dir, fileName, fileData) => {
 //     return trimmedFileNames
 // }
 
-helpers.listDocsExtended = async (dir) => {
+helpers.listDocsExtended = async (dir, fileName) => {
+    // Return a single file when fileName is receiveed
+    if (fileName !== undefined && fileName.trim().length > 0) {
+        const { docNum, docDate, docTotal, clientData: { name } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName+'.json', 'utf8'))
+        return [{ docNum, docDate, docTotal, name }]
+    }
+
+    // Otherwise read dir and loop through each file
     const fileNames = await fs.readdir(baseDir+dir+'/')
-    
+
     if (fileNames.length) {
         const docsSummary = []
 

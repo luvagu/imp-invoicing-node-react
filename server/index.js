@@ -25,14 +25,19 @@ app.get('/', (req, res) => {
 })
 
 // CRUD related routes
-app.get('/list-docs/:folder', async (req, res) => {
-    const dir = req.params.folder
+app.get('/list-docs/:folder/:doc?', async (req, res) => {
+    const { folder:dir, doc:fileName } = req.params
+
     try {
-        const docsList = await helpers.listDocsExtended(dir)
-        res.status(200).send(docsList)
+        const docsList = await helpers.listDocsExtended(dir, fileName)
+        if (docsList.length) {
+            res.status(200).send(docsList)
+        } else {
+            res.status(404).send('No hay documentos para mostrar')
+        }
     } catch (error) {
-        console.error('Error on Get path >>> /list-docs/:dir', error)
-        res.status(404).send({ error: `No se pudo obtener la lista de documentos` })
+        console.error('Error on Get path >>> /list-docs/:folder/:doc?', error)
+        res.status(404).send({ error: `No se pudo obtener el documento o lista de documentos` })
     }
 })
 
