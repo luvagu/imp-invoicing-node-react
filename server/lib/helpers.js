@@ -40,6 +40,7 @@ helpers.readDoc = async (dir, fileName) => {
 helpers.creteDoc = async (dir, fileData) => {
     const fileName = await getNextDocNum(dir)
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
+    // The client at first doesn't have the docNum/fileName so we update the docNum before write
     fileData.docNum = fileName
     await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
@@ -53,15 +54,6 @@ helpers.updateDoc = async (dir, fileName, fileData) => {
     await fileDescriptor.close()
     return { message: `Documento No. ${fileName} actualizado!` }
 }
-
-// helpers.listDocs = async (dir) => {
-//     const data = await fs.readdir(baseDir+dir+'/')
-//     const trimmedFileNames = []
-//     data.forEach(fileName => {
-//         trimmedFileNames.push(fileName.replace('.json', ''))
-//     })
-//     return trimmedFileNames
-// }
 
 helpers.listDocsExtended = async (dir, fileName) => {
     // Return a single file when fileName is receiveed
