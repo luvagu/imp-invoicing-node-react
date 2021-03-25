@@ -1,10 +1,13 @@
 import { useLocation } from 'react-router-dom'
 
 export default function Header({ sidebarOpen, setSidebarOpen }) {
-    const location = useLocation().pathname
+    const location = useLocation()
+
     let headerTitle
-    
-    switch (location) {
+
+    switch (location.pathname) {
+		case '/nuevo-egreso': headerTitle = 'Nuevo Egreso'
+            break
         case '/nueva-factura': headerTitle = 'Nueva Factura'
             break
         case '/nueva-proforma': headerTitle = 'Nueva Proforma'

@@ -45,8 +45,9 @@ export default function DocumentSearch() {
                         onChange={handleChange}
                     >
                         <option>Tipo de documento</option>
-                        <option value="invoices">Facturas</option>
-                        <option value="quotes">Proformas</option>
+                        <option value="egresos">Egresos</option>
+                        <option value="facturas">Facturas</option>
+                        <option value="proformas">Proformas</option>
                     </select>
                 </div>
                 

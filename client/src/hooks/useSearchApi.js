@@ -4,7 +4,7 @@ import { dataSearchApi } from '../api/helpers'
 const useSearchApi = () => {
 	const [errorMsg, setErrorMsg] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
-	const [searchResults, setSearchResults] = useState([])
+	const [searchResults, setSearchResults] = useState(null)
 	const [searchRouteWithQuery, setSearchRouteWithQuery] = useState(null)
 
 	useEffect(() => {
@@ -18,7 +18,7 @@ const useSearchApi = () => {
 				const results = await dataSearchApi(searchRouteWithQuery)
 				setSearchResults(results)
 			} catch (error) {
-				setSearchResults([])
+				setSearchResults(null)
 				setErrorMsg(error.response?.data.error || 'Network Error')
 			}
 

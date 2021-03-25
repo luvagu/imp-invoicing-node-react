@@ -31,7 +31,7 @@ function App() {
 								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' />} />
 							<Route path="/buscar-documentos" component={DocumentSearch} />
 							<Route path="/buscar-productos" component={ProductSearch} />
-							<Route path="/ver-documento/:type/:num" component={Test} />
+							<Route path="/ver-documento/:folder/:doc" component={Test} />
 						</Switch>
 					</main>
 				</div>
