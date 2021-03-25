@@ -15,9 +15,9 @@ export default function DocumentView() {
     }, [folder, doc, setRouteWithQuery])
 
     return docData ? <ProformaInvoice docType={docData.docType} apiFolder={folder} docDataReceived={docData}  /> : (
-        <>
+        <div className="container mx-auto px-6 py-6">
             {isLoading && <div className="mt-8 px-4 text-center"><Spinner /></div>}
             {errorMsg && <div className="mt-8 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
-        </>
+        </div>
     )
 }
