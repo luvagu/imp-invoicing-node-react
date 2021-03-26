@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+let API_URL = 'http://localhost:5000'
+
+if (process.env.NODE_ENV === 'production') API_URL = 'http://192.168.1.102:5000'
+
 /**
  * Currently available folder names [egresos, facturas, proformas]
  * any other folder names will get a 404
@@ -16,7 +20,7 @@ import axios from 'axios'
  */
 
 export const dataSearchApi = async (searchRouteWithQuery) => {
-    const { data } = await axios.get(`http://localhost:5000/${searchRouteWithQuery}`)
+    const { data } = await axios.get(`${API_URL}${searchRouteWithQuery}`)
     return data
 }
 
@@ -26,7 +30,7 @@ export const dataSearchApi = async (searchRouteWithQuery) => {
  */
 
 export const createDocApi = async (apiFolder, docData) => {
-    const { data } = await axios.post(`http://localhost:5000/create-doc/${apiFolder}`, docData)
+    const { data } = await axios.post(`${API_URL}/create-doc/${apiFolder}`, docData)
     return data
 }
 
@@ -36,6 +40,6 @@ export const createDocApi = async (apiFolder, docData) => {
  */
 
 export const updateDocApi = async (apiFolder, docNum, docData) => {
-    const { data } = await axios.put(`http://localhost:5000/update-doc/${apiFolder}/${docNum}`, docData)
+    const { data } = await axios.put(`${API_URL}/update-doc/${apiFolder}/${docNum}`, docData)
     return data
 }
