@@ -12,7 +12,7 @@ export default function DocumentSearchResults({ results, routeFolder }) {
                 <thead>
                     <tr className="border-b border-gray-300 text-sm text-gray-800 font-bold uppercase">
                         <th className="p-4 text-left tracking-wider">No.</th>
-                        <th className="p-4 text-left tracking-wider">Fecha</th>
+                        <th className="p-4 text-left tracking-wider hidden md:table-cell">Fecha</th>
                         <th className="p-4 text-left tracking-wider">Cliente</th>
                         <th className="p-4 text-left tracking-wider hidden lg:table-cell">Total</th>
                     </tr>
@@ -27,8 +27,8 @@ export default function DocumentSearchResults({ results, routeFolder }) {
                         title="Ver documento"
                     >
                         <td className="p-4">{res.docNum}</td>
-                        <td className="p-4">{res.docDate}</td>
-                        <td className="p-4 whitespace-nowrap">{res.name || res.clientData?.name}</td>
+                        <td className="p-4 hidden md:table-cell">{res.docDate}</td>
+                        <td className="p-4">{res.name || res.clientData?.name}</td>
                         <td className="p-4 hidden lg:table-cell">$ {res.docTotal}</td>
                     </tr>
                 ))}

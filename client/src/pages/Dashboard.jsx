@@ -2,7 +2,7 @@ import { SvgDocText, SvgGrid, SvgUsers } from '../icons'
 
 export default function Home() {
 	return (
-		<div className="container mx-auto px-6 py-6">
+		<div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
 
 			<h3 className="text-black text-3xl font-medium">Resumen</h3>
 

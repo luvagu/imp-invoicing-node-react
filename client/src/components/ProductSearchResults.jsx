@@ -7,7 +7,7 @@ export default function ProductSearchResults({ results }) {
                         <th className="p-4 text-left tracking-wider">Codigo</th>
                         <th className="p-4 text-left tracking-wider">Nombre</th>
                         <th className="p-4 text-left tracking-wider">Precio</th>
-                        <th className="p-4 text-left tracking-wider hidden lg:table-cell">Stock</th>
+                        <th className="p-4 text-left tracking-wider hidden md:table-cell">Stock</th>
                         <th className="p-4 text-left tracking-wider hidden lg:table-cell">Costo</th>
                         <th className="p-4 text-left tracking-wider hidden lg:table-cell whitespace-nowrap">Ult. Costo</th>
                     </tr>
@@ -19,7 +19,7 @@ export default function ProductSearchResults({ results }) {
                         <td className="p-4">{res.id}</td>
                         <td className="p-4">{res.name}</td>
                         <td className="p-4 whitespace-nowrap">$ {res.price}</td>
-                        <td className="p-4 hidden lg:table-cell">{res.stock}</td>
+                        <td className="p-4 hidden md:table-cell">{res.stock}</td>
                         <td className="p-4 hidden lg:table-cell">{res.cost}</td>
                         <td className="p-4 hidden lg:table-cell">{res.lastCost}</td>
                     </tr>

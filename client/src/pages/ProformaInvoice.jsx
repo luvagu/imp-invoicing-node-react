@@ -251,7 +251,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
     }, [docDataReceived])
 
     return (
-        <div className="container mx-auto px-6 py-6">
+        <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
             {/* Promt the user in case of unsaved data */}
             <Prompt
                 when={isEditing}
@@ -261,11 +261,11 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
             {/* Page header and action buttons */}
             <div className="flex justify-between mb-8">
                 <div className="flex items-center justify-start">
-                    <Logo className="h-10 w-auto border border-yellow-200 rounded" />
+                    <Logo className="h-7 sm:h-10 w-auto border border-yellow-200 rounded" />
                 </div>
                 
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold tracking-wider uppercase">{docData.docType}</h2>
+                    <h2 className="text-base sm:text-xl lg:text-2xl font-bold tracking-wider uppercase">{docData.docType}</h2>
 
                     {!isDocSaved && !isLoading && <DocActionsBtn action='save' handle={handleSave} title='Guardar' color='indigo' />}
                     {isDocUpdating && isDocSaved && !isLoading && <DocActionsBtn action='update' handle={handleUpdate} title='Actualizar' color='blue' />}
@@ -338,24 +338,24 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                 
                 {/* Products list header */}
                 <div className="flex items-start -mx-1 py-2 border-b">
-                    <div className="px-1 w-1/2">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">Descripcion</p>
+                    <div className="px-1 w-32 sm:w-1/2 tracking-wide">
+                        <p className="text-gray-800 uppercase text-sm font-bold">Descripcion</p>
                     </div>
 
-                    <div className="px-1 w-32 text-right">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">Cantidad</p>
+                    <div className="px-1 w-32 text-right tracking-wide">
+                        <p className="text-gray-800 uppercase text-sm font-bold">Cantidad</p>
                     </div>
 
-                    <div className="px-1 w-32 text-right">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">P.Unit</p>
+                    <div className="px-1 w-32 text-right tracking-wide hidden lg:block">
+                        <p className="text-gray-800 uppercase text-sm font-bold">P.Unit</p>
                     </div>
 
-                    <div className="px-1 w-32 text-right">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">Dcto. %</p>
+                    <div className="px-1 w-32 text-right tracking-wide hidden lg:block">
+                        <p className="text-gray-800 uppercase text-sm font-bold">Dcto. %</p>
                     </div>
 
-                    <div className="px-1 w-32 text-right">
-                        <p className="text-gray-800 uppercase tracking-wide text-sm font-bold">P.Total</p>
+                    <div className="px-1 w-32 text-right tracking-wide">
+                        <p className="text-gray-800 uppercase text-sm font-bold">P.Total</p>
                     </div>
 
                     <div className="px-1 w-10"> </div>
@@ -364,7 +364,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                 {/* Products list */}
                 {docData.productsList && docData.productsList.length > 0 && docData.productsList.map((product, idx) => (
                     <div key={idx} className="flex items-end -mx-1 py-2 border-b">
-                        <div className="px-1 w-1/2">
+                        <div className="px-1 w-32 sm:w-1/2">
                             <span className="font-medium text-sm text-gray-500">{product.id}</span>
                             <Input extraClass='py-1 px-2 text-sm' name='name' value={product.name} placeholder='Nombre' onChange={(e) => handleChangeProduct(idx, 'name', e.target.value)} />
                         </div>
@@ -373,11 +373,11 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                             <Input extraClass='py-1 px-2 text-right text-sm' name='quantity' value={product.quantity} placeholder='Cantidad' onChange={(e) => handleChangeProduct(idx, 'quantity', e.target.value)} />
                         </div>
 
-                        <div className="px-1 w-32">
+                        <div className="px-1 w-32 hidden lg:block">
                             <Input extraClass='py-1 px-2 text-right text-sm' name='price' value={product.price} placeholder='Precio' onChange={(e) => handleChangeProduct(idx, 'price', e.target.value)} />
                         </div>
 
-                        <div className="px-1 w-32">
+                        <div className="px-1 w-32 hidden lg:block">
                             <Input extraClass='py-1 px-2 text-right text-sm' name='discountRate' value={product.discountRate} placeholder='Descuento' onChange={(e) => handleChangeProduct(idx, 'discountRate', e.target.value)} />
                         </div>
 

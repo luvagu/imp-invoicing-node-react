@@ -37,7 +37,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
 					<SvgMenu />
 				</button>
 
-				<h3 className="uppercase text-lg text-black font-bold">{headerTitle}</h3>
+				<h3 className="uppercase text-sm sm:text-lg text-black font-bold">{headerTitle}</h3>
 			</div>
 
 			{/* Login & Logout buttons */}
