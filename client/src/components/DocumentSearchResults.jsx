@@ -22,8 +22,9 @@ export default function DocumentSearchResults({ results, routeFolder }) {
                 {results.map((res, idx) => (
                     <tr 
                         key={idx} 
-                        className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-gray-50 cursor-pointer"
+                        className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-yellow-50 cursor-pointer"
                         onClick={() => handleOnClick(res.docNum)}
+                        title="Ver documento"
                     >
                         <td className="p-4">{res.docNum}</td>
                         <td className="p-4">{res.docDate}</td>
