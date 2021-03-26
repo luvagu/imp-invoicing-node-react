@@ -11,25 +11,34 @@ const parseJsonToObject = (str) => {
     }
 }
 
-const updateSequences = async (sequences) => {
-    const fileDescriptor = await fs.open(baseDir+'db/sequences.json', 'r+')
-    await fileDescriptor.truncate()
-    await fileDescriptor.writeFile(JSON.stringify(sequences))
-    await fileDescriptor.close()
-}
-
-const getNextDocNum = async (keyName) => {
-    const sequences = parseJsonToObject(await fs.readFile(baseDir+'db/sequences.json', 'utf8'))
-    sequences[keyName] = sequences[keyName] + 1
-    await updateSequences(sequences)
-    return sequences[keyName].toString()
-}
-
 const helpers = {}
 
 helpers.queryDB = async (dbName) => {
     const data = await fs.readFile(baseDir+'db/'+dbName+'.json', 'utf8')
     return parseJsonToObject(data)
+}
+
+helpers.getNextDocNum = async (prop) => {
+    const sequences = await helpers.queryDB('sequences')
+    const nextNumber = sequences[prop] + 1
+    await helpers.updateSequences(prop, nextNumber)
+    return nextNumber.toString()
+}
+
+helpers.updateSequences = async (propToUpdate, newValue) => {
+    const sequences = await helpers.queryDB('sequences')
+    const newSequences = (propToUpdate in sequences) && typeof(newValue) === 'number' && !isNaN(newValue) ? { ...sequences, [propToUpdate]: newValue } : false
+    if (!newSequences) {
+        throw new Error(`No se pudo actualizar secuencias, nombre de propiedad no definida: ${propToUpdate} o tipo de valor invalido: ${newValue}`)
+    }
+    if (newValue <= sequences[propToUpdate]) {
+        throw new Error(`No se pudo actualizar secuencias, nuevo valor: ${newValue} debe ser mayor que el anterior: ${sequences[propToUpdate]}`)
+    }
+    const fileDescriptor = await fs.open(baseDir+'db/sequences.json', 'r+')
+    await fileDescriptor.truncate()
+    await fileDescriptor.writeFile(JSON.stringify(newSequences))
+    await fileDescriptor.close()
+    return { message: `Secuencia ${propToUpdate} actualizada!`}
 }
 
 helpers.readDoc = async (dir, fileName) => {
@@ -38,7 +47,7 @@ helpers.readDoc = async (dir, fileName) => {
 }
 
 helpers.creteDoc = async (dir, fileData) => {
-    const fileName = await getNextDocNum(dir)
+    const fileName = await helpers.getNextDocNum(dir)
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
     // The client at first doesn't have the docNum/fileName so we update the docNum before write
     fileData.docNum = fileName

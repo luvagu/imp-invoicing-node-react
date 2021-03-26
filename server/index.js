@@ -68,7 +68,7 @@ app.post('/create-doc/:folder', async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.error('Error on Post path >>> /create-doc/:folder', error)
-        res.status(500).send({ error: `No se pudo crear el documento ${fileName}, es posible que ya exista` })
+        res.status(500).send({ error: `No se pudo crear el documento, es posible que ya exista` })
     }
 })
 
@@ -91,7 +91,7 @@ app.delete('/delete-doc/:folder/:doc', async (req, res) => {
         const response = await helpers.deleteDoc(dir, fileName)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /delete-doc/:folder/:doc', error)
+        console.error('Error on Delete path >>> /delete-doc/:folder/:doc', error)
         res.status(500).send({ error: `No se pudo borrar el documento ${fileName}` })
     }
 })
@@ -109,6 +109,27 @@ app.delete('/delete-all-docs/:folder', async (req, res) => {
 })
 
 // Search DB related routes
+app.get('/doc-sequences', async (req, res) => {
+    try {
+        const sequences = await helpers.queryDB('sequences')
+        res.status(200).send(sequences)
+    } catch (error) {
+        console.log('Error on Get path >>> /doc-sequences', error)
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
+    }
+})
+
+app.put('/update-sequences/:prop/:value', async (req, res) => {
+    const { prop, value } = req.params
+    try {
+        const response = await helpers.updateSequences(prop, parseInt(value))
+        res.status(200).send(response)
+    } catch (error) {
+        console.log('Error on Put path >>> /doc-sequences/:name', error)
+        res.status(500).send({ error: error.message })
+    }
+})
+
 app.get('/search-client-id/:query', async (req, res) => {
     const clientId = req.params.query
 
