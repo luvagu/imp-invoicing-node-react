@@ -72,8 +72,9 @@ helpers.listDocsExtended = async (dir, fileName) => {
             const { docNum, docDate, docTotal, clientData: { name } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName, 'utf8'))
             docsSummary.push({ docNum, docDate, docTotal, name })
         }
+        const sortedDocs = docsSummary.sort((a, b) => b.docNum - a.docNum)
 
-        return docsSummary
+        return sortedDocs
     }
 
     return []
