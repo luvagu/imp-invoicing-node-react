@@ -24,9 +24,9 @@ export default function DocumentSearch() {
 
             switch (e.target.value) {
                 case '*': 
-					setRouteWithQuery(`list-docs/${routeFolder}`)
+					setRouteWithQuery(`/list-docs/${routeFolder}`)
                     break
-                default: setRouteWithQuery(`list-docs/${routeFolder}/${(e.target.value)}`)
+                default: setRouteWithQuery(`/list-docs/${routeFolder}/${(e.target.value)}`)
                     break
             }
         }

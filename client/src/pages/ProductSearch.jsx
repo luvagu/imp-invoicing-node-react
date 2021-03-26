@@ -11,10 +11,10 @@ export default function ProductSearch() {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'id': 
-					setRouteWithQuery(`search-product-id/${encodeURIComponent(e.target.value)}`)
+					setRouteWithQuery(`/search-product-id/${encodeURIComponent(e.target.value)}`)
                     break
                 case 'includes': 
-					setRouteWithQuery(`search-product-includes/${encodeURIComponent(e.target.value)}`)
+					setRouteWithQuery(`/search-product-includes/${encodeURIComponent(e.target.value)}`)
                     break
                 default: setRouteWithQuery(null)
                     break

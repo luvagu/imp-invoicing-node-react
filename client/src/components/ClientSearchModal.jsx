@@ -10,10 +10,10 @@ export default function ClientSearchModal({ closeModal, handleAddClient }) {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'id': 
-					setRouteWithQuery(`search-client-id/${encodeURIComponent(e.target.value)}`)
+					setRouteWithQuery(`/search-client-id/${encodeURIComponent(e.target.value)}`)
                     break
                 case 'query': 
-					setRouteWithQuery(`search-client-name/${encodeURIComponent(e.target.value)}`)
+					setRouteWithQuery(`/search-client-name/${encodeURIComponent(e.target.value)}`)
                     break
                 default: setRouteWithQuery(null)
                     break

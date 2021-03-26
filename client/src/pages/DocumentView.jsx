@@ -11,7 +11,7 @@ export default function DocumentView() {
     const [{ searchResults: docData, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     useEffect(() => {
-        setRouteWithQuery(`get-doc/${folder}/${doc}`)
+        setRouteWithQuery(`/get-doc/${folder}/${doc}`)
     }, [folder, doc, setRouteWithQuery])
 
     return docData ? <ProformaInvoice docType={docData.docType} apiFolder={folder} docDataReceived={docData}  /> : (
