@@ -1,7 +1,10 @@
 const path = require('path')
 
 const helpers = require('./lib/helpers')
-const port = process.env.PORT || 5000
+
+// IMPSRV IP 192.168.1.102
+const HOST_HTTP = process.env.NODE_ENV === 'production' ? '192.168.1.5' : 'localhost'
+const PORT = process.env.PORT || 5000
 
 const express = require('express')
 const app = express()
@@ -9,20 +12,26 @@ const app = express()
 const cors = require('cors')
 
 const compression = require('compression')
+const e = require('express')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-// export NODE_ENV=production
+//--GIT--> export NODE_ENV=production
+//--CMD--> SET NODE_ENV=production
 if (process.env.NODE_ENV === 'production') {
     app.use(compression())
     app.use(express.static(path.join(__dirname, '..', 'client/build')))
-}
 
-app.get('/', (req, res) => {
-    res.send({ welcome: 'Welcome to IMP Invoicing' })
-})
+    app.get('*', (req, res) => {
+        res.send(path.join(__dirname, '..', 'client/build', 'index.html'))
+    })
+} else {
+    app.get('/', (req, res) => {
+        res.send({ welcome: 'Welcome to IMP Invoicing API' })
+    })
+}
 
 // CRUD related routes
 app.get('/list-docs/:folder/:doc?', async (req, res) => {
@@ -188,6 +197,6 @@ app.get('/search-product-includes/:query', async (req, res) => {
     }
 })
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`App listening at http://${HOST_HTTP}:${PORT}`)
 })

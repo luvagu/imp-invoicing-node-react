@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-let API_URL = 'http://localhost:5000'
-
-if (process.env.NODE_ENV === 'production') API_URL = 'http://192.168.1.102:5000'
+// IMPSRV IP 192.168.1.102
+// SELF IP 192.168.1.5
+const API_URL = process.env.NODE_ENV === 'production' ? 'http://192.168.1.5:5000' : 'http://localhost:5000'
 
 /**
  * Currently available folder names [egresos, facturas, proformas]
