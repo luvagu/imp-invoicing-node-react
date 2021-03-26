@@ -1,8 +1,19 @@
-import Input from "./Input"
-import Spinner from "./Spinner"
+import Input from './Input'
+import Spinner from './Spinner'
 
-export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceholder, inputQueryName, inputQueryPaceholder, inputsHandle, closeModal, isLoading, errorMsg, children }) {
-    return (
+export default function SearchModalBody({
+	searchLabel,
+	inputIdName,
+	inputIdPaceholder,
+	inputQueryName,
+	inputQueryPaceholder,
+	inputsHandle,
+	closeModal,
+	isLoading,
+	errorMsg,
+	children,
+}) {
+	return (
 		<div className="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8">
 			<h2 className="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
 				Buscar {searchLabel} por:
@@ -10,17 +21,37 @@ export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceh
 
 			<div className="flex mb-6">
 				<div className="w-52 mr-2">
-					<Input extraClass='mb-1 py-2 px-4' type='search' name={inputIdName} placeholder={inputIdPaceholder} onKeyDown={inputsHandle} />
+					<Input
+						extraClass="mb-1 py-2 px-4"
+						type="search"
+						name={inputIdName}
+						placeholder={inputIdPaceholder}
+						onKeyDown={inputsHandle}
+					/>
 				</div>
 
 				<div className="w-full">
-					<Input extraClass='mb-1 py-2 px-4' type='search' name={inputQueryName} placeholder={inputQueryPaceholder} onKeyDown={inputsHandle} />
+					<Input
+						extraClass="mb-1 py-2 px-4"
+						type="search"
+						name={inputQueryName}
+						placeholder={inputQueryPaceholder}
+						onKeyDown={inputsHandle}
+					/>
 				</div>
 			</div>
 
-			{isLoading && <div className="m-0 text-center"><Spinner /></div>}
+			{isLoading && (
+				<div className="m-0 text-center">
+					<Spinner />
+				</div>
+			)}
 
-			{errorMsg && <div className="m-0 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
+			{errorMsg && (
+				<div className="m-0 px-4 text-center text-sm text-red-600 font-semibold uppercase">
+					{errorMsg}
+				</div>
+			)}
 
 			{children}
 
@@ -34,5 +65,5 @@ export default function SearchModalBody({ searchLabel, inputIdName, inputIdPaceh
 				</button>
 			</div>
 		</div>
-    )
+	)
 }

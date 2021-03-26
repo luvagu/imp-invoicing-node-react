@@ -3,6 +3,7 @@ import useSearchApi from '../hooks/useSearchApi'
 import ProductSearchResults from '../components/ProductSearchResults'
 import Spinner from '../components/Spinner'
 import Input from '../components/Input'
+import { SvgSearch } from '../icons'
 
 export default function ProductSearch() {
     const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
@@ -44,20 +45,8 @@ export default function ProductSearch() {
 function SearchInput({ name, placeholder, extraClass = '', handle }) {
     return (
         <div className={`relative ${extraClass}`}>
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <svg
-                    className="h-5 w-5 text-gray-500"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-                    <path
-                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    ></path>
-                </svg>
+            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                <SvgSearch className="h-5 w-5"/>
             </span>
 
             <Input

@@ -1,23 +1,16 @@
 const path = require('path')
-
+const express = require('express')
+const cors = require('cors')
+const compression = require('compression')
+const app = express()
 const helpers = require('./lib/helpers')
 
 // IMPSRV IP 192.168.1.102
+// SELF IP 192.168.1.5
 const HOST_HTTP = process.env.NODE_ENV === 'production' ? '192.168.1.5' : 'localhost'
 const PORT = process.env.PORT || 5000
 
-const express = require('express')
-const app = express()
-
-const cors = require('cors')
-
-const compression = require('compression')
-const e = require('express')
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cors())
-
+// Serve Client Static Dir
 //--GIT--> export NODE_ENV=production
 //--CMD--> SET NODE_ENV=production
 if (process.env.NODE_ENV === 'production') {
@@ -25,13 +18,17 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '..', 'client/build')))
 
     app.get('*', (req, res) => {
-        res.send(path.join(__dirname, '..', 'client/build', 'index.html'))
+        res.sendFile(path.join(__dirname, '..', 'client/build', 'index.html'))
     })
 } else {
     app.get('/', (req, res) => {
         res.send({ welcome: 'Welcome to IMP Invoicing API' })
     })
 }
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 // CRUD related routes
 app.get('/list-docs/:folder/:doc?', async (req, res) => {

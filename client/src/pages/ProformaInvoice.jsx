@@ -3,6 +3,7 @@ import { Prompt } from 'react-router-dom'
 import { createDocApi, updateDocApi } from '../api/helpers'
 
 import { ReactComponent as Logo } from '../assets/imp-logo.svg'
+import { SvgTrash } from '../icons'
 
 import { initialDocInfo, paymentMethods } from '../data/initialData'
 
@@ -257,7 +258,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                 message={location => `Documento sin gravar, seguro que quieres ir a (${location.pathname})?`}
             />
 
-            {/* Page header and save/print buttons */}
+            {/* Page header and action buttons */}
             <div className="flex justify-between mb-8">
                 <div className="flex items-center justify-start">
                     <Logo className="h-10 w-auto border border-yellow-200 rounded" />
@@ -290,7 +291,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                         <div className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700">
                             <label className="text-gray-800 block mb-2 font-bold text-sm uppercase">{docData.clientDetailsLabel}</label>
                             {docData.clientData.id && (
-                                <p className="block text-sm mb-2">
+                                <p className="block text-sm mb-2 break-words">
                                     {docData.clientIdLabel} {docData.clientData.id || ''}<br/>
                                     {docData.clientData.name || ''}<br/>
                                     {docData.clientData.address || ''}<br/>
@@ -387,12 +388,11 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                         <div className="px-1 w-10 text-right">
                             <button 
                                 onClick={() => handleRemoveProduct(idx)}
-                                className="text-red-500 hover:text-red-600 text-sm"
+                                className="text-red-500 hover:text-red-700 text-sm"
                                 type="button"
+                                title="Eliminar fila"
                             >
-                                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                </svg>
+                                <SvgTrash className="w-5 h-5" />
                             </button>
                         </div>
                     </div>
