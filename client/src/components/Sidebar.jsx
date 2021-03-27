@@ -1,9 +1,10 @@
+import { memo } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
 
 import { ReactComponent as Icon } from '../assets/imp-icon.svg'
 import { SvgDocAdd, SvgDocSearch, SvgHome, SvgGrid } from '../icons'
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
+export default memo(function Sidebar({ sidebarOpen, setSidebarOpen }) {
 	const close = () => {
 		setSidebarOpen(false)
 	}
@@ -33,7 +34,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 			</div>
 		</>
 	)
-}
+})
 
 // Custom router link
 function SidebarLink({ label, icon, to, active, close }) {

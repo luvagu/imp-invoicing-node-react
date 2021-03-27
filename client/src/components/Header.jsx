@@ -1,8 +1,9 @@
+import { memo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { SvgGear, SvgLogIn, SvgLogOut, SvgMenu } from '../icons'
 
-export default function Header({ sidebarOpen, setSidebarOpen }) {
+export default memo(function Header({ sidebarOpen, setSidebarOpen }) {
     const location = useLocation()
 	
     let headerTitle
@@ -56,4 +57,4 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
 			</div>
 		</header>
 	)
-}
+})
