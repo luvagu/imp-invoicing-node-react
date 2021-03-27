@@ -4,6 +4,7 @@ const cors = require('cors')
 const compression = require('compression')
 const app = express()
 const helpers = require('./lib/helpers')
+const startWorkers = require('./lib/workers')
 
 // IMPSRV IP 192.168.1.102
 // SELF IP 192.168.1.5
@@ -122,7 +123,7 @@ app.get('/doc-sequences', async (req, res) => {
 app.put('/update-sequences/:prop/:value', async (req, res) => {
     const { prop, value } = req.params
     try {
-        const response = await helpers.updateSequences(prop, parseInt(value))
+        const response = await helpers.updateSequencesProp(prop, parseInt(value))
         res.status(200).send(response)
     } catch (error) {
         console.log('Error on Put path >>> /doc-sequences/:name', error)
@@ -218,3 +219,6 @@ app.get('/search-product-includes/:query', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`App listening at http://${HOST_HTTP}:${PORT}`)
 })
+
+// Start the workers
+startWorkers()

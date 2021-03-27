@@ -11,6 +11,7 @@ const parseJsonToObject = (str) => {
     }
 }
 
+// Instantiate helpers
 const helpers = {}
 
 helpers.queryDB = async (dbName) => {
@@ -25,7 +26,7 @@ helpers.getNextDocNum = async (prop) => {
     return nextNumber.toString()
 }
 
-helpers.updateSequences = async (propToUpdate, newValue) => {
+helpers.updateSequencesProp = async (propToUpdate, newValue) => {
     const sequences = await helpers.queryDB('sequences')
     const newSequences = (propToUpdate in sequences) && typeof(newValue) === 'number' && !isNaN(newValue) ? { ...sequences, [propToUpdate]: newValue } : false
     if (!newSequences) {
@@ -39,6 +40,14 @@ helpers.updateSequences = async (propToUpdate, newValue) => {
     await fileDescriptor.writeFile(JSON.stringify(newSequences))
     await fileDescriptor.close()
     return { message: `Secuencia ${propToUpdate} actualizada!`}
+}
+
+helpers.updateStats = async (newStats) => {
+    const fileDescriptor = await fs.open(baseDir+'db/stats.json', 'r+')
+    await fileDescriptor.truncate()
+    await fileDescriptor.writeFile(JSON.stringify(newStats))
+    await fileDescriptor.close()
+    return true
 }
 
 helpers.readDoc = async (dir, fileName) => {
@@ -62,6 +71,15 @@ helpers.updateDoc = async (dir, fileName, fileData) => {
     await fileDescriptor.writeFile(JSON.stringify(fileData))
     await fileDescriptor.close()
     return { message: `Documento No. ${fileName} actualizado!` }
+}
+
+helpers.listDocs = async (dir) => {
+    const filesNames = await fs.readdir(baseDir+dir+'/')
+    const trimmedFileNames = []
+    for (const name of filesNames) {
+        trimmedFileNames.push(name.replace('.json', ''))
+    }
+    return trimmedFileNames
 }
 
 helpers.listDocsExtended = async (dir, fileName) => {
