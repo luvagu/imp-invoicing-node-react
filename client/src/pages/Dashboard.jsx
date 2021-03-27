@@ -13,7 +13,7 @@ export default function Dashboard() {
         const fetchData = async () => {
             setIsLoading(true)
             try {
-                const sequences = await dataSearchApi('/doc-sequences')
+                const sequences = await dataSearchApi('/doc-stats')
                 if (!isDone) setStats(sequences)
             } catch (error) {
                 if (!isDone) {
