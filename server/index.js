@@ -110,6 +110,16 @@ app.delete('/delete-all-docs/:folder', async (req, res) => {
 })
 
 // Search DB related routes
+app.get('/doc-stats', async (req, res) => {
+    try {
+        const stats = await helpers.queryDB('stats')
+        res.status(200).send(stats)
+    } catch (error) {
+        console.error('Error on Get path >>> /doc-stats', error)
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
+    }
+})
+
 app.get('/doc-sequences', async (req, res) => {
     try {
         const sequences = await helpers.queryDB('sequences')
