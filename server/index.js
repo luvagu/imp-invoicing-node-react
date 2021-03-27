@@ -115,7 +115,7 @@ app.get('/doc-sequences', async (req, res) => {
         const sequences = await helpers.queryDB('sequences')
         res.status(200).send(sequences)
     } catch (error) {
-        console.log('Error on Get path >>> /doc-sequences', error)
+        console.error('Error on Get path >>> /doc-sequences', error)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
@@ -126,7 +126,7 @@ app.put('/update-sequences/:prop/:value', async (req, res) => {
         const response = await helpers.updateSequencesProp(prop, parseInt(value))
         res.status(200).send(response)
     } catch (error) {
-        console.log('Error on Put path >>> /doc-sequences/:name', error)
+        console.error('Error on Put path >>> /doc-sequences/:name', error)
         res.status(500).send({ error: error.message })
     }
 })
