@@ -229,10 +229,12 @@ export default function PDFDocument({ data }) {
 
 				</View>
 
-				{/* <View style={compose('view mt-20')}>
-					<Text style={compose('span bold w-100')}>{data.notesLabel}</Text>
-					<Text style={compose('span w-100')}>{data.notes}</Text>
-				</View> */}
+				{data.docNotes && (
+					<View style={compose('view mt-20')}>
+						<Text style={compose('span bold w-100')}>{data.notesLabel}</Text>
+						<Text style={compose('span w-100')}>{data.docNotes}</Text>
+					</View>
+				)}
 
 			</Page>
 
