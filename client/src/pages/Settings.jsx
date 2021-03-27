@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import useSearchApi from '../hooks/useSearchApi'
+import { dataSearchApi, updateSequencesApi } from '../api/helpers'
 
 import Input from '../components/Input'
 import Spinner from '../components/Spinner'
 
 export default function Settings() {
     const [newSequence, setNewSequence] = useState(0)
+    const [errorMsg, setErrorMsg] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const [successMsg, setSuccessMsg] = useState('')
-    const [{ searchResults: sequences, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleChange = (e) => {
         const match = e.target.value.match(/[0-9]/g)
@@ -16,20 +17,46 @@ export default function Settings() {
         return e.target.value = numbers
     }
 
-    const handleClick = () => {
-        console.log(newSequence)
+    const handleClick = async () => {
+        setIsLoading(true)
+        try {
+            const response = await updateSequencesApi('facturas', newSequence)
+            setSuccessMsg(response.message)
+        } catch (error) {
+            console.log(error.response?.data.error)
+            setErrorMsg(error.response?.data.error || 'Network Error')
+        }
+        setIsLoading(false)
     }
 
-    console.log(sequences)
+    useEffect(() => {
+        let isDone = false
+        const fetchData = async () => {
+            setIsLoading(true)
+            try {
+                const sequences = await dataSearchApi('/doc-sequences')
+                if (!isDone) setNewSequence(sequences.facturas)
+            } catch (error) {
+                if (!isDone) {
+                    console.log(error.response?.data.error)
+                    setErrorMsg(error.response?.data.error || 'Network Error')
+                }
+            }
+            setIsLoading(false)
+        }
+        fetchData()
+        
+        return () => isDone = true
+    }, [])
 
     useEffect(() => {
-        setRouteWithQuery('/doc-sequences')
-    }, [setRouteWithQuery])
+        const timeout = setTimeout(() => {
+            setErrorMsg('')
+            setSuccessMsg('')
+        }, 5000)
 
-    useEffect(() => {
-        if (sequences === null) return
-        setNewSequence(sequences.facturas)
-    }, [sequences])
+        return () => clearTimeout(timeout)
+    }, [errorMsg, successMsg])
 
     return (
         <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">

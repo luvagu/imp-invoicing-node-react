@@ -38,9 +38,15 @@ export const createDocApi = async (apiFolder, docData) => {
 /**
  * PUT API update doc route with required 'folder & doc' params
  * /update-doc/:folder/:doc
+ * /update-sequences/:prop/:value
  */
 
 export const updateDocApi = async (apiFolder, docNum, docData) => {
     const { data } = await axios.put(`${API_URL}/update-doc/${apiFolder}/${docNum}`, docData)
+    return data
+}
+
+export const updateSequencesApi = async (prop, value) => {
+    const { data } = await axios.put(`${API_URL}/update-sequences/${prop}/${value}`)
     return data
 }

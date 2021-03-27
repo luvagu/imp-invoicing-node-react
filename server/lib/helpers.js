@@ -31,7 +31,7 @@ helpers.updateSequences = async (propToUpdate, newValue) => {
     if (!newSequences) {
         throw new Error(`No se pudo actualizar secuencias, nombre de propiedad no definida: ${propToUpdate} o tipo de valor invalido: ${newValue}`)
     }
-    if (newValue <= sequences[propToUpdate]) {
+    if (newValue < sequences[propToUpdate]) {
         throw new Error(`No se pudo actualizar secuencias, nuevo valor: ${newValue} debe ser mayor que el anterior: ${sequences[propToUpdate]}`)
     }
     const fileDescriptor = await fs.open(baseDir+'db/sequences.json', 'r+')
