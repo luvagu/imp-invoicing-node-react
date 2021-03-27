@@ -17,8 +17,9 @@ import ClientSearchModal from '../components/ClientSearchModal'
 import ProductSearchModal from '../components/ProductSearchModal'
 import Spinner from '../components/Spinner'
 import BlockEditingLayer from '../components/BlockEditingLayer'
+import Textarea from '../components/Textarea'
 
-export default function ProformaInvoice({ docType, apiFolder, docDataReceived = null }) {
+export default function ProformaInvoice({ docType, apiFolder, docDataReceived = null, allowNotes = false }) {
     const [errorMsg, setErrorMsg] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -259,7 +260,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
             />
 
             {/* Page header and action buttons */}
-            <div className="flex justify-between mb-8">
+            <div className="flex justify-between mb-6">
                 <div className="flex items-center justify-start">
                     <Logo className="h-7 sm:h-10 w-auto border border-yellow-200 rounded" />
                 </div>
@@ -280,12 +281,12 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                 </div>
             </div>
 
-            {errorMsg && <div className="mb-8 p-1 text-sm text-center text-red-600 font-semibold uppercase rounded shadow-sm bg-red-200">{errorMsg}</div>}
-            {successMsg && <div className="mb-8 p-1 text-sm text-center text-green-700 font-semibold uppercase rounded shadow-sm bg-green-200">{successMsg}</div>}
+            {errorMsg && <div className="mb-6 p-1 text-sm text-center text-red-600 font-semibold uppercase rounded shadow-sm bg-red-200">{errorMsg}</div>}
+            {successMsg && <div className="mb-6 p-1 text-sm text-center text-green-700 font-semibold uppercase rounded shadow-sm bg-green-200">{successMsg}</div>}
 
             <BlockEditingLayer isDocSaved={isDocSaved} isDocUpdating={isDocUpdating}>
                 {/* Client details and doc info */}
-                <div className="flex flex-wrap justify-between mb-8">
+                <div className="flex flex-wrap justify-between mb-6">
                     <div className="w-full md:w-1/2 mb-1 md:mb-0">
                         <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.companyName}</label>
                         <div className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700">
@@ -440,6 +441,18 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                         </div>
                     </div>
                 </div>
+            
+                {/* Doc notes */}
+                {allowNotes && (
+                    <div className="flex flex-wrap mt-6">
+                        <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.notesLabel}</label>
+                        <Textarea 
+                            value={docData.docNotes} 
+                            placeholder='Ingresa aqui las condiciones de pago y tiempo de entrega'
+                            onChange={(e) => handleChange('docNotes', e.target.value)}
+                        />
+                    </div>
+                )}
             </BlockEditingLayer>
 
             {/* Modals */}

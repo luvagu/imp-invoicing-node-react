@@ -30,7 +30,7 @@ function App() {
 							<Route path='/nueva-factura' render={() => 
 								<ProformaInvoice key={Date.now().toString()} docType='Factura' apiFolder='facturas' />} />
 							<Route path='/nueva-proforma' render={() => 
-								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' />} />
+								<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' allowNotes={true}  />} />
 							<Route path='/buscar-documentos' component={DocumentSearch} />
 							<Route path='/buscar-productos' component={ProductSearch} />
 							<Route path='/ver-documento/:folder/:doc' component={DocumentView} />
