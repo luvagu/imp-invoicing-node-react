@@ -2,3 +2,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    @variants responsive {
+        .sm-mw {
+            min-width: 640px;
+        }
+        .md-mw {
+            min-width: 768px;
+        }
+        .lg-mw {
+            min-width: 800px;
+            max-width: 800px;
+        }
+    }
+}

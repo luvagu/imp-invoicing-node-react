@@ -22,7 +22,7 @@ export default function DocumentView() {
 			allowNotes={folder === 'proformas' ? true : false}
 		/>
 	) : (
-		<div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
+		<div className="container sm:sm-mw md:md-mw lg:lg-mw mx-auto px-4 md:px-6 py-4 md:py-6">
 			{isLoading && (
 				<div className="mt-8 px-4 text-center">
 					<Spinner />

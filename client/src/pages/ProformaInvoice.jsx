@@ -252,7 +252,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
     }, [docDataReceived])
 
     return (
-        <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
+        <div className="container sm:sm-mw md:md-mw lg:lg-mw mx-auto px-4 md:px-6 py-4 md:py-6">
             {/* Promt the user in case of unsaved data */}
             <Prompt
                 when={isEditing}
