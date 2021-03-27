@@ -1,47 +1,22 @@
-import { useEffect, useState } from 'react'
-import { dataSearchApi } from '../api/helpers'
+
+import useSearchApi from '../hooks/useSearchApi'
 
 import SearchModalBody from './SearchModalBody'
 import SearchModalResults from './SearchModalResults'
 
-export default function ProductSearchModal({ handleClose, handleAddProduct }) {
-	const [isLoading, setIsLoading] = useState(false)
-    const [errMsg, setErrMsg] = useState('')  
-    const [searchRoute, setServerRoute] = useState('')
-    const [searchTerm, setSearchTerm] = useState(null)
-    const [searchResults, setSearchResults] = useState([])
-
-    useEffect(() => {
-        if (searchTerm === null || searchTerm === '') return
-
-		setErrMsg('')
-		setIsLoading(true)
-
-        dataSearchApi(searchRoute, searchTerm)
-            .then(data => {
-				setIsLoading(false)
-				setSearchResults(data)
-			})
-            .catch(err => {
-				setIsLoading(false)
-                setSearchResults([])
-                setErrMsg(err.response?.data.Error || 'Network Error')
-            })
-
-    }, [searchRoute, searchTerm])
+export default function ProductSearchModal({ closeModal, handleAddProduct }) {
+	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleInputSearch = (e) => {
         if (e.key === 'Enter') {
             switch (e.target.name) {
                 case 'id': 
-                    setServerRoute('search-product-id')
-                    setSearchTerm(e.target.value)
+					setRouteWithQuery(`/search-product-id/${encodeURIComponent(e.target.value)}`)
                     break
-                case 'terms': 
-                    setServerRoute('search-product-terms')
-                    setSearchTerm(e.target.value)
+                case 'query': 
+					setRouteWithQuery(`/search-product-includes/${encodeURIComponent(e.target.value)}`)
                     break
-                default:
+                default: setRouteWithQuery(null)
                     break
             }
         }
@@ -49,22 +24,20 @@ export default function ProductSearchModal({ handleClose, handleAddProduct }) {
 
 	const handleSelectedProduct = (index) => {
 		handleAddProduct(searchResults[index])
-		setSearchTerm(null)
-		setSearchResults([])
-		handleClose()
+		closeModal()
 	}
 
 	return (
 		<SearchModalBody 
-			searchLabel='product'
+			searchLabel='producto'
 			inputIdName='id'
 			inputIdPaceholder='Codigo exacto'
-			inputTermsName='terms'
-			inputTermsPaceholder='Codigo o nombre parcial'
+			inputQueryName='query'
+			inputQueryPaceholder='Codigo o nombre parcial'
 			inputsHandle={handleInputSearch}
-			handleClose={handleClose}
+			closeModal={closeModal}
 			isLoading={isLoading}
-			errorMsg={errMsg}
+			errorMsg={errorMsg}
 		>
 			{searchResults && searchResults.length > 0 && (
 				<SearchModalResults 

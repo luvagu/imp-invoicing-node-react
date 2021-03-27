@@ -6,25 +6,19 @@ export const initialDocInfo = {
 	companyTelephone: 'Telf: 02-2430-658',
 	companyEmail: 'Email: ventas@imporpernos.com',
 
-	currency: '$',
+	currencySymbol: '$',
 
-	docType: '', // @todo set it from the component title
-	docDateLabel: 'Fecha de Emision',
+	docType: '',
+	docNum: '',
 	docDate: '',
-	docNum: '', // @Todo get it from backend at runtime or set it on doc save
-	docPaymentMethod: 'Efectivo',
+	docPaymentMethod: '',
 	docSubtotal: '0.00',
 	docDiscount: '0.00',
 	docTaxRate: '12',
 	docTaxAmount: '0.00',
 	docTotal: '0.00',
+	docNotes: '',
 
-	clientDetailsLabel: 'Datos Cliente:',
-	clientIdLabel: 'CI / RUC:',
-	clientNameIdLabel: 'Nombre:',
-	clientAddressLabel: 'Dir:',
-	clientPhoneLabel: 'Tel:',
-	clientEmailLabel: 'Correo:',
 	clientData: {
 		id: '',
 		name: '',
@@ -33,22 +27,29 @@ export const initialDocInfo = {
 		email: '',
 	},
 
+	productsList: [],
+
+	clientDetailsLabel: 'Datos Cliente:',
+	clientIdLabel: 'CI / RUC:',
+	clientNameIdLabel: 'Nombre:',
+	clientAddressLabel: 'Dir:',
+	clientPhoneLabel: 'Tel:',
+	clientEmailLabel: 'Correo:',
+
+	docDateLabel: 'Fecha de Emision',
+	paymentMethodLabel: 'Forma de Pago',
+
 	productDescriptionLabel: 'Descripcion',
 	productQuantityLabel: 'Cantidad',
 	productPriceLabel: 'P.Unit',
 	productDiscounyRateLabel: 'Dcto. %',
 	productTotalAmountLabel: 'P.Total',
 
-	productsList: [],
-
 	subTotalLabel: 'Subtotal',
 	discountLabel: 'Descuento',
 	taxLabel: 'IVA (12%)',
 	totalLabel: 'Valor Total',
 	notesLabel: 'Notas',
-	paymentMethodLabel: 'Forma de Pago',
-
-	docNotes: '',
 }
 
 export const paymentMethods = [
@@ -63,5 +64,5 @@ export const paymentMethods = [
 	'Deposito y Retencion',
 	'Credito',
 	'Credito y Retencion',
-	'Otra',
+	'Condiciones en notas',
 ]

@@ -1,17 +1,11 @@
-export default function Input({ className, placeholder, value, onChange, editMode }) {
-  return (
-    <>
-      {editMode ? (
-        <Text style={compose('span ' + (className ? className : ''))}>{value}</Text>
-      ) : (
+export default function Input({ extraClass = '', type = 'text', name, placeholder, ...extraProps }) {
+    return (
         <input
-          type="text"
-          className={'input ' + (className ? className : '')}
-          placeholder={placeholder || ''}
-          value={value || ''}
-          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
+            className={`${extraClass} bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500`}
+            type={type}
+            name={name}
+            placeholder={placeholder}
+            {...extraProps}
         />
-      )}
-    </>
-  )
+    )
 }
