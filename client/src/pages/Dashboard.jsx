@@ -55,7 +55,7 @@ export default function Dashboard() {
 
 							<div className="mx-5">
 								<h4 className="text-2xl font-semibold text-gray-800">
-									{stats?.totalInvoices || '0'}
+									{stats?.facturas || '0'}
 								</h4>
 								<div className="text-gray-600">Facturas</div>
 							</div>
@@ -70,7 +70,7 @@ export default function Dashboard() {
 
 							<div className="mx-5">
 								<h4 className="text-2xl font-semibold text-gray-800">
-									{stats?.totalQuotes || '0'}
+									{stats?.proformas || '0'}
 								</h4>
 								<div className="text-gray-600">Proformas</div>
 							</div>
@@ -85,7 +85,7 @@ export default function Dashboard() {
 
 							<div className="mx-5">
 								<h4 className="text-2xl font-semibold text-gray-800">
-									{stats?.totalClients || '0'}
+									{stats?.clients || '0'}
 								</h4>
 								<div className="text-gray-600">Clientes</div>
 							</div>
@@ -100,7 +100,7 @@ export default function Dashboard() {
 
 							<div className="mx-5">
 								<h4 className="text-2xl font-semibold text-gray-800">
-									{stats?.totalProducts || '0'}
+									{stats?.products || '0'}
 								</h4>
 								<div className="text-gray-600">Productos</div>
 							</div>
