@@ -13,7 +13,7 @@ import ProductSearch from './pages/ProductSearch'
 import DocumentView from './pages/DocumentView'
 import Settings from './pages/Settings'
 
-function App() {
+export default function App() {
 	// Sidebar state close/open
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -45,5 +45,3 @@ function App() {
 		</div>
 	)
 }
-
-export default App
