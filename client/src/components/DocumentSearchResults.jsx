@@ -29,7 +29,7 @@ export default function DocumentSearchResults({ results, routeFolder }) {
                         <td className="p-4">{res.docNum}</td>
                         <td className="p-4 hidden md:table-cell">{res.docDate}</td>
                         <td className="p-4">{res.name || res.clientData?.name}</td>
-                        <td className="p-4 hidden lg:table-cell">$ {res.docTotal}</td>
+                        <td className="p-4 hidden whitespace-nowrap lg:table-cell">$ {res.docTotal}</td>
                     </tr>
                 ))}
 

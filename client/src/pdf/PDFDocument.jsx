@@ -229,7 +229,7 @@ export default function PDFDocument({ data }) {
 
 				</View>
 
-				{data.docNotes && (
+				{data.docNotes === '' ? (<Text></Text>) : (
 					<View style={compose('view mt-20')}>
 						<Text style={compose('span bold w-100')}>{data.notesLabel}</Text>
 						<Text style={compose('span w-100')}>{data.docNotes}</Text>
