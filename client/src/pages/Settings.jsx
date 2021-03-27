@@ -1,20 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useSearchApi from '../hooks/useSearchApi'
+
 import Input from '../components/Input'
 import Spinner from '../components/Spinner'
 
 export default function Settings() {
-    const [sequence, setSequence] = useState(0)
+    const [newSequence, setNewSequence] = useState(0)
+    const [successMsg, setSuccessMsg] = useState('')
+    const [{ searchResults: sequences, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
 
     const handleChange = (e) => {
         const match = e.target.value.match(/[0-9]/g)
         const numbers = match ? match.join('') : ''
-        setSequence(numbers)
+        setNewSequence(numbers)
         return e.target.value = numbers
     }
 
     const handleClick = () => {
-        console.log(sequence)
+        console.log(newSequence)
     }
+
+    console.log(sequences)
+
+    useEffect(() => {
+        setRouteWithQuery('/doc-sequences')
+    }, [setRouteWithQuery])
+
+    useEffect(() => {
+        if (sequences === null) return
+        setNewSequence(sequences.facturas)
+    }, [sequences])
 
     return (
         <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
@@ -22,7 +37,7 @@ export default function Settings() {
 
             <div className="flex flex-wrap mt-6">
                 <label className="text-gray-800 block mb-2 font-bold text-sm uppercase">Actualizar secuencia de facturas</label>
-                <Input type='text' name='facturas' placeholder='Secuencia de facturas' onChange={handleChange}  />
+                <Input type='text' name='facturas' placeholder='Secuencia de facturas' value={newSequence} onChange={handleChange}  />
             </div>
 
             <div className="flex items-center mt-2">
@@ -31,10 +46,13 @@ export default function Settings() {
 					className="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
                     onClick={handleClick}
                 >
-					Actualizar
+					Guardar
 				</button>
-                {false && <div className="ml-4"><Spinner /></div>}
+                {isLoading && <div className="ml-4"><Spinner /></div>}
 			</div>
+
+            {errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
+            {successMsg && <div className="mt-6 px-4 text-center text-sm text-green-600 font-semibold uppercase">{successMsg}</div>}
         </div>
     )
 }

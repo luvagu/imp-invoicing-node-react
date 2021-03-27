@@ -17,6 +17,7 @@ const API_URL = process.env.NODE_ENV === 'production' ? 'http://192.168.1.5:5000
  * /search-product-id/:query
  * /list-docs/:folder/:doc? (optinal 'doc' param)
  * /get-doc/:folder/:doc
+ * /doc-sequences (no params requiered)
  */
 
 export const dataSearchApi = async (searchRouteWithQuery) => {
