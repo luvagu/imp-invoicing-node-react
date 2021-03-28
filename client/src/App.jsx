@@ -18,7 +18,7 @@ export default function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
 	return (
-		<div className="flex h-screen bg-gray-200">
+		<div className="flex h-screen">
 			<Router>
 				<Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 				<div className="flex-1 flex flex-col overflow-hidden">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { dataSearchApi } from '../api/helpers'
+import DashboardWidget from '../components/DashboardWidget'
 import Spinner from '../components/Spinner'
-import { SvgDocText, SvgGrid, SvgUsers } from '../icons'
 
 export default function Dashboard() {
 	const [stats, setStats] = useState(null)
@@ -45,65 +45,12 @@ export default function Dashboard() {
 
 			<div className="flex flex-wrap mt-6 -mx-6">
 
-				<div className="w-full sm:w-1/2 px-6 mb-6 md:mt-0">
-					<div className="flex items-center px-5 py-6 shadow rounded-lg bg-gray-300">
-						<div className="p-3 rounded-full bg-indigo-600 bg-opacity-75">
-							<SvgDocText className="h-8 w-8 text-white" />
-						</div>
-
-						<div className="mx-5">
-							<h4 className="text-2xl font-semibold text-gray-800">
-								{stats?.facturas || '0'}
-							</h4>
-							<div className="text-gray-600">Facturas</div>
-						</div>
-					</div>
-				</div>
-
-				<div className="w-full sm:w-1/2 px-6 mb-6 md:mt-0">
-					<div className="flex items-center px-5 py-6 shadow rounded-lg bg-gray-300">
-						<div className="p-3 rounded-full bg-yellow-600 bg-opacity-75">
-							<SvgDocText className="h-8 w-8 text-white" />
-						</div>
-
-						<div className="mx-5">
-							<h4 className="text-2xl font-semibold text-gray-800">
-								{stats?.proformas || '0'}
-							</h4>
-							<div className="text-gray-600">Proformas</div>
-						</div>
-					</div>
-				</div>
-
-				<div className="w-full sm:w-1/2 px-6 mb-6 md:mt-0">
-					<div className="flex items-center px-5 py-6 shadow rounded-lg bg-gray-300">
-						<div className="p-3 rounded-full bg-green-600 bg-opacity-75">
-							<SvgUsers className="h-8 w-8 text-white" />
-						</div>
-
-						<div className="mx-5">
-							<h4 className="text-2xl font-semibold text-gray-800">
-								{stats?.clients || '0'}
-							</h4>
-							<div className="text-gray-600">Clientes</div>
-						</div>
-					</div>
-				</div>
-			
-				<div className="w-full sm:w-1/2 px-6 mb-6 md:mt-0">
-					<div className="flex items-center px-5 py-6 shadow rounded-lg bg-gray-300">
-						<div className="p-3 rounded-full bg-pink-600 bg-opacity-75">
-							<SvgGrid className="h-8 w-8 text-white" />
-						</div>
-
-						<div className="mx-5">
-							<h4 className="text-2xl font-semibold text-gray-800">
-								{stats?.products || '0'}
-							</h4>
-							<div className="text-gray-600">Productos</div>
-						</div>
-					</div>
-				</div>
+				<DashboardWidget icon='dollar' bgcolor='green' value={stats?.ventas} name='Ventas' />
+				<DashboardWidget bgcolor='red' value={stats?.egresos} name='Egresos' />
+				<DashboardWidget value={stats?.facturas} name='Facturas' />
+				<DashboardWidget bgcolor='yellow' value={stats?.proformas} name='Proformas' />
+				<DashboardWidget icon='users' bgcolor='purple' value={stats?.clients} name='Clientes' />
+				<DashboardWidget icon='grid' bgcolor='pink' value={stats?.products} name='Productos' />
 				
 			</div>
 			

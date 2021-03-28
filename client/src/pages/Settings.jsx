@@ -62,9 +62,9 @@ export default function Settings() {
         <div className="container sm:sm-mw md:md-mw lg:lg-mw mx-auto px-4 md:px-6 py-4 md:py-6">
             <h3 className="text-black text-3xl font-medium">Ajustes</h3>
 
-            <div className="flex flex-wrap mt-6">
+            <div className="flex flex-col mt-6">
                 <label className="text-gray-800 block mb-2 font-bold text-sm uppercase">Actualizar secuencia de facturas</label>
-                <Input type='text' name='facturas' placeholder='Secuencia de facturas' value={newSequence} onChange={handleChange}  />
+                <div className="w-full sm:w-64"><Input type='text' name='facturas' placeholder='Secuencia de facturas' value={newSequence} onChange={handleChange} /></div>
             </div>
 
             <div className="flex items-center mt-2">

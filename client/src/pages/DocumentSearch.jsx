@@ -3,8 +3,7 @@ import useSearchApi from '../hooks/useSearchApi'
 
 import DocumentSearchResults from '../components/DocumentSearchResults'
 import Spinner from '../components/Spinner'
-import Input from '../components/Input'
-import { SvgSearch } from '../icons'
+import SearchInput from '../components/SearchInput'
 
 export default function DocumentSearch() {
     const [isRequired, setIsRequired] = useState(false)
@@ -39,17 +38,15 @@ export default function DocumentSearch() {
 			<h3 className="text-black text-3xl font-medium">Buscar documentos por:</h3>
 
             <div className="flex flex-wrap mt-6">
-                <div className="mb-4 md:mb-0 mr-4">
-                    <select 
-                        className={`bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 pl-4 pr-8 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500 ${isRequired ? 'border-red-600' : ''}`}
-                        onChange={handleChange}
-                    >
-                        <option>Tipo de documento</option>
-                        <option value="egresos">Egresos</option>
-                        <option value="facturas">Facturas</option>
-                        <option value="proformas">Proformas</option>
-                    </select>
-                </div>
+                <select 
+                    className={`mb-4 md:mb-0 mr-4 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 pl-4 pr-8 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500 ${isRequired ? 'border-red-600' : ''}`}
+                    onChange={handleChange}
+                >
+                    <option>Tipo de documento</option>
+                    <option value="egresos">Egresos</option>
+                    <option value="facturas">Facturas</option>
+                    <option value="proformas">Proformas</option>
+                </select>
                 
                 <SearchInput name='docNum' placeholder='Numero o (*) para todos' handle={handleKeyDown} />
             </div>
@@ -61,22 +58,4 @@ export default function DocumentSearch() {
             {errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
         </div>
 	)
-}
-
-function SearchInput({ name, placeholder, extraClass = '', handle }) {
-    return (
-        <div className={`relative ${extraClass}`}>
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
-                <SvgSearch className="h-5 w-5"/>
-            </span>
-
-            <Input
-                extraClass="pl-10 pr-4"
-                type="search"
-                name={name}
-                placeholder={placeholder}
-                onKeyDown={handle}
-            />
-        </div>
-    )
 }
