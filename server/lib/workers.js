@@ -30,7 +30,7 @@ workers.dbStats = async () => {
 }
 
 // Get sales total
-workers.salesStats = async () => {
+workers.salesTotal = async () => {
     const dirNames = ['egresos', 'facturas']
     const allTotals = []
 
@@ -49,11 +49,11 @@ workers.salesStats = async () => {
 
 // Consolidate stats and update stats db file
 workers.statsUpdate = async () => {
-    
     try {
         const docStats = await workers.docStats()
         const dbStats = await workers.dbStats()
-        const newStats = { ...docStats, ...dbStats }
+        const addedTotals = await workers.salesTotal()
+        const newStats = { ...docStats, ...dbStats, ...addedTotals }
         if (await updateStats(newStats)) {
             return console.log('new stats >>>', newStats)
         }
@@ -66,7 +66,7 @@ workers.statsUpdate = async () => {
 workers.loop = () => {
     setInterval(() => {
         workers.statsUpdate()
-    }, 15000 )
+    }, 1000 * 60 * 60)
 }
 
 // Init script
