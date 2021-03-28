@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs/promises')
-
-const baseDir = path.join(__dirname, '/../data/')
+const crypto = require('crypto')
 
 const parseJsonToObject = (str) => {
     try {
@@ -126,6 +125,47 @@ helpers.deleteAllDocs = async (dir) => {
     }
     
     return { message: `Exito: ${deletedFiles} documentos borrados` }
+}
+
+// Hash passwords
+helpers.hash = (password) => {
+    if (typeof(password) == 'string' && password.length > 0) {
+        const hash = crypto.createHmac('sha256', '1imp792orper673no8s44s00sc1c').update(password).digest('hex')
+        return hash
+    } else {
+        return false
+    }
+}
+
+// Verify tokens
+helpers.verifyToken = async (id, user) => {
+    const tokenData = await helpers.readDoc('tokens', id)
+
+    // Check that the token is for the given user and has not expired
+    if (tokenData.user == user && tokenData.expires > Date.now()) {
+        return true
+    } else {
+        return false
+    }
+}
+
+// Create a string of random alphanumeric characters, of a given length
+helpers.createRandomString = (length) => {
+    length = typeof(length) == 'number' && length > 0 ? length : false
+
+    if (length) {
+        const characters = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789'
+        let str = ''
+        
+        for (let i = 0; i < length; i++) {
+            let randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length))
+            str += randomCharacter
+        }
+
+        return str
+    } else {
+        return false
+    }
 }
 
 module.exports = helpers

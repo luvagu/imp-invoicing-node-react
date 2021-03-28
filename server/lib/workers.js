@@ -30,7 +30,7 @@ workers.dbStats = async () => {
 }
 
 // Get sales total
-workers.salesTotal = async () => {
+workers.salesStats = async () => {
     const dirNames = ['egresos', 'facturas']
     const allTotals = []
 
@@ -52,8 +52,8 @@ workers.statsUpdate = async () => {
     try {
         const docStats = await workers.docStats()
         const dbStats = await workers.dbStats()
-        const addedTotals = await workers.salesTotal()
-        const newStats = { ...docStats, ...dbStats, ...addedTotals }
+        const salesTotal = await workers.salesStats()
+        const newStats = { ...docStats, ...dbStats, ...salesTotal }
         if (await updateStats(newStats)) {
             return console.log('new stats >>>', newStats)
         }
