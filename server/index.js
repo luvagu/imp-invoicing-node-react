@@ -31,6 +31,81 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
+// Auth routes
+app.post('/tokens', async (req, res) => {
+    const { user, password } = req.body
+
+    try {
+        // Verify user
+        if (await helpers.verifyUser(user, password)) {
+            const id = helpers.createRandomString(20)
+            const tokenData = {
+                id,
+                user,
+                expires: Date.now() + 1000 * 60 * 60
+            }
+
+            if (await helpers.createToken(id, tokenData)) {
+                res.status(200).send(tokenData)
+            }
+        } else {
+            res.status(401).send({ message: 'No autorizado. Usuario or contraseña incorrectos' })
+        }
+    } catch (error) {
+        console.log('Error on Post path >>> /tokens', error.message)
+        res.status(500).send({ error: 'No se pudo leer la base de datos' })
+    }
+    
+})
+
+app.get('/tokens/:id', async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const token = await helpers.readDoc('tokens', id)
+        res.status(200).send(token)
+    } catch (error) {
+        console.log('Error on Get path >>> /tokens', error.message)
+        res.status(500).send({ error: 'No se pudo crear el token' })
+    }
+})
+
+app.put('/tokens', async (req, res) => {
+    const { id, extend } = req.body
+
+    try {
+        const tokenData = await helpers.readDoc('tokens', id)
+
+        // Verify that the token isn't already expired
+        if (tokenData.expires > Date.now() && extend) {
+            // Update the expiration date 1 hour from now
+            tokenData.expires = Date.now() + 1000 * 60 * 60
+
+            if (await helpers.updateDoc('tokens', id, tokenData))
+            res.status(200).send(tokenData)
+
+        } else {
+            res.status(401).send({ error: 'Token expirado o no autorizado para renovar' })
+        }
+        
+    } catch (error) {
+        console.log('Error on Put path >>> /tokens', error.message)
+        res.status(500).send({ error: 'No se pudo renovar el token' })
+    }
+})
+
+app.delete('/tokens/:id', async (req, res) => {
+    const id = req.params.id
+
+    try {
+        await helpers.deleteDoc('tokens', id)
+        res.status(200).send({ message: 'Token eliminado' })
+    } catch (error) {
+        console.log('Error on Delete path >>> /tokens', error.message)
+        res.status(500).send({ error: 'No se pudo eliminar el token' })
+    }
+})
+
 // CRUD related routes
 app.get('/list-docs/:folder/:doc?', async (req, res) => {
     const { folder:dir, doc:fileName } = req.params
@@ -43,8 +118,8 @@ app.get('/list-docs/:folder/:doc?', async (req, res) => {
             res.status(404).send({ error: 'No hay documentos para mostrar' })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /list-docs/:folder/:doc?', error)
-        res.status(404).send({ error: `No se pudo obtener el documento o lista de documentos` })
+        console.error('Error on Get path >>> /list-docs/:folder/:doc?', error.message)
+        res.status(404).send({ error: 'No se pudo obtener el documento o lista de documentos' })
     }
 })
 
@@ -55,7 +130,7 @@ app.get('/get-doc/:folder/:doc', async (req, res) => {
         const invoiceData = await helpers.readDoc(dir, fileName)
         res.status(200).send(invoiceData)
     } catch (error) {
-        console.error('Error on Get path >>> /get-doc/:folder/:doc', error)
+        console.error('Error on Get path >>> /get-doc/:folder/:doc', error.message)
         res.status(404).send({ error: `No se pudo obtener el documento ${fileName}` })
     }
 })
@@ -68,8 +143,8 @@ app.post('/create-doc/:folder', async (req, res) => {
         const response = await helpers.creteDoc(dir, fileData)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /create-doc/:folder', error)
-        res.status(500).send({ error: `No se pudo crear el documento, es posible que ya exista` })
+        console.error('Error on Post path >>> /create-doc/:folder', error.message)
+        res.status(500).send({ error: 'No se pudo crear el documento, es posible que ya exista' })
     }
 })
 
@@ -81,7 +156,7 @@ app.put('/update-doc/:folder/:doc', async (req, res) => {
         const response = await helpers.updateDoc(dir, fileName, fileData)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Put path >>> /update-doc/:folder/:doc', error)
+        console.error('Error on Put path >>> /update-doc/:folder/:doc', error.message)
         res.status(500).send({ error: `No se pudo actualizar el documento ${fileName}` })
     }
 })
@@ -92,7 +167,7 @@ app.delete('/delete-doc/:folder/:doc', async (req, res) => {
         const response = await helpers.deleteDoc(dir, fileName)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Delete path >>> /delete-doc/:folder/:doc', error)
+        console.error('Error on Delete path >>> /delete-doc/:folder/:doc', error.message)
         res.status(500).send({ error: `No se pudo borrar el documento ${fileName}` })
     }
 })
@@ -104,8 +179,8 @@ app.delete('/delete-all-docs/:folder', async (req, res) => {
         const response = await helpers.deleteAllDocs(dir)
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Post path >>> /delete-all-docs/:folder', error)
-        res.status(500).send({ error: `No se pudieron borrar los documentos` })
+        console.error('Error on Post path >>> /delete-all-docs/:folder', error.message)
+        res.status(500).send({ error: 'No se pudieron borrar los documentos' })
     }
 })
 
@@ -115,7 +190,7 @@ app.get('/doc-stats', async (req, res) => {
         const stats = await helpers.queryDB('stats')
         res.status(200).send(stats)
     } catch (error) {
-        console.error('Error on Get path >>> /doc-stats', error)
+        console.error('Error on Get path >>> /doc-stats', error.message)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
@@ -125,7 +200,7 @@ app.get('/doc-sequences', async (req, res) => {
         const sequences = await helpers.queryDB('sequences')
         res.status(200).send(sequences)
     } catch (error) {
-        console.error('Error on Get path >>> /doc-sequences', error)
+        console.error('Error on Get path >>> /doc-sequences', error.message)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
@@ -136,7 +211,7 @@ app.put('/update-sequences/:prop/:value', async (req, res) => {
         const response = await helpers.updateSequencesProp(prop, parseInt(value))
         res.status(200).send(response)
     } catch (error) {
-        console.error('Error on Put path >>> /doc-sequences/:name', error)
+        console.error('Error on Put path >>> /doc-sequences/:name', error.message)
         res.status(500).send({ error: error.message })
     }
 })
@@ -154,7 +229,7 @@ app.get('/search-client-id/:query', async (req, res) => {
             res.status(404).send({ error: `ID de cliente no encontrada: ${clientId}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /search-client-id/:id', error)
+        console.error('Error on Get path >>> /search-client-id/:id', error.message)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
@@ -172,7 +247,7 @@ app.get('/search-client-name/:query', async (req, res) => {
             res.status(404).send({ error: `Nombre de cliente no encontrado: ${clientName}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /search-client-name/:name', error)
+        console.error('Error on Get path >>> /search-client-name/:name', error.message)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
@@ -182,7 +257,7 @@ app.get('/search-client-name/:query', async (req, res) => {
 //         const allProducts = await helpers.queryDB('products')
 //         res.status(200).send(allProducts)
 //     } catch (error) {
-//         console.error('Error on Get path >>> /get-all-products', error)
+//         console.error('Error on Get path >>> /get-all-products', error.message)
 //         res.status(500).send({ error: 'No se pudo leer la base de datos' })
 //     }
 // })
@@ -200,7 +275,7 @@ app.get('/search-product-id/:query', async (req, res) => {
             res.status(404).send({ error: `Codigo exacto de producto no encontrado: ${prodId}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /search-product-id/:id', error)
+        console.error('Error on Get path >>> /search-product-id/:id', error.message)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })
@@ -221,7 +296,7 @@ app.get('/search-product-includes/:query', async (req, res) => {
             res.status(404).send({ error: `Codigo o nombre parcial de producto no encontrado: ${query}` })
         }
     } catch (error) {
-        console.error('Error on Get path >>> /search-product-terms/:terms', error)
+        console.error('Error on Get path >>> /search-product-terms/:terms', error.message)
         res.status(500).send({ error: 'No se pudo leer la base de datos' })
     }
 })

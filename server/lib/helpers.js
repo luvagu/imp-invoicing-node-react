@@ -2,6 +2,8 @@ const path = require('path')
 const fs = require('fs/promises')
 const crypto = require('crypto')
 
+const baseDir = path.join(__dirname + '/../data/')
+
 const parseJsonToObject = (str) => {
     try {
         return JSON.parse(str)
@@ -137,12 +139,32 @@ helpers.hash = (password) => {
     }
 }
 
-// Verify tokens
+// Create token
+helpers.createToken = async (id, data) => {
+    const fileDescriptor = await fs.open(baseDir+'tokens/'+id+'.json', 'wx')
+    await fileDescriptor.writeFile(JSON.stringify(data))
+    await fileDescriptor.close()
+    return true
+}
+
+// Verify token
 helpers.verifyToken = async (id, user) => {
     const tokenData = await helpers.readDoc('tokens', id)
 
     // Check that the token is for the given user and has not expired
     if (tokenData.user == user && tokenData.expires > Date.now()) {
+        return true
+    } else {
+        return false
+    }
+}
+
+// Verify user exists in users DB and hashed passwords match
+helpers.verifyUser = async (user, password) => {
+    const users = await helpers.queryDB('users')
+    const userHashedPassword = helpers.hash(password)
+
+    if ([user] in users && users[user].hashedPassword === userHashedPassword) {
         return true
     } else {
         return false
@@ -156,7 +178,7 @@ helpers.createRandomString = (length) => {
     if (length) {
         const characters = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789'
         let str = ''
-        
+
         for (let i = 0; i < length; i++) {
             let randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length))
             str += randomCharacter
