@@ -1,4 +1,4 @@
-const { queryDB, updateStats, listDocs } = require('./helpers')
+const { queryDB, updateStats, listDocs, readDoc } = require('./helpers')
 
 // Instantiate workers
 const workers = {}
@@ -29,8 +29,27 @@ workers.dbStats = async () => {
     return dbStats
 }
 
+// Get sales total
+workers.salesStats = async () => {
+    const dirNames = ['egresos', 'facturas']
+    const allTotals = []
+
+    for (const dir of dirNames) {
+        const dirDocs = await listDocs(dir)
+        
+        for (const doc of dirDocs) {
+            const { docTotal } = await readDoc(dir, doc)
+            allTotals.push(docTotal)
+        }
+    }
+
+    const ventas = allTotals.reduce((acc, cv) => acc + parseFloat(cv), 0).toFixed(2)
+    return { ventas }
+}
+
 // Consolidate stats and update stats db file
 workers.statsUpdate = async () => {
+    
     try {
         const docStats = await workers.docStats()
         const dbStats = await workers.dbStats()
@@ -47,7 +66,7 @@ workers.statsUpdate = async () => {
 workers.loop = () => {
     setInterval(() => {
         workers.statsUpdate()
-    }, 1000 * 60 * 60)
+    }, 15000 )
 }
 
 // Init script
