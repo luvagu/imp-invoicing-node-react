@@ -21,7 +21,7 @@ class ErrorBoundary extends Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div className="flex flex-col justify-center items-center w-full h-full">
+                <div className="container sm:sm-mw md:md-mw lg:lg-mw flex flex-col justify-center items-center w-full h-full">
                     <h2 className="p-6 text-center text-2xl text-indigo-700">Lo siento, esta página se ha perdido en el aire.</h2>
                     <div className="-mt-4 inline-block bg-cover bg-top lg:bg-center w-full h-full" style={{ backgroundImage: 'url(/img/404.png)' }} />
                 </div>

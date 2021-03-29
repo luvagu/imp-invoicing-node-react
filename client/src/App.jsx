@@ -12,6 +12,7 @@ import DocumentSearch from './pages/DocumentSearch'
 import ProductSearch from './pages/ProductSearch'
 import DocumentView from './pages/DocumentView'
 import Settings from './pages/Settings'
+import AuthExample from './pages/Auth'
 
 export default function App() {
 	// Sidebar state close/open
@@ -37,6 +38,7 @@ export default function App() {
 								<Route path='/buscar-documentos' component={DocumentSearch} />
 								<Route path='/buscar-productos' component={ProductSearch} />
 								<Route path='/ver-documento/:folder/:doc' component={DocumentView} />
+								<Route path='/auth' component={AuthExample} />
 							</ErrorBoundary>
 						</Switch>
 					</main>
