@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { dataSearchApi } from '../api/helpers'
+import { dataGetApi } from '../api/helpers'
 import DashboardWidget from '../components/DashboardWidget'
 import Spinner from '../components/Spinner'
 
@@ -13,7 +13,7 @@ export default function Dashboard() {
         const fetchData = async () => {
             setIsLoading(true)
             try {
-                const sequences = await dataSearchApi('/doc-stats')
+                const sequences = await dataGetApi('/doc-stats')
                 if (!isDone) setStats(sequences)
             } catch (error) {
                 if (!isDone) {
@@ -45,7 +45,7 @@ export default function Dashboard() {
 
 			<div className="flex flex-wrap mt-6 -mx-6">
 
-				<DashboardWidget icon='dollar' bgcolor='green' value={stats?.ventas} name='Ventas' />
+				<DashboardWidget icon='dollar' bgcolor='green' value={`$ ${stats?.ventas}`} name='Ventas' />
 				<DashboardWidget bgcolor='red' value={stats?.egresos} name='Egresos' />
 				<DashboardWidget value={stats?.facturas} name='Facturas' />
 				<DashboardWidget bgcolor='yellow' value={stats?.proformas} name='Proformas' />

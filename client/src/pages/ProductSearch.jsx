@@ -1,11 +1,11 @@
-import useSearchApi from '../hooks/useSearchApi'
+import useGetApi from '../hooks/useGetApi'
 
 import ProductSearchResults from '../components/ProductSearchResults'
 import Spinner from '../components/Spinner'
 import SearchInput from '../components/SearchInput'
 
 export default function ProductSearch() {
-    const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
+    const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {

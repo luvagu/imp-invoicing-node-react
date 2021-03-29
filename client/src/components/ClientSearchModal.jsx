@@ -1,10 +1,10 @@
-import useSearchApi from '../hooks/useSearchApi'
+import useGetApi from '../hooks/useGetApi'
 
 import SearchModalBody from './SearchModalBody'
 import SearchModalResults from './SearchModalResults'
 
 export default function ClientSearchModal({ closeModal, handleAddClient }) {
-	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
+	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
 
     const handleInputSearch = (e) => {
         if (e.key === 'Enter') {

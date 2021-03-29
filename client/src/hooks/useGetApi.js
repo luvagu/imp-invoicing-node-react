@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { dataSearchApi } from '../api/helpers'
+import { dataGetApi } from '../api/helpers'
 
-const useSearchApi = () => {
+const useGetApi = () => {
 	const [errorMsg, setErrorMsg] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
 	const [searchResults, setSearchResults] = useState(null)
@@ -17,7 +17,7 @@ const useSearchApi = () => {
 			setIsLoading(true)
 
 			try {
-				const results = await dataSearchApi(searchRouteWithQuery)
+				const results = await dataGetApi(searchRouteWithQuery)
 				if (!didCancel) setSearchResults(results)
 			} catch (error) {
 				if (!didCancel) {
@@ -37,4 +37,4 @@ const useSearchApi = () => {
 	return [{ searchResults, isLoading, errorMsg }, setSearchRouteWithQuery]
 }
 
-export default useSearchApi
+export default useGetApi

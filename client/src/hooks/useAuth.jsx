@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
+import { createToken, deleteToken, renewToken } from '../api/helpers'
+import useLocalStorage from './useLocalStorage'
 
 const AuthProvider = createContext()
 
@@ -6,7 +8,6 @@ const AuthProvider = createContext()
 // ... available to any child component that calls useAuth().
 export function ProvideAuth({ children }) {
 	const auth = useProvideAuth()
-
 	return <AuthProvider.Provider value={auth}>{children}</AuthProvider.Provider>
 }
 
@@ -18,47 +19,60 @@ export const useAuth = () => {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-	const [user, setUser] = useState(null)
+	const [localToken, setLocalToken] = useLocalStorage('impSessionToken')
+	const [token, setToken] = useState(localToken ? localToken : null)
+	const [expiresIn, setExpiresIn] = useState(0)
 
 	// Wrap any auth methods we want to use making sure ...
 	// ... to save the user to state.
-	const signin = (email, password) => {
-		return firebase
-			.auth()
-			.signInWithEmailAndPassword(email, password)
-			.then((response) => {
-				setUser(response.user)
-				return response.user
+	const signIn = (user, password, cb) => {
+		return createToken({ user, password })
+			.then(token => {
+				setLocalToken(token)
+				setToken(token)
+				setExpiresIn(token.expires)
+				cb()
+				return token
+			})
+			.catch(error => console.log(error.response?.data.error))
+	}
+
+	const signOut = (cb) => {
+		return deleteToken(token.id)
+			.then(res => console.log(res))
+			.catch(error => console.log(error.response?.data.error))
+			.finally(() => {
+				cb()
+				setToken(null)
+				setLocalToken('')
+				setExpiresIn(0)
 			})
 	}
 
-	const signout = () => {
-		return firebase
-			.auth()
-			.signOut()
-			.then(() => {
-				setUser(false)
-			})
-	}
 
-
-	// Subscribe to user on mount
-	// Because this sets state in the callback it will cause any ...
-	// ... component that utilizes this hook to re-render with the ...
-	// ... latest auth object.
+	// Auto login if local token is valid
 	useEffect(() => {
-		const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-			if (user) {
-				setUser(user)
-			} else {
-				setUser(false)
-			}
-		})
+		if (!localToken) return
 
-		// Cleanup subscription on unmount
+		const unsubscribe = renewToken({ id: localToken.id, extend: false })
+			.then(token => {
+				console.log('renewToken', token)
+				setLocalToken(token)
+				// setToken(token)
+				setExpiresIn(token.expires)
+			})
+
 		return () => unsubscribe()
-	}, [])
+	}, [localToken])
+
+	useEffect(() => {
+		if (expiresIn === 0) return
+		const interval = setInterval(() => {
+		  console.log('This will run every >>>!', expiresIn)
+		}, (expiresIn - (1000 * 60)) - Date.now())
+		return () => clearInterval(interval)
+	  }, [expiresIn])
 
 	// Return the user object and auth methods
-	return { user, signin, signout }
+	return { token, signIn, signOut }
 }

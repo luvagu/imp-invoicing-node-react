@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { dataSearchApi, updateSequencesApi } from '../api/helpers'
+import { dataGetApi, updateSequencesApi } from '../api/helpers'
 
 import Input from '../components/Input'
 import Spinner from '../components/Spinner'
@@ -34,7 +34,7 @@ export default function Settings() {
         const fetchData = async () => {
             setIsLoading(true)
             try {
-                const sequences = await dataSearchApi('/doc-sequences')
+                const sequences = await dataGetApi('/doc-sequences')
                 if (!isDone) setNewSequence(sequences.facturas)
             } catch (error) {
                 if (!isDone) {

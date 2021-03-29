@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Spinner from '../components/Spinner'
-import useSearchApi from '../hooks/useSearchApi'
+import useGetApi from '../hooks/useGetApi'
 
 import ProformaInvoice from './ProformaInvoice'
 
 export default function DocumentView() {
 	const { folder, doc } = useParams()
 
-	const [{ searchResults: docData, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
+	const [{ searchResults: docData, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
 
 	useEffect(() => {
 		setRouteWithQuery(`/get-doc/${folder}/${doc}`)

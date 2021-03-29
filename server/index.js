@@ -49,7 +49,7 @@ app.post('/tokens', async (req, res) => {
                 res.status(200).send(tokenData)
             }
         } else {
-            res.status(401).send({ message: 'No autorizado. Usuario or contraseña incorrectos' })
+            res.status(401).send({ error: 'No autorizado. Usuario or contraseña incorrectos' })
         }
     } catch (error) {
         console.log('Error on Post path >>> /tokens', error.message)
@@ -70,6 +70,7 @@ app.get('/tokens/:id', async (req, res) => {
     }
 })
 
+// Renew token
 app.put('/tokens', async (req, res) => {
     const { id, extend } = req.body
 
@@ -85,7 +86,7 @@ app.put('/tokens', async (req, res) => {
             res.status(200).send(tokenData)
 
         } else {
-            res.status(401).send({ error: 'Token expirado o no autorizado para renovar' })
+            res.status(200).send(false)
         }
         
     } catch (error) {

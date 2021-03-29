@@ -10,6 +10,8 @@ import {
 	useLocation,
 } from 'react-router-dom'
 
+import { ProvideAuth, useAuth } from '../hooks/useAuth'
+
 // This example has 3 pages: a public page, a protected
 // page, and a login screen. In order to see the protected
 // page, you must first login. Pretty standard stuff.
@@ -27,7 +29,7 @@ import {
 
 export default function AuthExample() {
 	return (
-		<AuthProvider>
+		<ProvideAuth>
 			<Router>
 				<div>
 					<AuthButton />
@@ -45,7 +47,7 @@ export default function AuthExample() {
 						<Route path="/public">
 							<PublicPage />
 						</Route>
-						<Route path="/login">
+						<Route path="/ingresar">
 							<LoginPage />
 						</Route>
 						<PrivateRoute path="/protected">
@@ -54,67 +56,29 @@ export default function AuthExample() {
 					</Switch>
 				</div>
 			</Router>
-		</AuthProvider>
+		</ProvideAuth>
 	)
-}
-
-const fakeAuth = {
-	isAuthenticated: false,
-	signin(cb) {
-		fakeAuth.isAuthenticated = true
-		setTimeout(cb, 100) // fake async
-	},
-	signout(cb) {
-		fakeAuth.isAuthenticated = false
-		setTimeout(cb, 100)
-	},
 }
 
 /** For more details on
  * `authContext`, `AuthProvider`, `useAuth` and `useProvideAuth`
  * refer to: https://usehooks.com/useAuth/
  */
-const AuthContext = createContext()
 
-function AuthProvider({ children }) {
-	const auth = useProvideAuth()
-	return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-}
 
-function useAuth() {
-	return useContext(AuthContext)
-}
-
-function useProvideAuth() {
-	const [user, setUser] = useState(null)
-
-	const signin = (cb) => {
-		return fakeAuth.signin(() => {
-			setUser('user')
-			cb()
-		})
-	}
-
-	const signout = (cb) => {
-		return fakeAuth.signout(() => {
-			setUser(null)
-			cb()
-		})
-	}
-
-	return { user, signin, signout }
-}
 
 function AuthButton() {
 	let history = useHistory()
 	let auth = useAuth()
 
-	return auth.user ? (
+	console.log(auth)
+
+	return auth.token ? (
 		<p>
 			Welcome!{' '}
 			<button
 				onClick={() => {
-					auth.signout(() => history.push('/'))
+					auth.signOut(() => history.push('/'))
 				}}
 			>
 				Sign out
@@ -129,10 +93,13 @@ function AuthButton() {
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }) {
 	let auth = useAuth()
+
+	console.log(auth)
+
 	return (
 		<Route
 			{...rest}
-			render={({ location }) => auth.user 
+			render={({ location }) => auth.token 
                 ? (children) 
                 : (<Redirect to={{ pathname: '/ingresar', state: { from: location } }} />)
 			}
@@ -153,10 +120,10 @@ function LoginPage() {
 	let location = useLocation()
 	let auth = useAuth()
 
+	console.log(auth)
+
 	let { from } = location.state || { from: { pathname: '/' } }
-	let login = () => {
-		auth.signin(() => { history.replace(from) })
-	}
+	let login = () => auth.signIn('admin', '9792', () => { history.replace(from) })
 
 	return (
 		<div>

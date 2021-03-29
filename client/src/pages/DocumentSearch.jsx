@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useSearchApi from '../hooks/useSearchApi'
+import useGetApi from '../hooks/useGetApi'
 
 import DocumentSearchResults from '../components/DocumentSearchResults'
 import Spinner from '../components/Spinner'
@@ -8,7 +8,7 @@ import SearchInput from '../components/SearchInput'
 export default function DocumentSearch() {
     const [isRequired, setIsRequired] = useState(false)
     const [routeFolder, setRouteFolder] = useState('')
-    const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useSearchApi()
+    const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
 
     const handleChange = (e) => {
         setRouteFolder(e.target.value)

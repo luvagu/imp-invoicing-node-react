@@ -20,7 +20,7 @@ const API_URL = process.env.NODE_ENV === 'production' ? 'http://192.168.1.5:5000
  * /doc-sequences (no params requiered)
  */
 
-export const dataSearchApi = async (searchRouteWithQuery) => {
+export const dataGetApi = async (searchRouteWithQuery) => {
     const { data } = await axios.get(`${API_URL}${searchRouteWithQuery}`)
     return data
 }
@@ -48,5 +48,33 @@ export const updateDocApi = async (apiFolder, docNum, docData) => {
 
 export const updateSequencesApi = async (prop, value) => {
     const { data } = await axios.put(`${API_URL}/update-sequences/${prop}/${value}`)
+    return data
+}
+
+/**
+ * Tokens API 
+ * GET --> param required field (id)
+ * POST (create) --> body required fields { user, password }
+ * PUT (renew) --> body required fields { id, extend }
+ * DELETE --> param required field (id)
+ */
+
+export const getToken = async (id) => {
+    const { data } = await axios.get(`${API_URL}/tokens/${id}`)
+    return data
+}
+
+export const createToken = async (credentials) => {
+    const { data } = await axios.post(`${API_URL}/tokens`, credentials)
+    return data
+}
+
+export const renewToken = async (token) => {
+    const { data } = await axios.put(`${API_URL}/tokens`, token)
+    return data
+}
+
+export const deleteToken = async (id) => {
+    const { data } = await axios.delete(`${API_URL}/tokens/${id}`)
     return data
 }
