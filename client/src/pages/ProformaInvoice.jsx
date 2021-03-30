@@ -347,7 +347,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                         <p className="text-gray-800 uppercase text-sm font-bold">Cantidad</p>
                     </div>
 
-                    <div className="px-1 w-32 text-right tracking-wide hidden lg:block">
+                    <div className="px-1 w-32 text-right tracking-wide hidden md:block">
                         <p className="text-gray-800 uppercase text-sm font-bold">P.Unit</p>
                     </div>
 
@@ -374,7 +374,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                             <Input extraClass='py-1 px-2 text-right text-sm' name='quantity' value={product.quantity} placeholder='Cantidad' onChange={(e) => handleChangeProduct(idx, 'quantity', e.target.value)} />
                         </div>
 
-                        <div className="px-1 w-32 hidden lg:block">
+                        <div className="px-1 w-32 hidden md:block">
                             <Input extraClass='py-1 px-2 text-right text-sm' name='price' value={product.price} placeholder='Precio' onChange={(e) => handleChangeProduct(idx, 'price', e.target.value)} />
                         </div>
 

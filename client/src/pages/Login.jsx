@@ -10,18 +10,19 @@ export default function LogIn() {
 	const location = useLocation()
 	const auth = useAuth()
 
+    // Redirect to the path it was called from or fallback to '/'
 	const { from } = location.state || { from: { pathname: '/' } }
 
     const { user, password } = credentials
 
-	const handleLogin = () => {
-        if (!user || !password) return
-        auth.signIn(user, password, () => { history.replace(from) })
-    }
-
     const handleChange = (e) => {
         const { value, name } = e.target
         setCredentials({ ...credentials, [name]: value })
+    }
+
+	const handleLogin = () => {
+        if (!user || !password) return
+        auth.signIn(credentials, () => { history.replace(from) })
     }
 
 	return auth.token ? (<Redirect to={from} />) : (

@@ -4,115 +4,113 @@ import useLocalStorage from './useLocalStorage'
 
 const AuthProvider = createContext()
 
-// Provider component that wraps your app and makes auth object
-// available to any child component that calls useAuth().
+// Provider component, child components can call useAuth()
 export function ProvideAuth({ children }) {
 	const auth = useProvideAuth()
-	return <AuthProvider.Provider value={auth}>{children}</AuthProvider.Provider>
+	return (<AuthProvider.Provider value={auth}>{children}</AuthProvider.Provider>)
 }
 
-// Hook for child components to get the auth object and re-render when it changes.
+// Hook auth object to re-render child when it changes
 export const useAuth = () => {
 	return useContext(AuthProvider)
 }
 
-// Provider hook that creates auth object and handles state
+// Provider hook that creates an auth object and handles state
 function useProvideAuth() {
+	const [errorMsg, setErrorMsg] = useState('')
+	const [isLoading, setIsLoading] = useState(false)
 	const [localToken, setLocalToken] = useLocalStorage('impSessionToken')
-	// const [token, setToken] = useState(localToken ? localToken : null)
 	const [token, setToken] = useState(null)
 	const [expiresIn, setExpiresIn] = useState(0)
 
-	// Wrap any auth methods we want to use making sure ...
-	// ... to save the user to state.
-	const signIn = async (user, password, cb) => {
+	// Save token to state and redirect
+	const signIn = async (credentials, redirect) => {
+		setIsLoading(true)
 		try {
-			const token = await createToken({ user, password })
+			const token = await createToken(credentials)
 			setLocalToken(token)
 			setToken(token)
 			setExpiresIn(token.expires)
-			cb()
+			redirect()
 		} catch (error) {
-			console.log(error.response?.data.error)
+			console.error(error.response?.data.error)
 		}
+		setIsLoading(false)
 	}
 
-	const signOut = async (cb) => {
+	// Destroy token, localToken, server token and redirect
+	const signOut = async (redirect) => {
 		try {
 			await deleteToken(token.id)
 		} catch (error) {
-			console.log(error.response?.data.error)
+			console.error(error.response?.data.error)
 		} finally {
 			setToken(null)
 			setLocalToken('')
 			setExpiresIn(0)
-			cb()
+			redirect()
 		}
 	}
 
-	// const tokenRenewal = async (token) => {
-	// 	try {
-	// 		const newToken = await renewToken({ id: token.id, extend: true })
-	// 		console.log('renewToken', newToken)
-	// 		setLocalToken(newToken)
-	// 		setToken(newToken)
-	// 		setExpiresIn(newToken.expires)
-	// 	} catch (error) {
-	// 		console.log(error.response?.data.error)
-	// 		setLocalToken('')
-	// 	}
-	// }
-
 	// Renew token 1 min before it expires
 	useEffect(() => {
-		if (expiresIn === 0 || expiresIn < Date.now()) return
+		if (expiresIn === 0 || expiresIn < Date.now() || !token) return
 
 		const interval = setInterval(() => {
-			console.log('This will run every >>>!', (expiresIn - (1000 * 60)) - Date.now())
-			console.log('token', token)
-			// tokenRenewal(token)
-			renewToken({ id: token.id, extend: true })
-				.then(newToken => {
-					console.log('newToken', newToken)
+			// console.log('This will run every >>>!', expiresIn - (1000 * 60) - Date.now())
+
+			// renewToken({ id: token.id, extend: true })
+			// 	.then((newToken) => {
+			// 		setLocalToken(newToken)
+			// 		setToken(newToken)
+			// 		setExpiresIn(newToken.expires)
+			// 	})
+			// 	.catch((error) => {
+			// 		console.error(error.response?.data.error)
+			// 		setLocalToken('')
+			// 	})
+
+			// Renew token api call
+			(async () => {
+				try {
+					const newToken = await renewToken({ id: token.id, extend: true })
 					setLocalToken(newToken)
 					setToken(newToken)
 					setExpiresIn(newToken.expires)
-				})
-				.catch(error => {
-					console.log(error.response?.data.error)
+				} catch (error) {
+					console.error(error.response?.data.error)
+					setToken(null)
 					setLocalToken('')
-				})
-		}, (expiresIn - (1000 * 60)) - Date.now())
+					setExpiresIn(0)
+				}
+			})()
+
+		}, expiresIn - (1000 * 60) - Date.now())
 
 		return () => clearInterval(interval)
-	  }, [expiresIn, token])
+	}, [expiresIn, token])
 
-	  // Auto login if local token is valid
+	// Try auto login if localToken exists
 	useEffect(() => {
 		if (!localToken) return
-
-		console.log('localToken', localToken)
-		console.log('token', token)
+		
 		const unsubscribe = renewToken({ id: localToken.id, extend: true })
-			.then(newToken => {
-				console.log('newToken', newToken)
-				// setLocalToken(newToken)
+			.then((newToken) => {
 				if (newToken) {
 					setToken(newToken)
 					setExpiresIn(newToken.expires)
 				} else {
 					setToken(null)
-					setExpiresIn(0)
 				}
 			})
-			.catch(error => {
-				console.log(error.response?.data.error)
+			.catch((error) => {
+				console.error(error.response?.data.error)
 				setLocalToken('')
 			})
 
 		return () => unsubscribe
 	}, [])
 
-	// Return the user object and auth methods
-	return { token, signIn, signOut }
+	// Return the auth object, auth methods and related state
+	return { errorMsg, isLoading, token, signIn, signOut }
 }
