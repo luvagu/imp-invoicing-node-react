@@ -1,5 +1,3 @@
-import { useContext, createContext, useState } from 'react'
-
 import {
 	BrowserRouter as Router,
 	Switch,
