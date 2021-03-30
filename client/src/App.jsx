@@ -30,7 +30,7 @@ export default function App() {
 						<main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
 							<Switch>
 								<ErrorBoundary>
-									<Route exact path='/' component={Dashboard} />
+									<PrivateRoute exact path='/' component={Dashboard} />
 									<PrivateRoute path='/ajustes' component={Settings} />
 									<PrivateRoute path='/nuevo-egreso' component={() => 
 										<ProformaInvoice key={Date.now().toString()} docType='Egreso' apiFolder='egresos' />} />
