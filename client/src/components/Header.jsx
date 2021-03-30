@@ -1,15 +1,20 @@
 import { memo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 import { SvgGear, SvgLogIn, SvgLogOut, SvgMenu } from '../icons'
 
 export default memo(function Header({ sidebarOpen, setSidebarOpen }) {
+	const history = useHistory()
     const location = useLocation()
+	const auth = useAuth()
 	
     let headerTitle
 
     switch (location.pathname) {
 		case '/ajustes': headerTitle = 'Ajustes'
+            break
+		case '/entrar': headerTitle = 'Entrar'
             break
 		case '/nuevo-egreso': headerTitle = 'Nuevo Egreso'
             break
@@ -47,13 +52,19 @@ export default memo(function Header({ sidebarOpen, setSidebarOpen }) {
 					<SvgGear />
 				</Link>
 
-				<button className="flex mr-4 text-gray-600 focus:outline-none" title="Salir">
-					<SvgLogOut />
-				</button>
-
-				<button className="flex text-gray-600 focus:outline-none" title="Ingresar">
-					<SvgLogIn />
-				</button>
+				{auth.token ? (
+					<button 
+						className="flex text-gray-600 focus:outline-none" 
+						title="Salir" 
+						onClick={() => auth.signOut(() => history.push('/'))}
+					>
+						<SvgLogOut />
+					</button>
+				) : (
+					<Link to='/entrar' className="flex text-gray-600 focus:outline-none" title="Entrar">
+						<SvgLogIn />
+					</Link>
+				)}			
 			</div>
 		</header>
 	)

@@ -14,8 +14,7 @@ import DocumentSearch from './pages/DocumentSearch'
 import ProductSearch from './pages/ProductSearch'
 import DocumentView from './pages/DocumentView'
 import Settings from './pages/Settings'
-import Login from './pages/Login'
-
+import LogIn from './pages/LogIn'
 
 export default function App() {
 	// Sidebar state close/open
@@ -31,7 +30,7 @@ export default function App() {
 						<main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
 							<Switch>
 								<ErrorBoundary>
-									<PrivateRoute exact path='/' component={Dashboard} />
+									<Route exact path='/' component={Dashboard} />
 									<PrivateRoute path='/ajustes' component={Settings} />
 									<PrivateRoute path='/nuevo-egreso' component={() => 
 										<ProformaInvoice key={Date.now().toString()} docType='Egreso' apiFolder='egresos' />} />
@@ -42,7 +41,7 @@ export default function App() {
 									<PrivateRoute path='/buscar-documentos' component={DocumentSearch} />
 									<PrivateRoute path='/buscar-productos' component={ProductSearch} />
 									<PrivateRoute path='/ver-documento/:folder/:doc' component={DocumentView} />
-									<Route path='/entrar' component={Login} />
+									<Route path='/entrar' component={LogIn} />
 								</ErrorBoundary>
 							</Switch>
 						</main>

@@ -92,12 +92,18 @@ function useProvideAuth() {
 		if (!localToken) return
 
 		console.log('localToken', localToken)
+		console.log('token', token)
 		const unsubscribe = renewToken({ id: localToken.id, extend: true })
 			.then(newToken => {
 				console.log('newToken', newToken)
-				setLocalToken(newToken)
-				setToken(newToken)
-				setExpiresIn(newToken.expires)
+				// setLocalToken(newToken)
+				if (newToken) {
+					setToken(newToken)
+					setExpiresIn(newToken.expires)
+				} else {
+					setToken(null)
+					setExpiresIn(0)
+				}
 			})
 			.catch(error => {
 				console.log(error.response?.data.error)

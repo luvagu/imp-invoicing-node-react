@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth"
 
 import Input from '../components/Input'
 
-export default function Login() {
+export default function LogIn() {
     const [credentials, setCredentials] = useState({ user: '', password: ''})
 	const history = useHistory()
 	const location = useLocation()
@@ -29,8 +29,8 @@ export default function Login() {
 	return (
 		<div>
 			<p>You must log in to view the page at {from.pathname}</p>
-            <Input name='user' placeholder='Usuario' onClick={handleChange} />
-            <Input name='password' placeholder='Contraseña' onClick={handleChange} />
+            <Input name='user' placeholder='Usuario' onChange={handleChange} />
+            <Input name='password' placeholder='Contraseña' onChange={handleChange} />
 			<button onClick={handleLogin}>Entrar</button>
 		</div>
 	)
