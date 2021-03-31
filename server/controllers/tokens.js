@@ -1,7 +1,7 @@
 const { createToken, deleteDoc, readDoc, updateDoc, getUserToken, verifyUser } = require('../lib/helpers')
 
 // Get token data
-const getTokens = async (req, res) => {
+const getToken = async (req, res) => {
     const id = req.params.id
 
     try {
@@ -14,7 +14,7 @@ const getTokens = async (req, res) => {
 }
 
 // Verify user, get, create and send token
-const postTokens = async (req, res) => {
+const postToken = async (req, res) => {
     const { user, password } = req.body
 
     try {
@@ -37,7 +37,7 @@ const postTokens = async (req, res) => {
 }
 
 // Renew token
-const putTokens = async (req, res) => {
+const putToken = async (req, res) => {
     const { id, extend } = req.body
 
     try {
@@ -63,7 +63,7 @@ const putTokens = async (req, res) => {
 }
 
 // Delete a token
-const deleteTokens = async (req, res) => {
+const deleteToken = async (req, res) => {
     const id = req.params.id
 
     try {
@@ -76,8 +76,8 @@ const deleteTokens = async (req, res) => {
 }
 
 module.exports = {
-    getTokens,
-    postTokens,
-    putTokens,
-    deleteTokens
+    getToken,
+    postToken,
+    putToken,
+    deleteToken
 }

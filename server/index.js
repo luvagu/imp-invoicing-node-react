@@ -5,7 +5,9 @@ const compression = require('compression')
 const app = express()
 const helpers = require('./lib/helpers')
 const startWorkers = require('./lib/workers')
-const { getTokens, postTokens, putTokens, deleteTokens } = require('./routes/tokens')
+const { getToken, postToken, putToken, deleteToken } = require('./controllers/tokens')
+const { getDocList, getDocSingle, postCreateDoc, putUpdateDoc, deleteDocSingle, deleteDocAll } = require('./controllers/docs')
+const { getDocSalesStats, getDocSequences } = require('./controllers/utils')
 
 // IMPSRV IP 192.168.1.102
 // SELF IP 192.168.1.5
@@ -33,121 +35,25 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
 // Auth routes
-app.get('/tokens/:id', getTokens)
-app.post('/tokens', postTokens)
-app.put('/tokens', putTokens)
-app.delete('/tokens/:id', deleteTokens)
+app.get('/tokens/:id', getToken)
+app.post('/tokens', postToken)
+app.put('/tokens', putToken)
+app.delete('/tokens/:id', deleteToken)
 
 // CRUD related routes
-app.get('/list-docs/:folder/:doc?', async (req, res) => {
-    const { folder:dir, doc:fileName } = req.params
+app.get('/list-docs/:folder/:doc?', getDocList)
+app.get('/get-doc/:folder/:doc', getDocSingle)
+app.post('/create-doc/:folder', postCreateDoc)
+app.put('/update-doc/:folder/:doc', putUpdateDoc)
+app.delete('/delete-doc/:folder/:doc', deleteDocSingle)
+app.delete('/delete-all-docs/:folder', deleteDocAll)
 
-    try {
-        const docsList = await helpers.listDocsExtended(dir, fileName)
-        if (docsList.length) {
-            res.status(200).send(docsList)
-        } else {
-            res.status(404).send({ error: 'No hay documentos para mostrar' })
-        }
-    } catch (error) {
-        console.error('Error on Get path >>> /list-docs/:folder/:doc?', error.message)
-        res.status(404).send({ error: 'No se pudo obtener el documento o lista de documentos' })
-    }
-})
-
-app.get('/get-doc/:folder/:doc', async (req, res) => {
-    const { folder:dir, doc:fileName } = req.params
-
-    try {
-        const invoiceData = await helpers.readDoc(dir, fileName)
-        res.status(200).send(invoiceData)
-    } catch (error) {
-        console.error('Error on Get path >>> /get-doc/:folder/:doc', error.message)
-        res.status(404).send({ error: `No se pudo obtener el documento ${fileName}` })
-    }
-})
-
-app.post('/create-doc/:folder', async (req, res) => {
-    const { folder:dir } = req.params
-    const fileData = req.body
-
-    try {
-        const response = await helpers.createDoc(dir, fileData)
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Post path >>> /create-doc/:folder', error.message)
-        res.status(500).send({ error: 'No se pudo crear el documento, es posible que ya exista' })
-    }
-})
-
-app.put('/update-doc/:folder/:doc', async (req, res) => {
-    const { folder:dir, doc:fileName } = req.params
-    const fileData = req.body
-
-    try {
-        const response = await helpers.updateDoc(dir, fileName, fileData)
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Put path >>> /update-doc/:folder/:doc', error.message)
-        res.status(500).send({ error: `No se pudo actualizar el documento ${fileName}` })
-    }
-})
-
-app.delete('/delete-doc/:folder/:doc', async (req, res) => {
-    const { folder:dir, doc:fileName } = req.params
-    try {
-        const response = await helpers.deleteDoc(dir, fileName)
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Delete path >>> /delete-doc/:folder/:doc', error.message)
-        res.status(500).send({ error: `No se pudo borrar el documento ${fileName}` })
-    }
-})
-
-app.delete('/delete-all-docs/:folder', async (req, res) => {
-    const dir = req.params.folder
-
-    try {
-        const response = await helpers.deleteAllDocs(dir)
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Post path >>> /delete-all-docs/:folder', error.message)
-        res.status(500).send({ error: 'No se pudieron borrar los documentos' })
-    }
-})
+// Utils routes
+app.get('/doc-sales-stats', getDocSalesStats)
+app.get('/doc-sequences', getDocSequences)
+app.put('/update-sequence/:prop/:value', putUpdateSequence)
 
 // Search DB related routes
-app.get('/doc-stats', async (req, res) => {
-    try {
-        const stats = await helpers.queryDB('stats')
-        res.status(200).send(stats)
-    } catch (error) {
-        console.error('Error on Get path >>> /doc-stats', error.message)
-        res.status(500).send({ error: 'No se pudo leer la base de datos' })
-    }
-})
-
-app.get('/doc-sequences', async (req, res) => {
-    try {
-        const sequences = await helpers.queryDB('sequences')
-        res.status(200).send(sequences)
-    } catch (error) {
-        console.error('Error on Get path >>> /doc-sequences', error.message)
-        res.status(500).send({ error: 'No se pudo leer la base de datos' })
-    }
-})
-
-app.put('/update-sequences/:prop/:value', async (req, res) => {
-    const { prop, value } = req.params
-    try {
-        const response = await helpers.updateSequencesProp(prop, parseInt(value))
-        res.status(200).send(response)
-    } catch (error) {
-        console.error('Error on Put path >>> /doc-sequences/:name', error.message)
-        res.status(500).send({ error: error.message })
-    }
-})
-
 app.get('/search-client-id/:query', async (req, res) => {
     const clientId = req.params.query
 
