@@ -5,6 +5,7 @@ const compression = require('compression')
 const app = express()
 const helpers = require('./lib/helpers')
 const startWorkers = require('./lib/workers')
+const { getTokens, postTokens, putTokens, deleteTokens } = require('./routes/tokens')
 
 // IMPSRV IP 192.168.1.102
 // SELF IP 192.168.1.5
@@ -32,77 +33,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
 // Auth routes
-app.post('/tokens', async (req, res) => {
-    const { user, password } = req.body
-
-    try {
-        // Verify user and send token
-        if (await helpers.verifyUser(user, password)) {
-            const token = await helpers.getUserToken(user)
-
-            // Save the token
-            await helpers.createToken(token.id, token)
-            
-            res.status(200).send(token)
-        } else {
-            res.status(401).send({ error: 'No autorizado. Usuario o contraseña incorrectos' })
-        }
-    } catch (error) {
-        console.log('Error on Post path >>> /tokens', error.message)
-        res.status(500).send({ error: 'No se pudo leer la base de datos' })
-    }
-    
-})
-
-app.get('/tokens/:id', async (req, res) => {
-    const id = req.params.id
-
-    try {
-        const token = await helpers.readDoc('tokens', id)
-        res.status(200).send(token)
-    } catch (error) {
-        console.log('Error on Get path >>> /tokens', error.message)
-        res.status(500).send({ error: 'No se pudo crear el token' })
-    }
-})
-
-// Renew token
-app.put('/tokens', async (req, res) => {
-    const { id, extend } = req.body
-
-    try {
-        const existingToken = await helpers.readDoc('tokens', id)
-
-        // Verify that the token isn't already expired
-        if (existingToken.expires > Date.now() && extend) {
-            // Update the expiration date 12 hour from now
-            existingToken.expires = Date.now() + 1000 * 60 * 60 * 12
-
-            // Save the token
-            await helpers.updateDoc('tokens', id, existingToken)
-
-            res.status(200).send(existingToken)
-        } else {
-            res.status(200).send(false)
-        }
-        
-    } catch (error) {
-        console.log('Error on Put path >>> /tokens', error.message)
-        res.status(500).send({ error: 'No se pudo renovar el token' })
-    }
-})
-
-app.delete('/tokens/:id', async (req, res) => {
-    const id = req.params.id
-
-    try {
-        await helpers.deleteDoc('tokens', id)
-        res.status(200).send({ message: 'Token eliminado' })
-    } catch (error) {
-        console.log('Error on Delete path >>> /tokens', error.message)
-        res.status(500).send({ error: 'No se pudo eliminar el token' })
-    }
-})
+app.get('/tokens/:id', getTokens)
+app.post('/tokens', postTokens)
+app.put('/tokens', putTokens)
+app.delete('/tokens/:id', deleteTokens)
 
 // CRUD related routes
 app.get('/list-docs/:folder/:doc?', async (req, res) => {
@@ -138,7 +72,7 @@ app.post('/create-doc/:folder', async (req, res) => {
     const fileData = req.body
 
     try {
-        const response = await helpers.creteDoc(dir, fileData)
+        const response = await helpers.createDoc(dir, fileData)
         res.status(200).send(response)
     } catch (error) {
         console.error('Error on Post path >>> /create-doc/:folder', error.message)

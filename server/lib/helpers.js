@@ -56,7 +56,7 @@ helpers.readDoc = async (dir, fileName) => {
     return parseJsonToObject(data)
 }
 
-helpers.creteDoc = async (dir, fileData) => {
+helpers.createDoc = async (dir, fileData) => {
     const fileName = await helpers.getNextDocNum(dir)
     const fileDescriptor = await fs.open(baseDir+dir+'/'+fileName+'.json', 'wx')
     // The client at first doesn't have the docNum/fileName so we update the docNum before write
