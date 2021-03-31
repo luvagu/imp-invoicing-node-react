@@ -147,12 +147,34 @@ helpers.createToken = async (id, data) => {
     return true
 }
 
+// Token object
+helpers.getUserToken = async (user) => {
+    const users = await helpers.queryDB('users')
+
+    if ([user] in users) {
+        const id = helpers.createRandomString(20)
+
+        // Set token expiration date 12 hour from now
+        const token = {
+            id,
+            user,
+            displayName: users[user].displayName,
+            privileges: users[user].privileges,
+            expires: Date.now() + 1000 * 60 * 60 * 12
+        }
+
+        return token
+    } else {
+        return false
+    }
+}
+
 // Verify token
 helpers.verifyToken = async (id, user) => {
     const tokenData = await helpers.readDoc('tokens', id)
 
     // Check that the token is for the given user and has not expired
-    if (tokenData.user == user && tokenData.expires > Date.now()) {
+    if (tokenData.user === user && tokenData.expires > Date.now()) {
         return true
     } else {
         return false

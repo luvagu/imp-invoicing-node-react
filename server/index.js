@@ -36,20 +36,16 @@ app.post('/tokens', async (req, res) => {
     const { user, password } = req.body
 
     try {
-        // Verify user and set token expiration date 12 hour from now
+        // Verify user and send token
         if (await helpers.verifyUser(user, password)) {
-            const id = helpers.createRandomString(20)
-            const tokenData = {
-                id,
-                user,
-                expires: Date.now() + 1000 * 60 * 60 * 12
-            }
+            const token = await helpers.getUserToken(user)
 
-            if (await helpers.createToken(id, tokenData)) {
-                res.status(200).send(tokenData)
-            }
+            // Save the token
+            await helpers.createToken(id, token)
+            
+            res.status(200).send(token)
         } else {
-            res.status(401).send({ error: 'No autorizado. Usuario or contraseña incorrectos' })
+            res.status(401).send({ error: 'No autorizado. Usuario o contraseña incorrectos' })
         }
     } catch (error) {
         console.log('Error on Post path >>> /tokens', error.message)
@@ -75,16 +71,17 @@ app.put('/tokens', async (req, res) => {
     const { id, extend } = req.body
 
     try {
-        const tokenData = await helpers.readDoc('tokens', id)
+        const existingToken = await helpers.readDoc('tokens', id)
 
         // Verify that the token isn't already expired
-        if (tokenData.expires > Date.now() && extend) {
+        if (existingToken.expires > Date.now() && extend) {
             // Update the expiration date 12 hour from now
-            tokenData.expires = Date.now() + 1000 * 60 * 60 * 12
+            existingToken.expires = Date.now() + 1000 * 60 * 60 * 12
 
-            if (await helpers.updateDoc('tokens', id, tokenData))
-            res.status(200).send(tokenData)
+            // Save the token
+            await helpers.updateDoc('tokens', id, existingToken)
 
+            res.status(200).send(existingToken)
         } else {
             res.status(200).send(false)
         }

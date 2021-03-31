@@ -34,6 +34,7 @@ function useProvideAuth() {
 			redirect()
 		} catch (error) {
 			console.error(error.response?.data.error)
+			setErrorMsg(error.response?.data.error || 'Network Error')
 		}
 		setIsLoading(false)
 	}
@@ -110,6 +111,16 @@ function useProvideAuth() {
 
 		return () => unsubscribe
 	}, [])
+
+	useEffect(() => {
+		if (!errorMsg) return
+
+		const timeout = setTimeout(() => {
+			setErrorMsg('')
+		}, 5000)
+
+		return () => clearTimeout(timeout)
+	}, [errorMsg])
 
 	// Return the auth object, auth methods and related state
 	return { errorMsg, isLoading, token, signIn, signOut }

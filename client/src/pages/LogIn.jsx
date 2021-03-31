@@ -3,13 +3,14 @@ import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import { useAuth } from "../hooks/useAuth"
 
 import Input from '../components/Input'
+import Spinner from '../components/Spinner'
 
 export default function LogIn() {
     const [credentials, setCredentials] = useState({ user: '', password: ''})
 	const history = useHistory()
 	const location = useLocation()
 	const auth = useAuth()
-
+    
     // Redirect to the path it was called from or fallback to '/'
 	const { from } = location.state || { from: { pathname: '/' } }
 
@@ -35,14 +36,19 @@ export default function LogIn() {
                 <div className="w-full sm:w-64 mb-4">
                     <Input extraClass='mb-4' name='user' placeholder='Usuario' onChange={handleChange} />
                     <Input extraClass='mb-4' type='password' name='password' placeholder='Contraseña' onChange={handleChange} />
-                    <button
-                        type="button"
-                        className="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
-                        onClick={handleLogin}
-                    >
-                        Entrar
-                    </button>
+                    <div className="flex items-center">
+                       <button
+                            type="button"
+                            className="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
+                            onClick={handleLogin}
+                        >
+                            Entrar
+                        </button>
+                        {auth.isLoading && <div className="ml-4"><Spinner /></div>} 
+                    </div>
                 </div>
+
+                {auth.errorMsg && (<div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{auth.errorMsg}</div>)}
             </div>
         </div>
 	)
