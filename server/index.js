@@ -36,13 +36,13 @@ app.post('/tokens', async (req, res) => {
     const { user, password } = req.body
 
     try {
-        // Verify user
+        // Verify user and set token expiration date 12 hour from now
         if (await helpers.verifyUser(user, password)) {
             const id = helpers.createRandomString(20)
             const tokenData = {
                 id,
                 user,
-                expires: Date.now() + 1000 * 60 * 60
+                expires: Date.now() + 1000 * 60 * 60 * 12
             }
 
             if (await helpers.createToken(id, tokenData)) {
@@ -79,8 +79,8 @@ app.put('/tokens', async (req, res) => {
 
         // Verify that the token isn't already expired
         if (tokenData.expires > Date.now() && extend) {
-            // Update the expiration date 1 hour from now
-            tokenData.expires = Date.now() + 1000 * 60 * 60
+            // Update the expiration date 12 hour from now
+            tokenData.expires = Date.now() + 1000 * 60 * 60 * 12
 
             if (await helpers.updateDoc('tokens', id, tokenData))
             res.status(200).send(tokenData)
