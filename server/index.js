@@ -41,7 +41,7 @@ app.post('/tokens', async (req, res) => {
             const token = await helpers.getUserToken(user)
 
             // Save the token
-            await helpers.createToken(id, token)
+            await helpers.createToken(token.id, token)
             
             res.status(200).send(token)
         } else {
