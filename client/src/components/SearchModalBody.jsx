@@ -14,7 +14,7 @@ export default function SearchModalBody({
 	children,
 }) {
 	return (
-		<div className="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8">
+		<div className="shadow w-full rounded-lg bg-white overflow-hidden block p-8">
 			<h2 className="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
 				Buscar {searchLabel} por:
 			</h2>

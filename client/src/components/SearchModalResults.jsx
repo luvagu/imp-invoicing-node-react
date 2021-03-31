@@ -29,13 +29,13 @@ export default function SearchModalResults({ labelId, labelName, results, handle
 							</p>
 						</div>
 
-						<div className="w-3/5 mr-2">
+						<div className="w-3/4 mr-2">
 							<p className="text-gray-800 uppercase tracking-wide text-sm truncate">
 								{res.name}
 							</p>
 						</div>
 
-						<div className="w-auto text-right">
+						<div className="w-10 pr-1 text-right">
 							<button
 								type="button"
 								className="mt-1 text-green-500 hover:text-green-600 text-sm"
