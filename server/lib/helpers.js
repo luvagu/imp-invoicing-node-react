@@ -86,8 +86,9 @@ helpers.listDocs = async (dir) => {
 helpers.listDocsExtended = async (dir, fileName) => {
     // Return a single file when fileName is receiveed
     if (fileName !== undefined && fileName.trim().length > 0) {
-        const { docNum, docDate, docTotal, clientData: { name } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName+'.json', 'utf8'))
-        return [{ docNum, docDate, docTotal, name }]
+        const { docNum, docDate, docTotal, user, clientData: { name: clientName } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName+'.json', 'utf8'))
+        const shortDate = docDate.split(' ')[0]
+        return [{ docNum, shortDate, docTotal, user, clientName }]
     }
 
     // Otherwise read dir and loop through each file
@@ -97,8 +98,9 @@ helpers.listDocsExtended = async (dir, fileName) => {
         const docsSummary = []
 
         for (const fileName of fileNames) {
-            const { docNum, docDate, docTotal, clientData: { name } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName, 'utf8'))
-            docsSummary.push({ docNum, docDate, docTotal, name })
+            const { docNum, docDate, docTotal, user, clientData: { name: clientName } } = parseJsonToObject(await fs.readFile(baseDir+dir+'/'+fileName, 'utf8'))
+            const shortDate = docDate.split(' ')[0]
+            docsSummary.push({ docNum, shortDate, docTotal, user, clientName })
         }
         const sortedDocs = docsSummary.sort((a, b) => b.docNum - a.docNum)
 
