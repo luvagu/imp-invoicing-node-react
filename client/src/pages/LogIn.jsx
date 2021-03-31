@@ -21,7 +21,9 @@ export default function LogIn() {
         setCredentials({ ...credentials, [name]: value })
     }
 
-	const handleLogin = () => {
+	const handleLogin = (e) => {
+        e.preventDefault()
+
         if (!user || !password) return
         auth.signIn(credentials, () => { history.replace(from) })
     }
@@ -33,20 +35,22 @@ export default function LogIn() {
             <div className="flex flex-col mt-6">
                 <p className="mb-4">Debes iniciar sesión para ir a {from.pathname}</p>
 
-                <div className="w-full sm:w-64 mb-4">
+                <form 
+                    className="w-full sm:w-64 mb-4"
+                    onSubmit={handleLogin}
+                >
                     <Input extraClass='mb-4' name='user' placeholder='Usuario' onChange={handleChange} />
                     <Input extraClass='mb-4' type='password' name='password' placeholder='Contraseña' onChange={handleChange} />
                     <div className="flex items-center">
                        <button
-                            type="button"
+                            type="submit"
                             className="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
-                            onClick={handleLogin}
                         >
                             Entrar
                         </button>
                         {auth.isLoading && <div className="ml-4"><Spinner /></div>} 
                     </div>
-                </div>
+                </form>
 
                 {auth.errorMsg && (<div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{auth.errorMsg}</div>)}
             </div>

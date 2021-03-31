@@ -37,9 +37,9 @@ export default function DocumentSearch() {
 
 			<h3 className="text-black text-3xl font-medium">Buscar documentos por:</h3>
 
-            <div className="flex flex-wrap mt-6">
+            <div className="flex flex-wrap md:flex-nowrap mt-6">
                 <select 
-                    className={`mb-4 md:mb-0 mr-4 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 pl-4 pr-8 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500 ${isRequired ? 'border-red-600' : ''}`}
+                    className={`mb-4 md:mb-0 mr-0 md:mr-4 w-full md:w-1/3 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 pl-4 pr-8 text-gray-700 focus:outline-none focus:bg-white focus:border-blue-500 ${isRequired ? 'border-red-600' : ''}`}
                     onChange={handleChange}
                 >
                     <option>Tipo de documento</option>
@@ -48,7 +48,7 @@ export default function DocumentSearch() {
                     <option value="proformas">Proformas</option>
                 </select>
                 
-                <SearchInput name='docNum' placeholder='Numero o (*) para todos' handle={handleKeyDown} />
+                <SearchInput extraClass='w-full md:w-2/3' name='docNum' placeholder='Numero o (*) para todos' handle={handleKeyDown} />
             </div>
 
             {isLoading && <div className="mt-6 text-center"><Spinner /></div>}

@@ -21,10 +21,8 @@ export default function DownloadBtn({ data }) {
 
 	return (
 		<div
-			className={`${
-				!show ? 'opacity-30' : 'opacity-100'
-			} p-1 text-white rounded-full bg-red-600 hover:bg-red-700 inline-flex items-center justify-center ml-2`}
-      title="Descargar PDF"
+			className={`${!show ? 'opacity-30' : 'opacity-100'} ml-2 p-1 text-white rounded-full bg-red-600 hover:bg-red-700 inline-flex items-center justify-center`}
+			title="Descargar PDF"
 		>
 			<PDFDownloadLink
 				document={<PDFDocument data={data} />}

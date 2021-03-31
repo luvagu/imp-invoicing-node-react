@@ -23,7 +23,7 @@ export default function DocumentSearchResults({ results, routeFolder }) {
                 {results.map((res, idx) => (
                     <tr 
                         key={idx} 
-                        className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-yellow-50 cursor-pointer"
+                        className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-yellow-100 cursor-pointer"
                         onClick={() => handleOnClick(res.docNum)}
                         title="Ver documento"
                     >

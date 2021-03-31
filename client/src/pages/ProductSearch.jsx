@@ -27,9 +27,9 @@ export default function ProductSearch() {
 
 			<h3 className="text-black text-3xl font-medium">Buscar productos por:</h3>
 
-            <div className="flex flex-wrap mt-6">
-                <SearchInput extraClass='mb-4 md:mb-0 mr-4' name='id' placeholder='Codigo exacto' handle={handleKeyDown} />
-                <SearchInput name='includes' placeholder='Codigo o nombre parcial' handle={handleKeyDown} />
+            <div className="flex flex-wrap md:flex-nowrap mt-6">
+                <SearchInput extraClass='mb-4 md:mb-0 mr-0 md:mr-4 w-full md:w-1/3' name='id' placeholder='Codigo exacto' handle={handleKeyDown} />
+                <SearchInput extraClass='w-full md:w-2/3' name='includes' placeholder='Codigo o nombre parcial' handle={handleKeyDown} />
             </div>
 
             {isLoading && <div className="mt-6 text-center"><Spinner /></div>}
