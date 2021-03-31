@@ -15,7 +15,7 @@ export default function ProductSearchResults({ results }) {
                 <tbody>
                 
                 {results.map((res, idx) => (
-                    <tr key={idx} className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-gray-50">
+                    <tr key={idx} className="bg-white border-b border-gray-300 text-sm text-gray-800 hover:bg-gray-200">
                         <td className="p-4">{res.id}</td>
                         <td className="p-4">{res.name}</td>
                         <td className="p-4 whitespace-nowrap">$ {res.price}</td>

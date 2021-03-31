@@ -20,7 +20,7 @@ export default function SearchModalBody({
 			</h2>
 
 			<div className="flex mb-6">
-				<div className="w-52 mr-2">
+				<div className="w-1/3 mr-2">
 					<Input
 						extraClass="mb-1 py-2 px-4"
 						type="search"
@@ -30,7 +30,7 @@ export default function SearchModalBody({
 					/>
 				</div>
 
-				<div className="w-full">
+				<div className="w-2/3">
 					<Input
 						extraClass="mb-1 py-2 px-4"
 						type="search"

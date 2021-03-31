@@ -33,7 +33,7 @@ export default function ClientAddModal({ handleAddClient, closeModal, data }) {
 
 			<div className="flex flex-col mb-6">
 				<div className="flex w-full">
-					<div className="w-1/3 mr-2">
+					<div className="w-1/2 mr-2">
 						<Input
 							extraClass="mb-1 py-2 px-4"
 							name="id"
@@ -43,23 +43,12 @@ export default function ClientAddModal({ handleAddClient, closeModal, data }) {
 						/>
 					</div>
 
-					<div className="w-1/3 mr-2">
+					<div className="w-1/2">
 						<Input
 							extraClass="mb-1 py-2 px-4"
 							name="phone"
 							value={clientData.phone}
 							placeholder="Telefono"
-							onChange={handleChange}
-						/>
-					</div>
-
-					<div className="w-1/3">
-						<Input
-							extraClass="mb-1 py-2 px-4"
-							type="email"
-							name="email"
-							value={clientData.email}
-							placeholder="Email"
 							onChange={handleChange}
 						/>
 					</div>
@@ -79,6 +68,15 @@ export default function ClientAddModal({ handleAddClient, closeModal, data }) {
 						name="address"
 						value={clientData.address}
 						placeholder="Direccion"
+						onChange={handleChange}
+					/>
+
+					<Input
+						extraClass="mb-1 py-2 px-4"
+						type="email"
+						name="email"
+						value={clientData.email}
+						placeholder="Email"
 						onChange={handleChange}
 					/>
 				</div>
