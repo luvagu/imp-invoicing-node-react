@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { dataGetApi } from '../api/helpers'
+import { useAuth } from "../hooks/useAuth"
+
 import DashboardWidget from '../components/DashboardWidget'
 import Spinner from '../components/Spinner'
 
@@ -7,6 +9,7 @@ export default function Dashboard() {
 	const [stats, setStats] = useState(null)
 	const [errorMsg, setErrorMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const auth = useAuth()
 
 	useEffect(() => {
 		let isDone = false
@@ -39,19 +42,17 @@ export default function Dashboard() {
 	return (
 		<div className="container lg:lg-mw mx-auto px-4 md:px-6 py-4 md:py-6">
 
-			<h3 className="text-black text-3xl font-medium">Resumen {isLoading && <Spinner />}</h3>
+			<h3 className="text-black text-3xl font-medium">Hola, {auth?.token.displayName || 'usuario'} {isLoading && <Spinner />}</h3>
 
 			{errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
 
 			<div className="flex flex-wrap mt-6 -mx-6">
-
 				<DashboardWidget icon='dollar' bgcolor='green' value={`$ ${stats?.ventas}`} name='Ventas' />
 				<DashboardWidget bgcolor='red' value={stats?.egresos} name='Egresos' />
 				<DashboardWidget value={stats?.facturas} name='Facturas' />
 				<DashboardWidget bgcolor='yellow' value={stats?.proformas} name='Proformas' />
 				<DashboardWidget icon='users' bgcolor='purple' value={stats?.clients} name='Clientes' />
 				<DashboardWidget icon='grid' bgcolor='pink' value={stats?.products} name='Productos' />
-				
 			</div>
 			
 		</div>
