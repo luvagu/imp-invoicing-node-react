@@ -56,7 +56,7 @@ workers.statsUpdate = async () => {
         const salesTotal = await workers.salesStats()
         const newStats = { ...docStats, ...dbStats, ...salesTotal }
         if (await updateStats(newStats)) {
-            return console.log('new stats >>>', newStats)
+            return console.log('Stats >>>', newStats)
         }
     } catch (error) {
         return console.error('stats update error >>>', error.message)
@@ -78,7 +78,7 @@ workers.deleteExpiredTokens = async () => {
             }
         }
 
-        return console.log(`${deleteCount} expired tokens deleted`)
+        return console.log(`Tokens >>> ${deleteCount} expired tokens deleted`)
     } catch (error) {
         console.error('delete expired tokens error >>>', error.message)
     }
