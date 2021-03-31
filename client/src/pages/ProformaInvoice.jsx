@@ -12,7 +12,7 @@ import DownloadBtn from '../pdf/DownloadBtn'
 import Input from '../components/Input'
 
 import Modal from '../components/Modal'
-import ClientAddModal from '../components/ClientAddModal'
+import ModalClientAdd from '../components/ModalClientAdd'
 import ClientSearchModal from '../components/ClientSearchModal'
 import ProductSearchModal from '../components/ProductSearchModal'
 import Spinner from '../components/Spinner'
@@ -462,7 +462,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
 
             {/* Modals */}
             <Modal showModal={showModal} closeModal={handleCloseModal}>
-                {modalVersion === 'client-add' && <ClientAddModal closeModal={handleCloseModal} handleAddClient={handleAddClient} data={docData.clientData.id ? { ...docData.clientData } : null} />}
+                {modalVersion === 'client-add' && <ModalClientAdd closeModal={handleCloseModal} handleAddClient={handleAddClient} data={docData.clientData.id ? { ...docData.clientData } : null} />}
                 {modalVersion === 'client-search' && <ClientSearchModal closeModal={handleCloseModal} handleAddClient={handleAddClient} />}
                 {modalVersion === 'products' && <ProductSearchModal closeModal={handleCloseModal} handleAddProduct={handleAddProduct} />}
             </Modal>

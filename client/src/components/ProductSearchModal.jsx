@@ -1,8 +1,8 @@
 
 import useGetApi from '../hooks/useGetApi'
 
-import SearchModalBody from './SearchModalBody'
-import SearchModalResults from './SearchModalResults'
+import ModalSearchHead from './ModalSearchHead'
+import ModalSearchResults from './ModalSearchResults'
 
 export default function ProductSearchModal({ closeModal, handleAddProduct }) {
 	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
@@ -28,7 +28,7 @@ export default function ProductSearchModal({ closeModal, handleAddProduct }) {
 	}
 
 	return (
-		<SearchModalBody 
+		<ModalSearchHead 
 			searchLabel='producto'
 			inputIdName='id'
 			inputIdPaceholder='Codigo exacto'
@@ -40,13 +40,13 @@ export default function ProductSearchModal({ closeModal, handleAddProduct }) {
 			errorMsg={errorMsg}
 		>
 			{searchResults && searchResults.length > 0 && (
-				<SearchModalResults 
+				<ModalSearchResults 
 					labelId='Codigo' 
 					labelName='Producto' 
 					results={searchResults} 
 					handleSelectedItem={handleSelectedProduct} 
 				/>
 			)}
-		</SearchModalBody>
+		</ModalSearchHead>
 	)
 }

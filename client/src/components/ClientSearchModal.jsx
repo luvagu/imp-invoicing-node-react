@@ -1,7 +1,7 @@
 import useGetApi from '../hooks/useGetApi'
 
-import SearchModalBody from './SearchModalBody'
-import SearchModalResults from './SearchModalResults'
+import ModalSearchHead from './ModalSearchHead'
+import ModalSearchResults from './ModalSearchResults'
 
 export default function ClientSearchModal({ closeModal, handleAddClient }) {
 	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
@@ -27,7 +27,7 @@ export default function ClientSearchModal({ closeModal, handleAddClient }) {
 	}
 
 	return (
-		<SearchModalBody 
+		<ModalSearchHead 
 			searchLabel='cliente'
 			inputIdName='id'
 			inputIdPaceholder='Cedula o RUC'
@@ -39,13 +39,13 @@ export default function ClientSearchModal({ closeModal, handleAddClient }) {
 			errorMsg={errorMsg}
 		>
 			{searchResults && searchResults.length > 0 && (
-				<SearchModalResults 
+				<ModalSearchResults 
 					labelId='CI / RUC' 
 					labelName='Cliente' 
 					results={searchResults} 
 					handleSelectedItem={handleSelectedClient} 
 				/>
 			)}
-		</SearchModalBody>
+		</ModalSearchHead>
 	)
 }

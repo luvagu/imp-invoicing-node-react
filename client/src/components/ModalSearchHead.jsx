@@ -1,7 +1,7 @@
 import Input from './Input'
 import Spinner from './Spinner'
 
-export default function SearchModalBody({
+export default function ModalSearchHead({
 	searchLabel,
 	inputIdName,
 	inputIdPaceholder,

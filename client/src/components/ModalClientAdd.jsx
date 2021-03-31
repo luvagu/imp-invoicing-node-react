@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Input from './Input'
 
-export default function ClientAddModal({ handleAddClient, closeModal, data }) {
+export default function ModalClientAdd({ handleAddClient, closeModal, data }) {
 	const [clientData, setclientData] = useState(data ? { ...data } : {})
 	const [errorMsg, setErrorMsg] = useState('')
 

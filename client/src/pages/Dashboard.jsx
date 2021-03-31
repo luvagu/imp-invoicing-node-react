@@ -45,7 +45,7 @@ export default function Dashboard({ user = 'Supervisor' }) {
 			{errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
 
 			<div className="flex flex-wrap mt-6 -mx-6">
-				<DashboardWidget icon='dollar' bgcolor='green' value={`$ ${stats?.ventas}`} name='Ventas' />
+				<DashboardWidget icon='dollar' bgcolor='green' value={`$ ${stats?.ventas || 0}`} name='Ventas' />
 				<DashboardWidget bgcolor='red' value={stats?.egresos} name='Egresos' />
 				<DashboardWidget value={stats?.facturas} name='Facturas' />
 				<DashboardWidget bgcolor='yellow' value={stats?.proformas} name='Proformas' />

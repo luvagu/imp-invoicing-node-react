@@ -1,6 +1,4 @@
-import { SvgPlusCircleSm } from '../icons'
-
-export default function SearchModalResults({ labelId, labelName, results, handleSelectedItem }) {
+export default function ModalSearchResults({ labelId, labelName, results, handleSelectedItem }) {
 	return (
 		<>
 			<div className="flex items-center m-0 border-b pb-2">
