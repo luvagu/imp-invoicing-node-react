@@ -32,12 +32,12 @@ export default function App() {
 								<ErrorBoundary>
 									<PrivateRoute exact path='/' component={Dashboard} />
 									<PrivateRoute path='/ajustes' component={Settings} />
-									<PrivateRoute path='/nuevo-egreso' component={() => 
-										<ProformaInvoice key={Date.now().toString()} docType='Egreso' apiFolder='egresos' />} />
-									<PrivateRoute path='/nueva-factura' component={() => 
-										<ProformaInvoice key={Date.now().toString()} docType='Factura' apiFolder='facturas' />} />
-									<PrivateRoute path='/nueva-proforma' component={() => 
-										<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' allowNotes={true}  />} />
+									<PrivateRoute path='/nuevo-egreso' component={(props) => 
+										<ProformaInvoice key={Date.now().toString()} docType='Egreso' apiFolder='egresos' user={props.user} />} />
+									<PrivateRoute path='/nueva-factura' component={(props) => 
+										<ProformaInvoice key={Date.now().toString()} docType='Factura' apiFolder='facturas' user={props.user} />} />
+									<PrivateRoute path='/nueva-proforma' component={(props) => 
+										<ProformaInvoice key={Date.now().toString()} docType='Proforma' apiFolder='proformas' allowNotes={true} user={props.user} />} />
 									<PrivateRoute path='/buscar-documentos' component={DocumentSearch} />
 									<PrivateRoute path='/buscar-productos' component={ProductSearch} />
 									<PrivateRoute path='/ver-documento/:folder/:doc' component={DocumentView} />

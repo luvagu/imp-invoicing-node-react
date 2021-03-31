@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
 import { dataGetApi } from '../api/helpers'
-import { useAuth } from "../hooks/useAuth"
 
 import DashboardWidget from '../components/DashboardWidget'
 import Spinner from '../components/Spinner'
 
-export default function Dashboard() {
+export default function Dashboard({ user = 'Supervisor' }) {
 	const [stats, setStats] = useState(null)
 	const [errorMsg, setErrorMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const auth = useAuth()
 
 	useEffect(() => {
 		let isDone = false
@@ -42,7 +40,7 @@ export default function Dashboard() {
 	return (
 		<div className="container lg:lg-mw mx-auto px-4 md:px-6 py-4 md:py-6">
 
-			<h3 className="text-black text-3xl font-medium">Hola, {auth?.token.displayName || 'usuario'} {isLoading && <Spinner />}</h3>
+			<h3 className="text-black text-3xl font-medium">Hola, {user} {isLoading && <Spinner />}</h3>
 
 			{errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
 

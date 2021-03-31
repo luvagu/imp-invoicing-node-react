@@ -23,7 +23,7 @@ helpers.queryDB = async (dbName) => {
 helpers.getNextDocNum = async (prop) => {
     const sequences = await helpers.queryDB('sequences')
     const nextNumber = sequences[prop] + 1
-    await helpers.updateSequences(prop, nextNumber)
+    await helpers.updateSequencesProp(prop, nextNumber)
     return nextNumber.toString()
 }
 

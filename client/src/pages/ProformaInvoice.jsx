@@ -19,7 +19,7 @@ import Spinner from '../components/Spinner'
 import BlockEditingLayer from '../components/BlockEditingLayer'
 import Textarea from '../components/Textarea'
 
-export default function ProformaInvoice({ docType, apiFolder, docDataReceived = null, allowNotes = false }) {
+export default function ProformaInvoice({ docType, apiFolder, docDataReceived = null, allowNotes = false, user = 'Supervisor' }) {
     const [errorMsg, setErrorMsg] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -28,7 +28,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
     const [isDocUpdating, setIsDocUpdating] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [modalVersion, setModalVersion] = useState('')
-    const [docData, setDocData] = useState(docDataReceived ? { ...docDataReceived } : { ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC') })
+    const [docData, setDocData] = useState(docDataReceived ? { ...docDataReceived } : { ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC'), user })
 
     const handleShowModal = (version) => {
         setShowModal(true)
@@ -441,7 +441,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                         </div>
                     </div>
                 </div>
-            
+
                 {/* Doc notes */}
                 {allowNotes && (
                     <div className="flex flex-wrap mt-6">
@@ -453,6 +453,11 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                         />
                     </div>
                 )}
+
+                {/* User */}
+                <div className="flex flex-wrap mt-6">
+                    <label className="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">{docData.userLabel} {docData.user}</label>
+                </div>
             </BlockEditingLayer>
 
             {/* Modals */}

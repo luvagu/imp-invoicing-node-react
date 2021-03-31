@@ -18,6 +18,7 @@ export const initialDocInfo = {
 	docTaxAmount: '0.00',
 	docTotal: '0.00',
 	docNotes: '',
+	user: '',
 
 	clientData: {
 		id: '',
@@ -49,7 +50,8 @@ export const initialDocInfo = {
 	discountLabel: 'Descuento',
 	taxLabel: 'IVA (12%)',
 	totalLabel: 'Valor Total',
-	notesLabel: 'Notas',
+	notesLabel: 'Notas:',
+	userLabel: 'Vendedor:'
 }
 
 export const paymentMethods = [

@@ -164,6 +164,8 @@ export default function PDFDocument({ data }) {
 					<View style={compose('view w-50 mt-20')}>
 						<Text style={compose('span bold')}>{data.paymentMethodLabel}</Text>
 						<Text style={compose('span uppercase')}>{data.docPaymentMethod}</Text>
+						<Text style={compose('span bold')}>{data.userLabel}</Text>
+						<Text style={compose('span uppercase')}>{data.user}</Text>
 					</View>
 
 					<View style={compose('view w-50 mt-20')}>
