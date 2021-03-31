@@ -14,7 +14,7 @@ export default function Dashboard({ user = 'Supervisor' }) {
         const fetchData = async () => {
             setIsLoading(true)
             try {
-                const sequences = await dataGetApi('/doc-stats')
+                const sequences = await dataGetApi('/doc-sales-stats')
                 if (!isDone) setStats(sequences)
             } catch (error) {
                 if (!isDone) {

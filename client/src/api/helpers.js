@@ -47,7 +47,7 @@ export const updateDocApi = async (apiFolder, docNum, docData) => {
 }
 
 export const updateSequencesApi = async (prop, value) => {
-    const { data } = await axios.put(`${API_URL}/update-sequences/${prop}/${value}`)
+    const { data } = await axios.put(`${API_URL}/update-sequence/${prop}/${value}`)
     return data
 }
 
