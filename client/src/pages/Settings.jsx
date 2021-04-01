@@ -4,7 +4,7 @@ import { dataGetApi, updateSequencesApi } from '../api/helpers'
 import Input from '../components/Input'
 import Spinner from '../components/Spinner'
 
-export default function Settings() {
+export default function Settings({ privileges }) {
     const [newSequence, setNewSequence] = useState(0)
     const [errorMsg, setErrorMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -27,6 +27,10 @@ export default function Settings() {
             setErrorMsg(error.response?.data.error || 'Network Error')
         }
         setIsLoading(false)
+    }
+
+    const handleDocsDelete = async (apiFolder) => {
+        console.log(apiFolder)
     }
 
     useEffect(() => {
@@ -77,6 +81,33 @@ export default function Settings() {
 				</button>
                 {isLoading && <div className="ml-4"><Spinner /></div>}
 			</div>
+
+            {privileges === 'admin' && (
+                <div className="flex flex-col mt-6 w-full sm:w-64 space-y-2">
+                    <label className="text-red-600 block mb-2 font-bold text-sm uppercase">Zona de peligro</label>
+                    <button
+                        type="button"
+                        className="bg-red-600 hover:bg-red-800 text-white font-semibold py-2 px-4 border border-red-600 rounded shadow-sm"
+                        onClick={(e) => handleDocsDelete('egresos')}
+                    >
+                        Eliminar Egresos
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 border border-indigo-600 rounded shadow-sm"
+                        onClick={(e) => handleDocsDelete('facturas')}
+                    >
+                        Eliminar Facturas
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-yellow-600 hover:bg-yellow-800 text-white font-semibold py-2 px-4 border border-yellow-600 rounded shadow-sm"
+                        onClick={(e) => handleDocsDelete('proformas')}
+                    >
+                        Eliminar Proformas
+                    </button>
+                </div>
+            )}
 
             {errorMsg && <div className="mt-6 px-4 text-center text-sm text-red-600 font-semibold uppercase">{errorMsg}</div>}
             {successMsg && <div className="mt-6 px-4 text-center text-sm text-green-600 font-semibold uppercase">{successMsg}</div>}

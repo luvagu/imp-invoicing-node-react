@@ -36,6 +36,17 @@ export const createDocApi = async (apiFolder, docData) => {
 }
 
 /**
+ * DELETE API delete doc route with required 'folder' param
+ * /delete-doc/:folder/:doc
+ * /delete-all-docs/:folder
+ */
+
+export const deleteAllDocsApi = async (apiFolder) => {
+    const { data } = await axios.delete(`${API_URL}/delete-all-docs/${apiFolder}`)
+    return data
+}
+
+/**
  * PUT API update doc route with required 'folder & doc' params
  * /update-doc/:folder/:doc
  * /update-sequences/:prop/:value
