@@ -8,7 +8,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
 		<Route
 			{...rest}
 			render={(props) => auth.token
-                ? (<Component {...props} user={auth.token.displayName} />) 
+                ? (<Component {...props} user={auth.token.displayName} privileges={auth.token.privileges} />) 
                 : (<Redirect to={{ pathname: '/entrar', state: { from: props.location } }} />)
 			}
 		/>
