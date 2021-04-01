@@ -18,7 +18,7 @@ export default function LogIn() {
 
     const handleChange = (e) => {
         const { value, name } = e.target
-        setCredentials({ ...credentials, [name]: value })
+        setCredentials({ ...credentials, [name]: value.toLowerCase() })
     }
 
 	const handleLogin = (e) => {
