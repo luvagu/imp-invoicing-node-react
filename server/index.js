@@ -13,7 +13,7 @@ const startWorkers = require('./lib/workers')
 
 // IMPSRV IP 192.168.1.102
 // SELF IP 192.168.1.5
-const HOST_HTTP = process.env.NODE_ENV === 'production' ? '192.168.1.5' : 'localhost'
+const HOST_HTTP = process.env.NODE_ENV === 'production' ? '192.168.1.102' : 'localhost'
 const PORT = process.env.PORT || 5000
 
 // Use middlewares
@@ -63,7 +63,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(PORT, () => {
-  console.log(`App listening at http://${HOST_HTTP}:${PORT}`)
+  console.log(`IMP F&P SIRVIENDOSE EN LA URL >>> http://${HOST_HTTP}:${PORT}`)
 })
 
 // Start the workers
