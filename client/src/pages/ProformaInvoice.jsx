@@ -13,8 +13,8 @@ import Input from '../components/Input'
 
 import Modal from '../components/Modal'
 import ModalClientAdd from '../components/ModalClientAdd'
-import ClientSearchModal from '../components/ClientSearchModal'
-import ProductSearchModal from '../components/ProductSearchModal'
+import ModalClientSearch from '../components/ModalClientSearch'
+import ModalProductSearch from '../components/ModalProductSearch'
 import Spinner from '../components/Spinner'
 import BlockEditingLayer from '../components/BlockEditingLayer'
 import Textarea from '../components/Textarea'
@@ -463,8 +463,8 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
             {/* Modals */}
             <Modal showModal={showModal} closeModal={handleCloseModal}>
                 {modalVersion === 'client-add' && <ModalClientAdd closeModal={handleCloseModal} handleAddClient={handleAddClient} data={docData.clientData.id ? { ...docData.clientData } : null} />}
-                {modalVersion === 'client-search' && <ClientSearchModal closeModal={handleCloseModal} handleAddClient={handleAddClient} />}
-                {modalVersion === 'products' && <ProductSearchModal closeModal={handleCloseModal} handleAddProduct={handleAddProduct} />}
+                {modalVersion === 'client-search' && <ModalClientSearch closeModal={handleCloseModal} handleAddClient={handleAddClient} />}
+                {modalVersion === 'products' && <ModalProductSearch closeModal={handleCloseModal} handleAddProduct={handleAddProduct} />}
             </Modal>
         </div>
     )

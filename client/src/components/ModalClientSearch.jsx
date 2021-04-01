@@ -3,7 +3,7 @@ import useGetApi from '../hooks/useGetApi'
 import ModalSearchHead from './ModalSearchHead'
 import ModalSearchResults from './ModalSearchResults'
 
-export default function ClientSearchModal({ closeModal, handleAddClient }) {
+export default function ModalClientSearch({ closeModal, handleAddClient }) {
 	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
 
     const handleInputSearch = (e) => {

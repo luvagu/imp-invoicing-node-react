@@ -4,7 +4,7 @@ import useGetApi from '../hooks/useGetApi'
 import ModalSearchHead from './ModalSearchHead'
 import ModalSearchResults from './ModalSearchResults'
 
-export default function ProductSearchModal({ closeModal, handleAddProduct }) {
+export default function ModalProductSearch({ closeModal, handleAddProduct }) {
 	const [{ searchResults, isLoading, errorMsg }, setRouteWithQuery] = useGetApi()
 
     const handleInputSearch = (e) => {
