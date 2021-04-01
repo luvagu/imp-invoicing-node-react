@@ -8,6 +8,7 @@ export const initialDocInfo = {
 
 	currencySymbol: '$',
 
+	docTs: 0,
 	docType: '',
 	docNum: '',
 	docDate: '',
@@ -50,7 +51,7 @@ export const initialDocInfo = {
 	discountLabel: 'Descuento',
 	taxLabel: 'IVA (12%)',
 	totalLabel: 'Valor Total',
-	notesLabel: 'Notas:',
+	notesLabel: 'Condiciones:',
 	userLabel: 'Vendedor:'
 }
 
@@ -66,5 +67,5 @@ export const paymentMethods = [
 	'Deposito y Retencion',
 	'Credito',
 	'Credito y Retencion',
-	'Condiciones en notas',
+	'Ver Condiciones',
 ]

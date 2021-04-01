@@ -58,19 +58,6 @@ function useProvideAuth() {
 		if (expiresIn === 0 || expiresIn < Date.now() || !token) return
 
 		const interval = setInterval(() => {
-			// console.log('This will run every >>>!', expiresIn - (1000 * 60) - Date.now())
-
-			// renewToken({ id: token.id, extend: true })
-			// 	.then((newToken) => {
-			// 		setLocalToken(newToken)
-			// 		setToken(newToken)
-			// 		setExpiresIn(newToken.expires)
-			// 	})
-			// 	.catch((error) => {
-			// 		console.error(error.response?.data.error)
-			// 		setLocalToken('')
-			// 	})
-
 			// Renew token api call
 			(async () => {
 				try {
@@ -89,7 +76,7 @@ function useProvideAuth() {
 		}, expiresIn - (1000 * 60) - Date.now())
 
 		return () => clearInterval(interval)
-	}, [expiresIn, token])
+	}, [expiresIn, token, setLocalToken])
 
 	// Try auto login if localToken exists
 	useEffect(() => {

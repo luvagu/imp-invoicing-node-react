@@ -28,7 +28,7 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
     const [isDocUpdating, setIsDocUpdating] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [modalVersion, setModalVersion] = useState('')
-    const [docData, setDocData] = useState(docDataReceived ? { ...docDataReceived } : { ...initialDocInfo, docType, docDate: new Date().toLocaleString('es-EC'), user })
+    const [docData, setDocData] = useState(docDataReceived ? { ...docDataReceived } : { ...initialDocInfo, docTs: Date.now(), docType, docDate: new Date().toLocaleString('es-EC'), user })
 
     const handleShowModal = (version) => {
         setShowModal(true)

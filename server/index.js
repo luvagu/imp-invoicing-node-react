@@ -21,22 +21,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-// Serve Client Static Dir
-//--GIT--> export NODE_ENV=production
-//--CMD--> SET NODE_ENV=production
-if (process.env.NODE_ENV === 'production') {
-    app.use(compression())
-    app.use(express.static(path.join(__dirname, '..', 'client/build')))
-
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'client/build', 'index.html'))
-    })
-} else {
-    app.get('/', (req, res) => {
-        res.send({ welcome: 'Welcome to IMP Invoicing API' })
-    })
-}
-
 // Auth routes
 app.get('/tokens/:id', getToken)
 app.post('/tokens', postToken)
@@ -61,6 +45,22 @@ app.get('/search-client-id/:query', getSingleClientId)
 app.get('/search-client-name/:query', getClientsByName)
 app.get('/search-product-id/:query', getSingleProductId)
 app.get('/search-product-includes/:query', getProductsWithTerms)
+
+// Serve Client Static Dir
+//--GIT--> export NODE_ENV=production
+//--CMD--> SET NODE_ENV=production
+if (process.env.NODE_ENV === 'production') {
+    app.use(compression())
+    app.use(express.static(path.join(__dirname, '..', 'client/build')))
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'client/build', 'index.html'))
+    })
+} else {
+    app.get('/', (req, res) => {
+        res.send({ welcome: 'Welcome to IMP Invoicing API' })
+    })
+}
 
 app.listen(PORT, () => {
   console.log(`App listening at http://${HOST_HTTP}:${PORT}`)
