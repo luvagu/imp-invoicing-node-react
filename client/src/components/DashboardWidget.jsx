@@ -1,6 +1,6 @@
 import { SvgDollar, SvgGrid, SvgDocText, SvgUsers } from "../icons"
 
-export default function DashboardWidget({ icon = 'docText', bgcolor, name, value = 0 }) {
+export default function DashboardWidget({ icon = 'docText', bgcolor = 'bg-indigo-600', name, value = 0 }) {
     const icons = {
         docText : <SvgDocText className="h-8 w-8 text-white" />,
         users : <SvgUsers className="h-8 w-8 text-white" />,
@@ -11,7 +11,7 @@ export default function DashboardWidget({ icon = 'docText', bgcolor, name, value
     return (
         <div className="w-full sm:w-1/2 px-6 mb-6 md:mt-0">
             <div className="flex items-center px-5 py-6 shadow rounded-lg bg-gray-300">
-                <div className={`p-3 rounded-full ${bgcolor ? bgcolor : 'bg-indigo-600'} bg-opacity-75`}>
+                <div className={`p-3 rounded-full ${bgcolor} bg-opacity-75`}>
                     {icons[icon]}
                 </div>
 

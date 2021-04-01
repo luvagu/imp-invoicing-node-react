@@ -268,12 +268,12 @@ export default function ProformaInvoice({ docType, apiFolder, docDataReceived = 
                 <div className="flex items-center justify-between">
                     <h2 className="text-base sm:text-xl lg:text-2xl font-bold tracking-wider uppercase">{docData.docType}</h2>
 
-                    {!isDocSaved && !isLoading && <DocActionsBtn action='save' handle={handleSave} title='Guardar' color='indigo' />}
-                    {isDocUpdating && isDocSaved && !isLoading && <DocActionsBtn action='update' handle={handleUpdate} title='Actualizar' color='blue' />}
+                    {!isDocSaved && !isLoading && <DocActionsBtn action='save' handle={handleSave} title='Guardar' />}
+                    {isDocUpdating && isDocSaved && !isLoading && <DocActionsBtn action='update' handle={handleUpdate} title='Actualizar' bgcolor='bg-blue-600' bghover='bg-blue-800' />}
                     {(isDocSaved && !isDocUpdating) && !isLoading && (
                         <>
                             {!docDataReceived && <DocActionsBtn action='link' title={`Nuevo Documento ${docType}`} />}
-                            <DocActionsBtn action='edit' handle={handleEdit} title='Editar' color='yellow' />
+                            <DocActionsBtn action='edit' handle={handleEdit} title='Editar' bgcolor='bg-yellow-600' bghover='bg-yellow-800' />
                             <DownloadBtn data={{ ...docData }} />
                         </>
                     )}
