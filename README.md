@@ -1,7 +1,7 @@
 
 <h1 align="center">IMP Invoicing App</h1>
 
-IMP Invoicing is an in-house full-stack web application built with Node.js / Express (Back-end REST JSON API) and React / Tailwind CSS (Front-end). It generates PDF invoices and quotes with client and product data served from the backend.
+IMP Invoicing is an in-house full-stack web application built with Node.js / Express (Back-end REST JSON API) and React / Tailwind CSS (Front-end). It generates PDF invoices and quotes with client and product data served from the back-end.
 
 <p align="center">
     <img src="Screenshot.png" width="400">
@@ -12,26 +12,40 @@ IMP Invoicing is an in-house full-stack web application built with Node.js / Exp
 ## Back-end main features
 
 - REST JSON API built with Node.js and Express
-
+- CRUD application with local JSON Data
+- Uses `compression` and `cors` middlewares
+- Serves the front-end build
+- Generates and handles session tokens
+- Encrypted passwords with `node crypto`
+- Background worker, keeps stats up to date
+- Background worker, cleans expired tokens
 
 ## Front-end main features
 - Built with `create-react-app`
+- Uses `axios` and `react-router-dom` with `private routes`
+- User sessions with `custom hooks`
 - Responsive design using `Taiwind CSS`
-- Uses `react-router-dom` and `axios`
 - Dynamic Stats Dashboard
 - `Create` and `Edit` Invoices / Quotes
 - Add existing client or register new one
 - Unlimited product lines per document
 - Per product line `editable fields` (name, price, discount %)
-- `Save` and Print document in `PDF` format
+- `Save` and Print document in `PDF` with `react-pdf`
 - Prevents from navigating away on unsaved documents
 - Search documents by type or number
 - Search products by code or name
-- Access only for designated users
 
 ## More screenshots
 
-Try the demo account at: https://luvagu.github.io/todos-js-snowpack-tailwind
+<p align="center">
+    <img src="Invoive-view.png" width="400">
+    <img src="PDF-sample.png" width="400">
+    <img src="Doc-search.png" width="400">
+    <img src="Product-search.png" width="400">
+    <img src="Login-view.png" width="400">
+</p>
+
+Try the demo account at: https://luvagu.github.io/todos-js-snowpack-tailwind just beware that the interface is in Spanish.
 
 > User: **demo** Password: **demo**
 
