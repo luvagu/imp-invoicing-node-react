@@ -45,7 +45,7 @@ IMP Invoicing is an in-house full-stack web application built with Node.js / Exp
     <img src="Login-view.png" width="400">
 </p>
 
-Try the demo account at: https://luvagu.github.io/todos-js-snowpack-tailwind just beware that the interface is in Spanish.
+Try the demo account at: "url comming soon" just beware that the interface is in Spanish.
 
 > User: **demo** Password: **demo**
 
