@@ -22,8 +22,8 @@ IMP Invoicing is an in-house full-stack web application built with Node.js / Exp
 
 ## Front-end main features
 - Built with `create-react-app`
-- Uses `axios` and `react-router-dom` with `private routes`
-- User sessions with `custom hooks`
+- Uses `axios`, `react-router-dom` with `private routes` and `custom hooks`
+- User login with persistent sessions 
 - Responsive design using `Taiwind CSS`
 - Dynamic Stats Dashboard
 - `Create` and `Edit` Invoices / Quotes
