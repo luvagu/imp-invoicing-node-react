@@ -24,11 +24,11 @@ export default function ModalClientAdd({ handleAddClient, closeModal, data }) {
 
 	return (
 		<form
-			className="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8"
+			className="shadow w-full rounded-lg bg-white overflow-hidden block p-8"
 			onSubmit={handleSubmit}
 		>
 			<h2 className="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
-				Añadir cliente nuevo:
+				{data ? 'Actualizar' : 'Añadir'} cliente nuevo:
 			</h2>
 
 			<div className="flex flex-col mb-6">
