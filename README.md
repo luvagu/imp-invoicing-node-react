@@ -44,3 +44,18 @@ IMP Invoicing is an in-house full-stack web application built with Node.js / Exp
     <img src="Product-search.png" width="400">
     <img src="Login-view.png" width="400">
 </p>
+
+## Live Demo
+
+Try the live demo at https://imp-invoicing-react.web.app/ with the credentials below. Just beware that the interface is in the Spanish language.
+
+User: **`demo`**
+Password: **`demo`**
+
+> **Note**: this demo does not contain real data.
+
+To add a client by ID try `9999999999` or by name try `john` or `doe`
+
+To add a product by ID try `demo1`, `demo2` or `demo3` or by name try `product`
+
+Have fun experimenting!

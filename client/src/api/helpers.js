@@ -3,8 +3,8 @@ import axios from 'axios'
 // Production URLs
 // IMPSRV IP ==> 192.168.1.102
 // SELF IP ==> 192.168.1.5
-// APP Engine ==> https://imp-invoicing.uc.r.appspot.com
-const API_URL = process.env.NODE_ENV === 'production' ? 'http://localhost:5000' : 'http://localhost:5000'
+// VPS ==> https://imp-node-api.imporpernos.com
+const API_URL = process.env.NODE_ENV === 'production' ? 'https://imp-node-api.imporpernos.com' : 'http://localhost:5000'
 
 /**
  * Currently available folder names [egresos, facturas, proformas]
