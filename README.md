@@ -7,7 +7,7 @@ IMP Invoicing is an in-house full-stack web application built with Node.js / Exp
     <img src="Screenshot.png" width="400">
 </p>
 
-> It's purpose is to serve as an auxiliary tool in place of the main invoicing system while it's being maintained.
+> It's primarily used by our salesmen to register new invoices or quotes and in-store as a backup invoicing system while the main system is being maintained.
 
 ## Back-end main features
 
