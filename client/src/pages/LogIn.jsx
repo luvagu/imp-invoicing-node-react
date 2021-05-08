@@ -31,6 +31,11 @@ export default function LogIn() {
 	return auth.token ? (<Redirect to={from} />) : (
 		<div className="container sm:sm-mw md:md-mw lg:lg-mw mx-auto px-4 md:px-6 py-4 md:py-6">
             <h3 className="text-black text-3xl font-medium">Entrar</h3>
+            <p className="mb-4 text-indigo-700">
+                Demo account credentials:<br/>
+                <strong>User</strong>: demo<br/>
+                <strong>Password</strong>: demo
+            </p>
 
             <div className="flex flex-col mt-6">
                 <p className="mb-4">Debes iniciar sesión para ir a {from.pathname}</p>
